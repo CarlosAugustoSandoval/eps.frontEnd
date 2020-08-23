@@ -1,0 +1,124 @@
+<template>
+    <v-navigation-drawer
+        style="padding-top: 56px !important; z-index: 2 !important;"
+        v-model="Customizer_drawer"
+        app
+        temporary
+        clipped
+        :right="!$vuetify.rtl"
+    >
+      <!---USer Area -->
+      <v-list-item two-line class="profile-bg">
+        <v-list-item-avatar>
+          <img src="https://randomuser.me/api/portraits/men/81.jpg"/>
+        </v-list-item-avatar>
+        <v-list-item-content class="white--text">
+          <v-list-item-title>Carlos Augusto Sandoval</v-list-item-title>
+          <v-list-item-subtitle class="caption white--text">sandovalcarlosaugusto@gmail.com</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <!---USer Area -->
+      <v-list class="pa-0">
+        <v-list-item @click="true">
+          <v-list-item-avatar color="primary">
+            <v-icon dark>mdi-account</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>Perfil</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="true">
+          <v-list-item-avatar color="error">
+            <v-icon dark>mdi-close</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>Cerrar Sesión</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <!---Theme color -->
+      <v-divider></v-divider>
+      <div class="px-4 py-4">
+        <span>Color del Tema</span>
+        <v-item-group v-model="colorActive">
+          <v-item
+            v-for="tcolor in themeColors"
+            :key="tcolor"
+            :value="tcolor"
+            class="mt-2"
+          >
+            <template v-slot="{ active, toggle }">
+              <v-avatar
+                :class="active && 'v-settings__item--active'"
+                :color="tcolor"
+                class="v-settings__item mr-2"
+                size="25"
+                @click="toggle"
+              />
+            </template>
+          </v-item>
+        </v-item-group>
+        <v-switch v-model="dark" class="mt-4"  hide-details primary  label="Modo Oscuro" />
+      </div>
+    </v-navigation-drawer>
+</template>
+
+<script>
+import Proxyable from 'vuetify/lib/mixins/proxyable'
+import { mapGetters } from 'vuex'
+  export default {
+    name: 'Customizer',
+    mixins: [Proxyable],
+    data: () => ({
+      colorActive: '',
+      dark: false,
+    }),
+    computed: {
+      ...mapGetters(['themeColors', 'themeColor', 'darkMode']),
+      Customizer_drawer: {
+          get () { return this.$store.state.sidebar.Customizer_drawer },
+          set (val) { this.$store.commit('SET_CUSTOMIZER_DRAWER', val) }
+      }
+    },
+    watch: {
+      dark: {
+        handler (dark) {
+          this.$store.commit('SET_THEME_MODE', dark)
+        },
+        immediate: false
+      },
+      colorActive: {
+        handler (color) {
+          this.$store.commit('SET_THEME_COLOR', color)
+        },
+        immediate: false
+      },
+      themeColor: {
+        handler (color) {
+          this.colorActive = color
+          this.$vuetify.theme.themes[this.isDark ? 'dark' : 'light'].primary = color
+          this.$vuetify.theme.themes[this.isLight ? 'light' : 'dark'].primary = color
+        },
+        immediate: true
+      },
+      darkMode: {
+        handler (mode) {
+          this.dark = mode
+          this.$vuetify.theme.dark = mode
+        },
+        immediate: true
+      }
+    },
+     methods: {
+     } 
+  }
+</script>
+
+<style lang="scss">
+.profile-bg{
+  background:url('../../../assets/images/user-info.jpg') no-repeat;
+  .v-avatar{
+    padding:45px 0;
+  }
+}
+</style>
