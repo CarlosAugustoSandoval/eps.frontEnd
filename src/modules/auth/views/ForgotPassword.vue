@@ -70,7 +70,7 @@
 
 <script>
 export default {
-  name: "RememberPassword",
+  name: 'ForgotPassword',
   data: () => ({
     email: null
   }),

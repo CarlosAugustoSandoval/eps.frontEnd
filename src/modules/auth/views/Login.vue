@@ -54,7 +54,7 @@
                       label="Recordarme"
                   ></v-checkbox>
                   <div class="ml-auto">
-                    <router-link tag="a" class="link" :to="{name: 'RememberPassword'}" exact>Recordar Contraseña</router-link>
+                    <router-link tag="a" class="link" :to="{name: 'ForgotPassword'}" exact>¿Olvidó la Contraseña?</router-link>
                   </div>
                 </div>
                 <v-btn
@@ -78,23 +78,28 @@
 export default {
   name: 'Login',
   data: () => ({
-    password: null,
     email: null,
+    password: null,
     remember: false,
     loading: false
   }),
+  created() {
+    this.$store.commit('SET_SNACKBAR', {color: 'success', message: 'un mensaje de prueba.'})
+  },
   methods: {
     login() {
-      this.loading = true
       this.$refs.formLogin.validate().then(result => {
         if (result) {
-          console.log('result', result)
-          setTimeout(() => {
-            this.loading = false
-          }, 1000)
+          this.loading = true
+          this.$store.dispatch('logIn', { username: this.email, password: this.password, remember: this.remember })
+              .then(() => {
+                setTimeout(() => {
+                  this.loading = false
+                }, 1000)
+              })
         }
       })
     }
   }
-};
+}
 </script>

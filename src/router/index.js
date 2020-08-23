@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import goTo from 'vuetify/es5/services/goto'
 
 import mipresRoutes from '@/modules/mipres/router'
-import authenticationRoutes from '@/modules/authentication/router'
+import authenticationRoutes from '@/modules/auth/router'
 
 Vue.use(Router)
 

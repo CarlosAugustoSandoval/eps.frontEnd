@@ -7,6 +7,8 @@ import sidebar from './modules/sidebar'
 import menu from './modules/menu'
 import theme from './modules/theme'
 import dataTable from './modules/dataTable'
+import snackbar from './modules/snackbar'
+import auth from '../modules/auth/store/modules/auth'
 
 Vue.use(Vuex)
 
@@ -15,7 +17,9 @@ export default new Vuex.Store({
         theme,
         sidebar,
         menu,
-        dataTable
+        auth,
+        dataTable,
+        snackbar
     },
     plugins: [createPersistedState({
         paths: ['theme']

@@ -83,27 +83,3 @@ extend('maxlength', {
   },
   message: 'El campo {_field_} debe tener como maximo {length} caracteres'
 })
-
-
-
-/// Validaciones de preguntas
-extend('requiredPregunta', {
-    ...required,
-    message: 'La pregunta {_field_} es requerida'
-})
-
-extend('minPregunta', {
-    params: ['minimo'],
-    validate(value, { minimo }) {
-        return Number(value) >= minimo
-    },
-    message: 'La respuesta debe ser mayor o igual a {minimo}'
-})
-
-extend('maxPregunta', {
-    params: ['maximo'],
-    validate(value, { maximo }) {
-        return Number(value) <= maximo
-    },
-    message: 'La respuesta debe ser menor o igual a {maximo}'
-})
