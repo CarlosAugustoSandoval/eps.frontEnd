@@ -7,14 +7,15 @@
         clipped
         :right="!$vuetify.rtl"
     >
+      <Loading :value="loading"></Loading>
       <!---USer Area -->
-      <v-list-item two-line class="profile-bg">
+      <v-list-item two-line class="profile-bg" v-if="user">
         <v-list-item-avatar>
-          <img src="https://randomuser.me/api/portraits/men/81.jpg"/>
+          <img src="@/assets/images/users/userDefault.png"/>
         </v-list-item-avatar>
         <v-list-item-content class="white--text">
-          <v-list-item-title>Carlos Augusto Sandoval</v-list-item-title>
-          <v-list-item-subtitle class="caption white--text">sandovalcarlosaugusto@gmail.com</v-list-item-subtitle>
+          <v-list-item-title>{{ user.name }}</v-list-item-title>
+          <v-list-item-subtitle class="caption white--text">{{ user.email }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <!---USer Area -->
@@ -27,7 +28,7 @@
             <v-list-item-title>Perfil</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="true">
+        <v-list-item @click="logout">
           <v-list-item-avatar color="error">
             <v-icon dark>mdi-close</v-icon>
           </v-list-item-avatar>
@@ -70,11 +71,12 @@ import { mapGetters } from 'vuex'
     name: 'Customizer',
     mixins: [Proxyable],
     data: () => ({
+      loading: false,
       colorActive: '',
       dark: false,
     }),
     computed: {
-      ...mapGetters(['themeColors', 'themeColor', 'darkMode']),
+      ...mapGetters(['themeColors', 'themeColor', 'darkMode', 'user']),
       Customizer_drawer: {
           get () { return this.$store.state.sidebar.Customizer_drawer },
           set (val) { this.$store.commit('SET_CUSTOMIZER_DRAWER', val) }
@@ -110,6 +112,15 @@ import { mapGetters } from 'vuex'
       }
     },
      methods: {
+       logout () {
+         this.loading = true
+         this.$store.dispatch('logout')
+             .then(resolve => {
+               if (resolve) this.$router.push({name: 'Login'})
+               this.$store.commit('SET_CUSTOMIZER_DRAWER', false)
+               this.loading = false
+             })
+       }
      } 
   }
 </script>

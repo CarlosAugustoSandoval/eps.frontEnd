@@ -91,11 +91,10 @@ export default {
       this.$refs.formLogin.validate().then(result => {
         if (result) {
           this.loading = true
-          this.$store.dispatch('logIn', { username: this.email, password: this.password, remember: this.remember })
-              .then(() => {
-                setTimeout(() => {
-                  this.loading = false
-                }, 1000)
+          this.$store.dispatch('login', { email: this.email, password: this.password, remember_token: this.remember })
+              .then(resolve => {
+                if (resolve) this.$router.push({name: 'Home'})
+                this.loading = false
               })
         }
       })

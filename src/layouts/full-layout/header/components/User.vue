@@ -1,7 +1,7 @@
 <template>
   <v-btn dark icon class="mr-1" @click.stop="setCustomizerDrawer(!Customizer_drawer)">
     <v-avatar size="40">
-      <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+      <img src="@/assets/images/users/userDefault.png" alt="John" />
     </v-avatar>
   </v-btn>
 </template>

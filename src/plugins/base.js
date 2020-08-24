@@ -1,13 +1,6 @@
 import Vue from 'vue'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import {ValidationObserver, ValidationProvider} from 'vee-validate'
-Vue.use({
-    install(Vue) {
-        Vue.component('ValidationProvider', ValidationProvider)
-        Vue.component('ValidationObserver', ValidationObserver)
-    }
-})
 
 const requireComponent = require.context(
     // The relative path of the components folder
@@ -32,7 +25,6 @@ requireComponent.keys().forEach(fileName => {
                 .replace(/\.\w+$/, '')
         )
     )
-
 
     // Register component globally
     Vue.component(

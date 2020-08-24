@@ -26,7 +26,7 @@ export default {
       buttonZone: false,
       advanceFilters: true,
       nameItemState: 'tablaPrescripciones',
-      route: 'prescripciones',
+      route: 'mipres/prescripciones',
       makeHeaders: [
         {
           text: 'Prescripción',

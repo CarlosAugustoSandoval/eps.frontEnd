@@ -442,7 +442,7 @@
                         .catch(e => {
                             this.value.loading = false
                             this.activePetition = true
-                            this.$store.commit('snackbar', {
+                            this.$store.commit('SET_SNACKBAR', {
                                 color: 'error',
                                 message: `al hacer la búsqueda de registros.`,
                                 error: e

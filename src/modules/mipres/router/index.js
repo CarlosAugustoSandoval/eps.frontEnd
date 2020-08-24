@@ -8,6 +8,7 @@ export default {
             path: 'prescripciones',
             component: () => import('@/modules/mipres/views/prescripciones/Prescripciones'),
             meta: {
+                requiresAuth: true,
                 title: {
                     text: 'Prescripciones',
                     icon: 'fas fa-edit',

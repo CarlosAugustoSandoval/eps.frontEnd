@@ -1,4 +1,11 @@
 import Vue from 'vue'
+import {ValidationObserver, ValidationProvider} from 'vee-validate'
+Vue.use({
+    install(Vue) {
+        Vue.component('ValidationProvider', ValidationProvider)
+        Vue.component('ValidationObserver', ValidationObserver)
+    }
+})
 import { required, email, required_if, numeric, is_not, confirmed } from 'vee-validate/dist/rules'
 import { extend } from 'vee-validate'
 

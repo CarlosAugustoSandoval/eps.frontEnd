@@ -22,6 +22,6 @@ export default new Vuex.Store({
         snackbar
     },
     plugins: [createPersistedState({
-        paths: ['theme']
+        paths: ['theme', 'auth']
     })]
 })

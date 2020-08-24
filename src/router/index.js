@@ -4,10 +4,12 @@ import goTo from 'vuetify/es5/services/goto'
 
 import mipresRoutes from '@/modules/mipres/router'
 import authenticationRoutes from '@/modules/auth/router'
+import store from "../store/store";
 
 Vue.use(Router)
 
-export default new Router({
+// export default new Router({
+const router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,
     // This is for the scroll top when click on any router link
@@ -32,6 +34,7 @@ export default new Router({
                     path: 'home',
                     component: () => import('@/views/Home'),
                     meta: {
+                        requiresAuth: true,
                         title: {
                             text: 'Home',
                             icon: 'mdi-home',
@@ -51,3 +54,18 @@ export default new Router({
         authenticationRoutes
     ]
 })
+
+// navigation guards before each
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (store.getters.user === null) {
+            next({ name: 'Login' })
+        } else {
+            next()
+        }
+    } else {
+        next()
+    }
+})
+
+export default router
