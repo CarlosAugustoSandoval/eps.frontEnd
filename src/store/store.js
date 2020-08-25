@@ -8,7 +8,8 @@ import menu from './modules/menu'
 import theme from './modules/theme'
 import dataTable from './modules/dataTable'
 import snackbar from './modules/snackbar'
-import auth from '../modules/auth/store/modules/auth'
+import auth from '../modules/auth/store/auth'
+import mipres from '../modules/mipres/store/mipres'
 
 Vue.use(Vuex)
 
@@ -19,7 +20,8 @@ export default new Vuex.Store({
         menu,
         auth,
         dataTable,
-        snackbar
+        snackbar,
+        mipres
     },
     plugins: [createPersistedState({
         paths: ['theme', 'auth']

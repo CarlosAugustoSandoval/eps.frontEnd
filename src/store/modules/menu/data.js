@@ -11,7 +11,7 @@ export const itemsMenu = [
     {
         id: 2,
         title: 'Prescripciones',
-        icon: 'fas fa-edit',
+        icon: 'fas fa-prescription',
         iconbg: 'light-blue',
         desc: '',
         routeName: 'Prescripciones'

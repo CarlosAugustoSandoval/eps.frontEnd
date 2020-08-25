@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="down-top-padding">
-    <IndexViewTitle/>
+    <ViewTitle/>
     <v-row>
       <v-col cols="12" md="6">
         <v-card>

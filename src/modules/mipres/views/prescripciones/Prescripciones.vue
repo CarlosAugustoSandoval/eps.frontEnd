@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="down-top-padding">
-    <IndexViewTitle/>
+    <ViewTitle/>
     <v-row>
       <v-col cols="12">
         <v-card>
@@ -8,6 +8,7 @@
               ref="tablaPrescripciones"
               v-model="dataTable"
               @resetOption="item => resetOptions(item)"
+              @detallePrescripcion="item => $router.push({ name: 'Prescripcion', params: {NoPrescripcion: item.NoPrescripcion }})"
           ></DataTable>
         </v-card>
       </v-col>
@@ -16,11 +17,8 @@
 </template>
 
 <script>
-import IndexViewTitle from '@/components/globalComponents/IndexViewTitle'
-import DataTable from '@/components/globalComponents/DataTable'
 export default {
   name: 'Prescripciones',
-  components: {DataTable, IndexViewTitle},
   data: () => ({
     dataTable: {
       buttonZone: false,
@@ -32,7 +30,7 @@ export default {
           text: 'Prescripción',
           align: 'left',
           sortable: false,
-          value: 'prescripcion'
+          value: 'NoPrescripcion'
         },
         {
           text: 'Amb. Atención',
@@ -44,13 +42,41 @@ export default {
           text: 'Paciente',
           align: 'center',
           sortable: false,
-          value: 'NoIDPaciente'
+          value: 'NoIDPaciente',
+          component: {
+            functional: true,
+            render: function (createElement, context) {
+              return createElement(
+                  'CItemList', {
+                    props: {
+                      item: {
+                        title: [context.props.value.PAPaciente, context.props.value.SAPaciente, context.props.value.PNPaciente, context.props.value.SNPaciente].filter(x => x).join(' '),
+                        subtitle: `${context.props.value.TipoIDPaciente}${context.props.value.NroIDPaciente}`
+                      }
+                    }
+                  })
+            }
+          }
         },
         {
           text: 'Profesional',
           align: 'left',
           sortable: false,
-          value: 'NoIDProf'
+          value: 'NoIDProf',
+          component: {
+            functional: true,
+            render: function (createElement, context) {
+              return createElement(
+                  'CItemList', {
+                    props: {
+                      item: {
+                        title: [context.props.value.PAProfS, context.props.value.SAProfS, context.props.value.PNProfS, context.props.value.SNProfS].filter(x => x).join(' '),
+                        subtitle: `${context.props.value.TipoIDProf}${context.props.value.NumIDProf}`
+                      }
+                    }
+                  })
+            }
+          }
         },
         {
           text: 'Avance entrega',
@@ -86,7 +112,7 @@ export default {
   methods: {
     resetOptions(item) {
       item.options = []
-      item.options.push({event: 'entregar', icon: 'ti ti-package', tooltip: 'Entregar'})
+      item.options.push({event: 'detallePrescripcion', icon: 'fas fa-file-prescription', tooltip: 'Ver Prescripción'})
       return item
     }
   }

@@ -7,8 +7,13 @@
             <v-icon :dark="!!title.color">{{title.icon}}</v-icon>
           </v-avatar>
           <v-toolbar-title class="py-2">
-            <span class="text--primary">{{title.text}}</span>
+            <span class="text--primary">{{title.text}}{{adicionalTitle}}</span>
             <v-breadcrumbs v-if="title.breadcrumbs" :items="title.breadcrumbs" class="pa-0">
+              <template v-slot:item="{ item }">
+                <v-breadcrumbs-item tag="a" :disabled="item.disabled" @click="$router.push({ name: item.routerName})">
+                  {{ item.text }}
+                </v-breadcrumbs-item>
+              </template>
               <template v-slot:divider>
                 <v-icon>mdi-chevron-right</v-icon>
               </template>
@@ -21,7 +26,13 @@
 </template>
 <script>
 export default {
-  name: 'IndexViewTitle',
+  name: 'ViewTitle',
+  props: {
+    adicionalTitle: {
+      type: String,
+      default: ''
+    }
+  },
   computed: {
     title () {
       if (this && this.$route && this.$route.meta && this.$route.meta.title) return this.$route.meta.title
