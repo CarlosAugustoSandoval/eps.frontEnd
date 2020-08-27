@@ -1,5 +1,4 @@
 <template>
-
   <BaseItemGroup
     :item="item"
     text

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import App from './App.vue'
+import moment from 'moment'
 import vuetify from './plugins/vuetify'
 import router from './router'
 import store from './store/store'
@@ -11,6 +12,10 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 import './plugins/base'
 import './plugins/veeValidate'
 import VueSkycons from 'vue-skycons'
+
+moment.locale('es')
+Vue.prototype.moment = moment
+
 Vue.use(VueAxios, axios)
 Vue.use(VueSkycons, {color: '#1e88e5'})
 Vue.use(VueSweetalert2, {showConfirmButton: false, timerProgressBar: true, timer: 6000})
