@@ -43,7 +43,7 @@
             </v-tooltip>
             <v-toolbar-title>
               <v-list-item-content>
-                <v-list-item-title>{{ data.title }}</v-list-item-title>
+                <v-list-item-title class="py-1">{{ data.title }}</v-list-item-title>
                 <v-list-item-subtitle class="caption" :class="data.classSubTitle || ''">{{ data.subTitle }}
                 </v-list-item-subtitle>
               </v-list-item-content>
@@ -282,7 +282,7 @@ export default {
             cantidadTotal: (this.item.CantTotal !== null ? Number(this.item.CantTotal) : 0),
             type: 'servicio complementario',
             TipoTec: 'S',
-            title: (this.item.CodSerComp ? this.item.CodSerComp : '') + (this.item.DescSerComp ? ' - ' + this.item.DescSerComp : ''),
+            title: (this.item.CodSerComp ? this.item.CodSerComp : '') + (this.item.DescSerComp ? ' | ' + this.item.DescSerComp : ''),
             subTitle: `${this.item.EstadoJunta}`,
             classSubTitle: this.item.EstJM === 2 ? 'error--text' : 'success--text',
             cantidadFormulada: (this.item.CantTotal !== null ? this.item.CantTotal : ''),
@@ -452,7 +452,7 @@ export default {
             cantidadTotal: (this.item.CantTotal !== null ? Number(this.item.CantTotal) : 0),
             type: 'procedimiento',
             TipoTec: 'P',
-            title: this.item.cup ? this.item.cup.codigo + ' - ' + this.item.cup.descripcion : '',
+            title: this.item.cup ? this.item.cup.codigo + ' | ' + this.item.cup.descripcion : '',
             subTitle: `${this.item.estado_junta}`,
             classSubTitle: this.item.EstJM === 2 ? 'error--text' : 'success--text',
             cantidadFormulada: (this.item.CantTotal !== null ? this.item.CantTotal : ''),
@@ -536,7 +536,7 @@ export default {
             cantidadTotal: (this.item.CantTotal !== null ? Number(this.item.CantTotal) : 0),
             type: 'dispositivo médico',
             TipoTec: 'D',
-            title: this.item.dispositivo ? this.item.dispositivo.codigo + ' - ' + this.item.dispositivo.descripcion : '',
+            title: this.item.dispositivo ? this.item.dispositivo.codigo + ' | ' + this.item.dispositivo.descripcion : '',
             subTitle: `${this.item.EstadoJunta}`,
             classSubTitle: this.item.EstJM === 2 ? 'error--text' : 'success--text',
             cantidadFormulada: (this.item.CantTotal !== null ? this.item.CantTotal : ''),

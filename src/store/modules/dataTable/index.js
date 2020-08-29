@@ -2,7 +2,9 @@
 const state = {
     tables: {
         tablaPrescripciones: 0,
-        tablaPrescripcionesVersion: 1
+        tablaPrescripcionesVersion: 1,
+        tablaTutelas: 0,
+        tablaTutelasVersion: 1
     }
 }
 

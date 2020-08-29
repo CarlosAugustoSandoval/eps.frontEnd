@@ -10,6 +10,7 @@ const getters = {
         let menuPrincipal = []
         menuPrincipal.push(state.itemsMenu.find(x => x.id === 1))
         menuPrincipal.push(state.itemsMenu.find(x => x.id === 2))
+        menuPrincipal.push(state.itemsMenu.find(x => x.id === 3))
         return menuPrincipal
     }
 }

@@ -1,15 +1,15 @@
 <template>
   <v-container fluid class="down-top-padding">
-    <ViewTitle/>
+    <view-title/>
     <v-row>
       <v-col cols="12">
         <v-card>
-          <DataTable
-              ref="tablaPrescripciones"
+          <data-table
+              ref="tablaTutelas"
               v-model="dataTable"
               @resetOption="item => resetOptions(item)"
-              @detallePrescripcion="item => $router.push({ name: 'Prescripcion', params: {NoPrescripcion: item.NoPrescripcion }})"
-          ></DataTable>
+              @detalleTutela="item => $router.push({ name: 'Tutela', params: {NoTutela: item.NoTutela }})"
+          ></data-table>
         </v-card>
       </v-col>
     </v-row>
@@ -18,25 +18,53 @@
 
 <script>
 export default {
-  name: 'Prescripciones',
-  data: () => ({
+  name: 'Tutelas',
+  data: (vm) => ({
     dataTable: {
       buttonZone: false,
       advanceFilters: true,
-      nameItemState: 'tablaPrescripciones',
-      route: 'mipres/prescripciones',
+      nameItemState: 'tablaTutelas',
+      route: 'mipres/tutelas',
       makeHeaders: [
         {
-          text: 'Prescripción',
+          text: 'Tutela',
           align: 'left',
           sortable: false,
-          value: 'NoPrescripcion'
+          value: 'NoTutela',
+          component: {
+            functional: true,
+            render: function (createElement, context) {
+              return createElement(
+                  'CItemList', {
+                    props: {
+                      item: {
+                        title: context.props.value.NoTutela,
+                        subtitle: context.props.value.FTutela ? vm.moment(context.props.value.FTutela).format('DD/MM/YYYY') : ''
+                      }
+                    }
+                  })
+            }
+          }
         },
         {
-          text: 'Amb. Atención',
+          text: 'Fallo',
           align: 'left',
           sortable: false,
-          value: 'AmbitoAtencion'
+          value: 'NroFallo',
+          component: {
+            functional: true,
+            render: function (createElement, context) {
+              return createElement(
+                  'CItemList', {
+                    props: {
+                      item: {
+                        title: context.props.value.NroFallo,
+                        subtitle: context.props.value.FFalloTutela ? vm.moment(context.props.value.FFalloTutela).format('DD/MM/YYYY') : ''
+                      }
+                    }
+                  })
+            }
+          }
         },
         {
           text: 'Paciente',
@@ -137,7 +165,7 @@ export default {
           align: 'left',
           sortable: false,
           visibleColumn: false,
-          value: 'EstadoPrescripcion'
+          value: 'EstadoTutela'
         },
         {
           text: 'Usuario',
@@ -159,7 +187,7 @@ export default {
   methods: {
     resetOptions(item) {
       item.options = []
-      item.options.push({event: 'detallePrescripcion', icon: 'mdi-file-find', tooltip: 'Ver Prescripción', color: 'success'})
+      item.options.push({event: 'detalleTutela', icon: 'mdi-file-find', tooltip: 'Ver Tutela', color: 'success'})
       return item
     }
   }

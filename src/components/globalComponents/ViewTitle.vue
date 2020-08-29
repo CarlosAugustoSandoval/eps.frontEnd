@@ -4,7 +4,18 @@
       <v-card class="px-2 custom-shaodow">
         <v-toolbar dense flat class="transparent pa-0" height="60px" v-if="title">
           <v-avatar :color="title.color || ''" class="mr-2">
-            <v-icon :dark="!!title.color">{{title.icon}}</v-icon>
+            <template v-if="title.svg">
+              <icon-base :name="title.icon">
+                <FileShield
+                    v-if="title.icon === 'FileShield'"
+                    scale="0.6"
+                    translatex="130"
+                    translatey="100"
+                    fill="white"
+                ></FileShield>
+              </icon-base>
+            </template>
+            <v-icon v-else :large="title.large" :dark="!!title.color">{{title.icon}}</v-icon>
           </v-avatar>
           <v-toolbar-title class="py-2">
             <span class="text--primary">{{title.text}}{{adicionalTitle}}</span>
@@ -25,8 +36,10 @@
   </v-row>
 </template>
 <script>
+import FileShield from '../icons/FileShield'
 export default {
   name: 'ViewTitle',
+  components: {FileShield},
   props: {
     adicionalTitle: {
       type: String,

@@ -18,6 +18,14 @@ export const itemsMenu = [
     },
     {
         id: 3,
+        title: 'Tutelas',
+        icon: 'mdi-gavel',
+        iconbg: 'teal',
+        desc: '',
+        routeName: 'Tutelas'
+    },
+    {
+        id: 4,
         title: 'Direccionamientos',
         icon: 'fas fa-map-signs',
         iconbg: 'success',
@@ -25,7 +33,7 @@ export const itemsMenu = [
         routeName: 'Direccionamientos'
     },
     {
-        id: 4,
+        id: 5,
         title: 'Reportes de Entrega',
         icon: 'fas fa-clipboard-check',
         iconbg: 'purple',

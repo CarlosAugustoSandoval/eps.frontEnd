@@ -10,7 +10,7 @@
       <v-divider></v-divider>
       <v-list-item v-for="(item, i) in itemsMenu" :key="i" :to="{name: item.routeName}">
         <v-list-item-avatar :color="item.iconbg">
-          <v-icon small dark>{{ item.icon }}</v-icon>
+          <v-icon dark>{{ item.icon }}</v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title class="font-weight-medium">{{ item.title }}</v-list-item-title>

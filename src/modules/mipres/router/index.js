@@ -23,9 +23,9 @@ export default {
             }
         },
         {
+            name: 'Prescripcion',
             path: 'prescripciones/:NoPrescripcion',
             props: true,
-            name: 'Prescripcion',
             component: () => import('@/modules/mipres/views/prescripciones/prescripcion/Prescripcion'),
             meta: {
                 requiresAuth: true,
@@ -41,6 +41,51 @@ export default {
                         },
                         {
                             text: 'Prescripción',
+                            disabled: true
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            name: 'Tutelas',
+            path: 'tutelas',
+            component: () => import('@/modules/mipres/views/tutelas/Tutelas'),
+            meta: {
+                requiresAuth: true,
+                title: {
+                    text: 'Tutelas',
+                    icon: 'mdi-gavel',
+                    color: 'teal',
+                    breadcrumbs: [
+                        {
+                            text: 'Tutelas',
+                            disabled: true
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            name: 'Tutela',
+            path: 'tutelas/:NoTutela',
+            props: true,
+            component: () => import('@/modules/mipres/views/tutelas/tutela/Tutela'),
+            meta: {
+                requiresAuth: true,
+                title: {
+                    text: 'Tutela',
+                    icon: 'FileShield',
+                    color: 'teal',
+                    svg: true,
+                    breadcrumbs: [
+                        {
+                            text: 'Tutelas',
+                            disabled: false,
+                            routerName: 'Tutelas'
+                        },
+                        {
+                            text: 'Tutela',
                             disabled: true
                         }
                     ]
