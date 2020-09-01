@@ -43,7 +43,7 @@
                 </v-expand-transition>
             </v-card>
             <v-layout row wrap align-center justify-end fill-height v-if="value.filters">
-                <v-flex xs1 style="height: 66px !important;">
+                <v-col cols="1" sm="2" md="1">
                     <v-layout align-center justify-center fill-height>
                         <v-tooltip top>
                             <template v-slot:activator="{ on }">
@@ -54,8 +54,8 @@
                             <span>Recargar Registros</span>
                         </v-tooltip>
                     </v-layout>
-                </v-flex>
-                <v-flex xs11 sm6 md5 lg3 style="height: 66px !important;">
+                </v-col>
+                <v-col cols="11" sm="5" md="3" lg="2">
                     <v-select
                             label="Columnas visibles"
                             multiple
@@ -65,6 +65,7 @@
                             item-value="id"
                             return-object
                             clearable
+                            hide-details
                     >
                         <template
                                 slot="selection"
@@ -74,12 +75,13 @@
                       v-if="index === 0"
                       class="grey--text caption"
               >
-                  {{`${value.headers.length} ${value.headers.length === 1 ? 'columna ' : 'columnas'} de ${value.makeHeaders.length} disponible${value.makeHeaders.length === 1 ? '' : 's'}`}}
+                  {{`${value.headers.length} de ${value.makeHeaders.length}`}}
+<!--                  {{`${value.headers.length} ${value.headers.length === 1 ? 'columna ' : 'columnas'} de ${value.makeHeaders.length} disponible${value.makeHeaders.length === 1 ? '' : 's'}`}}-->
               </span>
                         </template>
                     </v-select>
-                </v-flex>
-                <v-flex xs12 sm6 md3 lg2 style="height: 66px !important;">
+                </v-col>
+                <v-col cols="12" sm="5" md="3" lg="2">
                     <v-select
                             label="Registros por página"
                             v-model="pagination.per_page"
@@ -89,18 +91,18 @@
                             @change="reloadCurrentPage"
                             hide-details
                     ></v-select>
-                </v-flex>
-                <v-flex xs12 sm12 md6 lg3 style="height: 66px !important;">
+                </v-col>
+                <v-col cols="12" sm="12" md="5" lg="6">
                     <v-text-field
                             v-model="value.search"
                             label="Buscar"
                             clearable
                             hide-details
-                            prepend-icon="mdi-magnify"
+                            prepend-inner-icon="mdi-magnify"
                             @keyup.enter="reloadCurrentPage"
                     >
                     </v-text-field>
-                </v-flex>
+                </v-col>
             </v-layout>
         </v-container>
         <v-data-table
@@ -133,12 +135,12 @@
             </template>
             <template v-slot:body="{ items }" v-if="value.items.length">
                 <tbody>
-                <tr v-for="(propitem, indexitem) in items" :key="'item' + indexitem">
+                <tr v-for="(propitem, indexitem) in items" :key="`item${indexitem}`">
                     <template v-for="(datHeader, index) in value.makeHeaders">
                         <td
                                 v-if="value.headers.find(x => x.id === (index))"
                                 :key="'td' + index"
-                                :class="datHeader.classData"
+                                :class="`${datHeader.classData} text-${datHeader.align || 'left'}`"
                                 :width="datHeader.width"
                                 :style="propitem.colortrrgba ? `background-color: rgba(${propitem.colortrrgba}) !important; color: ${propitem.colortext} !important;` : ''"
                         >

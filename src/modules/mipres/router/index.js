@@ -1,6 +1,6 @@
 export default {
     path: '/',
-    redirect: {name: 'PrescripcionesIndex'},
+    redirect: {name: 'Prescripciones'},
     component: () => import('@/layouts/full-layout/Layout'),
     children: [
         {

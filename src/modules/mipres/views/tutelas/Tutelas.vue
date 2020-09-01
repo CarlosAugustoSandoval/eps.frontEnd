@@ -68,7 +68,7 @@ export default {
         },
         {
           text: 'Paciente',
-          align: 'center',
+          align: 'left',
           sortable: false,
           value: 'NoIDPaciente',
           component: {

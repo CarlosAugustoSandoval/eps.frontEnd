@@ -72,13 +72,13 @@
                     }}</p>
                 </v-col>
                 <v-col cols="12" xl="6" v-if="prescripcion.dx1">
-                  <v-list-item-subtitle>Primer Diagnóstico Relacionado</v-list-item-subtitle>
+                  <v-list-item-subtitle>Diagnóstico Relacionado 1</v-list-item-subtitle>
                   <p class="pt-1 mb-0">{{
                       prescripcion.dx1 ? [prescripcion.dx1.codigo, prescripcion.dx1.descripcion].filter(x => x).join(' ') : ''
                     }}</p>
                 </v-col>
                 <v-col cols="12" xl="6" v-if="prescripcion.dx2">
-                  <v-list-item-subtitle class="text--secondary">Segundo Diagnóstico Relacionado</v-list-item-subtitle>
+                  <v-list-item-subtitle class="text--secondary">Diagnóstico Relacionado 2</v-list-item-subtitle>
                   <p class="pt-1 mb-0">{{
                       prescripcion.dx2 ? [prescripcion.dx2.codigo, prescripcion.dx2.descripcion].filter(x => x).join(' ') : ''
                     }}</p>
@@ -105,7 +105,7 @@
                     class="mb-3"
                     :key="`Medicamento${indexMedicamento}`"
                     key-tecnologia="medicamentos"
-                    :prescripcion="prescripcion"
+                    :documento="prescripcion"
                     :item="medicamento"
                 ></card-servtec>
               </template>
@@ -114,7 +114,8 @@
                     class="mb-3"
                     :key="`Complementario${indexComplementario}`"
                     key-tecnologia="complementarios"
-                    :prescripcion="prescripcion"
+                    :documento="prescripcion"
+                    tipo="prescripción"
                     :item="complementario"
                 ></card-servtec>
               </template>
@@ -123,7 +124,7 @@
                     class="mb-3"
                     :key="`nutricional${indexNutricional}`"
                     key-tecnologia="nutricionales"
-                    :prescripcion="prescripcion"
+                    :documento="prescripcion"
                     :item="nutricional"
                 ></card-servtec>
               </template>
@@ -132,7 +133,8 @@
                     class="mb-3"
                     :key="`procedimiento${indexProcedimiento}`"
                     key-tecnologia="procedimientos"
-                    :prescripcion="prescripcion"
+                    :documento="prescripcion"
+                    tipo="prescripción"
                     :item="procedimiento"
                 ></card-servtec>
               </template>
@@ -141,7 +143,8 @@
                     class="mb-3"
                     :key="`dispositivo${indexDispositivo}`"
                     key-tecnologia="dispositivos"
-                    :prescripcion="prescripcion"
+                    :documento="prescripcion"
+                    tipo="prescripción"
                     :item="dispositivo"
                 ></card-servtec>
               </template>

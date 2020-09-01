@@ -39,5 +39,13 @@ export const itemsMenu = [
         iconbg: 'purple',
         desc: '',
         routeName: 'ReportesEntrega'
+    },
+    {
+        id: 6,
+        title: 'Administrativo',
+        icon: 'fas fa-cog',
+        iconbg: 'orange',
+        desc: '',
+        routeName: 'Administrativo'
     }
 ]

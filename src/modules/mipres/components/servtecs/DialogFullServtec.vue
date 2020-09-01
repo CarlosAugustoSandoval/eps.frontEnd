@@ -21,7 +21,8 @@
     >
       <card-servtec
           :key-tecnologia="keyTecnologia"
-          :prescripcion="prescripcion"
+          :documento="documento"
+          :tipo="tipo"
           :item="item"
           slot-full
       />
@@ -37,9 +38,13 @@ export default {
       type: Object,
       default: null
     },
-    prescripcion: {
+    documento: {
       type: Object,
       default: null
+    },
+    tipo: {
+      type: String,
+      default: 'prescripción'
     },
     keyTecnologia: {
       type: String,

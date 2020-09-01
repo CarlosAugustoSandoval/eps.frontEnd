@@ -15,7 +15,7 @@ const actions = {
 // mutations
 const mutations = {
     SET_SNACKBAR (state, data) {
-        let timeout = 8000
+        let timeout = 6000
         let message = ''
         message = data.message
         state.snackbar = {

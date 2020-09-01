@@ -1,15 +1,15 @@
 <template>
   <v-container fluid class="down-top-padding">
-    <ViewTitle/>
+    <view-title/>
     <v-row>
       <v-col cols="12">
         <v-card>
-          <DataTable
+          <data-table
               ref="tablaPrescripciones"
               v-model="dataTable"
               @resetOption="item => resetOptions(item)"
               @detallePrescripcion="item => $router.push({ name: 'Prescripcion', params: {NoPrescripcion: item.NoPrescripcion }})"
-          ></DataTable>
+          ></data-table>
         </v-card>
       </v-col>
     </v-row>
@@ -40,7 +40,7 @@ export default {
         },
         {
           text: 'Paciente',
-          align: 'center',
+          align: 'left',
           sortable: false,
           value: 'NoIDPaciente',
           component: {
@@ -81,7 +81,7 @@ export default {
         {
           text: 'Avance entrega',
           tooltip: 'Ubicación Posible Caso',
-          align: 'left',
+          align: 'center',
           sortable: false,
           value: 'avance',
           component: {

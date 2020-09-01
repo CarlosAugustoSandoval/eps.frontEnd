@@ -66,13 +66,13 @@
                     }}</p>
                 </v-col>
                 <v-col cols="12" xl="6" v-if="tutela.dx1">
-                  <v-list-item-subtitle>Primer Diagnóstico Relacionado</v-list-item-subtitle>
+                  <v-list-item-subtitle>Diagnóstico Relacionado 1</v-list-item-subtitle>
                   <p class="pt-1 mb-0">{{
                       tutela.dx1 ? [tutela.dx1.codigo, tutela.dx1.descripcion].filter(x => x).join(' ') : ''
                     }}</p>
                 </v-col>
                 <v-col cols="12" xl="6" v-if="tutela.dx2">
-                  <v-list-item-subtitle class="text--secondary">Segundo Diagnóstico Relacionado</v-list-item-subtitle>
+                  <v-list-item-subtitle class="text--secondary">Diagnóstico Relacionado 2</v-list-item-subtitle>
                   <p class="pt-1 mb-0">{{
                       tutela.dx2 ? [tutela.dx2.codigo, tutela.dx2.descripcion].filter(x => x).join(' ') : ''
                     }}</p>
@@ -128,7 +128,8 @@
                     class="mb-3"
                     :key="`Medicamento${indexMedicamento}`"
                     key-tecnologia="medicamentos"
-                    :tutela="tutela"
+                    :documento="tutela"
+                    tipo="tutela"
                     :item="medicamento"
                 ></card-servtec>
               </template>
@@ -137,7 +138,8 @@
                     class="mb-3"
                     :key="`Complementario${indexComplementario}`"
                     key-tecnologia="complementarios"
-                    :tutela="tutela"
+                    :documento="tutela"
+                    tipo="tutela"
                     :item="complementario"
                 ></card-servtec>
               </template>
@@ -146,7 +148,8 @@
                     class="mb-3"
                     :key="`nutricional${indexNutricional}`"
                     key-tecnologia="nutricionales"
-                    :tutela="tutela"
+                    :documento="tutela"
+                    tipo="tutela"
                     :item="nutricional"
                 ></card-servtec>
               </template>
@@ -155,7 +158,8 @@
                     class="mb-3"
                     :key="`procedimiento${indexProcedimiento}`"
                     key-tecnologia="procedimientos"
-                    :tutela="tutela"
+                    :documento="tutela"
+                    tipo="tutela"
                     :item="procedimiento"
                 ></card-servtec>
               </template>
@@ -164,7 +168,8 @@
                     class="mb-3"
                     :key="`dispositivo${indexDispositivo}`"
                     key-tecnologia="dispositivos"
-                    :tutela="tutela"
+                    :documento="tutela"
+                    tipo="tutela"
                     :item="dispositivo"
                 ></card-servtec>
               </template>

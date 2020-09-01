@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import goTo from 'vuetify/es5/services/goto'
+import store from "../store/store";
 
 import mipresRoutes from '@/modules/mipres/router'
 import authenticationRoutes from '@/modules/auth/router'
-import store from "../store/store";
+import administrativoRoutes from '@/modules/administrativo/router'
 
 Vue.use(Router)
 
@@ -51,7 +52,8 @@ const router = new Router({
             ]
         },
         mipresRoutes,
-        authenticationRoutes
+        authenticationRoutes,
+        administrativoRoutes
     ]
 })
 

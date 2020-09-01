@@ -10,7 +10,7 @@
               </v-list-item-subtitle>
             </v-list-item-content>
             <v-list-item-action v-if="slotEntregas">
-              <entregas :key-tecnologia="keyTecnologia" :prescripcion="prescripcion" :item="data"></entregas>
+              <entregas :key-tecnologia="keyTecnologia" :documento="documento" :tipo="tipo" :item="data"></entregas>
             </v-list-item-action>
           </v-list-item>
         </template>
@@ -53,7 +53,8 @@
               <dialog-full-servtec
                   class="mr-2"
                   :item="item"
-                  :prescripcion="prescripcion"
+                  :documento="documento"
+                  :tipo="tipo"
                   :key-tecnologia="keyTecnologia"
               />
               <v-tooltip top>
@@ -88,7 +89,7 @@
           <template v-if="slotFull">
             <v-divider class="ma-0"></v-divider>
             <v-card-text>
-              <template v-for="(itemList, indexList) in data.list">
+              <template v-for="(itemList, indexList) in data.list.filter(x => x.visible !== false)">
                 <v-list-item two-line class="pa-0" :key="`itemList${indexList}`">
                   <v-list-item-content>
                     <v-list-item-subtitle>{{ itemList.title }}</v-list-item-subtitle>
@@ -129,9 +130,13 @@ export default {
       type: Object,
       default: null
     },
-    prescripcion: {
+    documento: {
       type: Object,
       default: null
+    },
+    tipo: {
+      type: String,
+      default: 'prescripción'
     },
     expand: {
       type: Boolean,
@@ -162,6 +167,11 @@ export default {
       val && this.assignData()
     }
   },
+  computed: {
+    esPrescripcion() {
+      return this && this.tipo && this.tipo === 'prescripción'
+    }
+  },
   created() {
     this.assignData()
   },
@@ -174,8 +184,8 @@ export default {
             cantidadTotal: (this.item.CantTotalF !== null ? Number(this.item.CantTotalF) : 0),
             type: 'medicamento',
             TipoTec: 'M',
-            title: this.item.DescMedPrinAct,
-            subTitle: `${this.item.estado_junta}`,
+            title: this.esPrescripcion ? this.item.DescMedPrinAct : this.item.DscMedPA,
+            subTitle: this.esPrescripcion ? `${this.item.estado_junta}` : `Tipo Tutela: ${this.item.tipo_tutela}`,
             classSubTitle: this.item.EstJM === 2 ? 'error--text' : 'success--text',
             cantidadFormulada: (this.item.CantTotalF !== null ? this.item.CantTotalF + (this.item.presentacion ? ' ' + this.item.presentacion.descripcion : '') : ''),
             table: [
@@ -362,7 +372,7 @@ export default {
               }
             ],
             list: [
-              {title: 'Número de prescripción asociada', text: this.item.NoPrescAso},
+              {title: 'Número de prescripción asociada', text: this.item.NoPrescAso, visible: this.item.NoPrescAso !== null},
               {title: 'Justificación no PBS', text: this.item.JustNoPBS},
               {title: 'Indicaciones especiales', text: this.item.indicaciones_especiales},
               {title: 'Indicaciones o recomendaciones para el paciente', text: this.item.IndRec}

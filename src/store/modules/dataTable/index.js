@@ -4,7 +4,9 @@ const state = {
         tablaPrescripciones: 0,
         tablaPrescripcionesVersion: 1,
         tablaTutelas: 0,
-        tablaTutelasVersion: 1
+        tablaTutelasVersion: 1,
+        tablaUsuarios: 0,
+        tablaUsuariosVersion: 1
     }
 }
 

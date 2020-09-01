@@ -11,6 +11,7 @@ import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import './plugins/base'
 import './plugins/veeValidate'
+import './plugins/mixin'
 import VueSkycons from 'vue-skycons'
 
 moment.locale('es')

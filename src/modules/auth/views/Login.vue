@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <Loading :value="loading"></Loading>
+    <loading :value="loading"></loading>
     <v-col cols="12" md="6" lg="7" xl="8" class="info d-none d-md-flex align-center justify-center">
       <v-container>
         <div class="pa-10">
@@ -34,14 +34,14 @@
                 </v-col>
               </v-row>
               <ValidationObserver class="mb-5" ref="formLogin" v-slot="{ invalid }" tag="form" autocomplete="off" @submit.prevent="login">
-                <CTexto
+                <c-texto
                     v-model="email"
                     label="Nombre de Usuario"
                     rules="required|email"
                     name="nombre de usuario"
                     :dense="false"
                 />
-                <CPassword
+                <c-password
                     v-model="password"
                     label="Contraseña"
                     rules="required"

@@ -31,9 +31,6 @@ export default {
 	}),
 	computed: {
     ...mapGetters(['snackbar'])
-    // snackbar () {
-    //   return this.$store.state.snackbar.snackbar
-    // }
 	},
 	watch: {
     'snackbar' (val) {
