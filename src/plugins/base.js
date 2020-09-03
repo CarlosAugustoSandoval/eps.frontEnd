@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
+import lodash from 'lodash'
+window.lodash = lodash
 
 const requireComponent = require.context(
     // The relative path of the components folder

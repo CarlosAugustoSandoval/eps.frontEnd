@@ -5,7 +5,7 @@
       persistent
   >
     <v-card>
-      <loading :value="loading"></loading>
+      <loading :value="loading" absolute></loading>
       <v-card-title>
         <v-avatar v-if="accesorios" :color="accesorios.color" class="mr-2">
           <v-icon dark>{{ accesorios.icon }}</v-icon>
@@ -49,7 +49,7 @@
             color="primary"
             @click="close"
         >
-          Cerrar
+          Cancelar
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn

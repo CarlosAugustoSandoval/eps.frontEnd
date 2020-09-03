@@ -24,7 +24,9 @@
           :documento="documento"
           :tipo="tipo"
           :item="item"
-          slot-full
+          :boton-direccionamientos="false"
+          :boton-detalle="false"
+          :full-detalle="true"
       />
     </v-dialog>
   </div>

@@ -1,36 +1,49 @@
 <template>
   <div>
-    <v-expansion-panel v-if="expand && data">
-      <v-expansion-panel-content>
-        <template v-slot:header>
-          <v-list-item class="v-list-item-pl0">
-            <v-list-item-content class="truncate-content">
-              <v-list-item-title class="body-1">{{ data.title }}</v-list-item-title>
-              <v-list-item-subtitle class="caption" :class="data.classSubTitle || ''">{{ data.subTitle }}
-              </v-list-item-subtitle>
-            </v-list-item-content>
-            <v-list-item-action v-if="slotEntregas">
-              <entregas :key-tecnologia="keyTecnologia" :documento="documento" :tipo="tipo" :item="data"></entregas>
-            </v-list-item-action>
-          </v-list-item>
-        </template>
-        <v-divider class="my-0"></v-divider>
-        <v-data-table
-            :items="data.table"
-            hide-actions
-            hide-headers
-        >
-          <template v-slot:items="props">
-            <td class="fs-12 fw-normal" style="height: 36px !important;">
-              {{ props.item.label }}
-            </td>
-            <td class="caption fw-normal" style="height: 36px !important;">
-              {{ props.item.text }}
-            </td>
-          </template>
-        </v-data-table>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
+    <v-expansion-panels v-if="expand && data">
+      <v-expansion-panel>
+        <v-expansion-panel-header class="px-3 py-0">
+          <v-list>
+            <v-list-item class="pl-0">
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <v-list-item-avatar v-on="on" color="primary" class="white--text font-weight-bold">{{ data.TipoTec }}</v-list-item-avatar>
+                </template>
+                <span>{{data.type}}</span>
+              </v-tooltip>
+              <v-list-item-content class="truncate-content pa-0">
+                <v-list-item-title class="body-1">{{ data.title }}</v-list-item-title>
+                <v-list-item-subtitle class="caption" :class="data.classSubTitle || ''">{{ data.subTitle }}
+                </v-list-item-subtitle>
+              </v-list-item-content>
+              <v-list-item-action v-if="botonDireccionamientos">
+                <dialog-direccionamientos
+                    @actualizado="$emit('actualizado')"
+                    v-if="botonDireccionamientos"
+                    :key-tecnologia="keyTecnologia"
+                    :documento="documento"
+                    :item="data"
+                    :tipo="tipo"
+                />
+              </v-list-item-action>
+            </v-list-item>
+          </v-list>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content class="pa-0">
+          <v-divider class="my-0"></v-divider>
+          <v-simple-table dense>
+            <template v-slot:default>
+              <tbody>
+              <tr v-for="(item, indexItem) in data.table" :key="`tr${indexItem}`">
+                <td>{{ item.label }}</td>
+                <td class="pl-0">{{ item.text }}</td>
+              </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
     <template v-else>
       <v-card style="contain: content !important;" class="elevation-3">
         <template v-if="data">
@@ -49,31 +62,22 @@
               </v-list-item-content>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <template v-if="!slotFull">
-              <dialog-full-servtec
-                  class="mr-2"
-                  :item="item"
-                  :documento="documento"
-                  :tipo="tipo"
-                  :key-tecnologia="keyTecnologia"
-              />
-              <v-tooltip top>
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                      v-on="on"
-                      dark
-                      fab
-                      bottom
-                      small
-                      color="green"
-                  >
-                    <v-icon>fas fa-map-signs</v-icon>
-                  </v-btn>
-                </template>
-                <span>Direccionamientos</span>
-              </v-tooltip>
-              <!--              <entregas v-if="slotEntregas" :key-tecnologia="keyTecnologia" :prescripcion="prescripcion" :item="data"></entregas>-->
-            </template>
+            <dialog-full-servtec
+                v-if="botonDetalle"
+                class="mr-2"
+                :item="item"
+                :documento="documento"
+                :tipo="tipo"
+                :key-tecnologia="keyTecnologia"
+            />
+            <dialog-direccionamientos
+                @actualizado="$emit('actualizado')"
+                v-if="botonDireccionamientos"
+                :key-tecnologia="keyTecnologia"
+                :documento="documento"
+                :item="data"
+                :tipo="tipo"
+            />
           </v-toolbar>
           <v-divider class="mb-0"></v-divider>
           <v-simple-table dense>
@@ -86,7 +90,7 @@
               </tbody>
             </template>
           </v-simple-table>
-          <template v-if="slotFull">
+          <template v-if="fullDetalle">
             <v-divider class="ma-0"></v-divider>
             <v-card-text>
               <template v-for="(itemList, indexList) in data.list.filter(x => x.visible !== false)">
@@ -122,6 +126,7 @@
 
 <script>
 import DialogFullServtec from '@/modules/mipres/components/servtecs/DialogFullServtec'
+import DialogDireccionamientos from '@/modules/mipres/components/servtecs/direccionamientos/DialogDireccionamientos'
 
 export default {
   name: 'CardServtec',
@@ -142,13 +147,17 @@ export default {
       type: Boolean,
       default: false
     },
-    slotEntregas: {
+    botonDireccionamientos: {
+      type: Boolean,
+      default: true
+    },
+    fullDetalle: {
       type: Boolean,
       default: false
     },
-    slotFull: {
+    botonDetalle: {
       type: Boolean,
-      default: false
+      default: true
     },
     keyTecnologia: {
       type: String,
@@ -156,7 +165,7 @@ export default {
     }
   },
   components: {
-    // Entregas: () => import('@/components/Prescripciones/ServiciosTecnologias/Entregas'),
+    DialogDireccionamientos,
     DialogFullServtec
   },
   data: () => ({
@@ -186,7 +195,7 @@ export default {
             TipoTec: 'M',
             title: this.esPrescripcion ? this.item.DescMedPrinAct : this.item.DscMedPA,
             subTitle: this.esPrescripcion ? `${this.item.estado_junta}` : `Tipo Tutela: ${this.item.tipo_tutela}`,
-            classSubTitle: this.item.EstJM === 2 ? 'error--text' : 'success--text',
+            classSubTitle: [2,4].find(x => x === this.item.EstJM) ? 'red--text' : 'green--text',
             cantidadFormulada: (this.item.CantTotalF !== null ? this.item.CantTotalF + (this.item.presentacion ? ' ' + this.item.presentacion.descripcion : '') : ''),
             table: [
               {label: 'Tipo medicamento', text: this.item.tipo_medicamento},
@@ -294,7 +303,7 @@ export default {
             TipoTec: 'S',
             title: (this.item.CodSerComp ? this.item.CodSerComp : '') + (this.item.DescSerComp ? ' | ' + this.item.DescSerComp : ''),
             subTitle: `${this.item.EstadoJunta}`,
-            classSubTitle: this.item.EstJM === 2 ? 'error--text' : 'success--text',
+            classSubTitle: [2,4].find(x => x === this.item.EstJM) ? 'red--text' : 'green--text',
             cantidadFormulada: (this.item.CantTotal !== null ? this.item.CantTotal : ''),
             table: [
               {label: 'Tipo prestación', text: this.item.TipoPrestador},
@@ -346,7 +355,7 @@ export default {
             TipoTec: 'N',
             title: this.item.producto ? this.item.producto.codigo + ' | ' + [this.item.producto.nombre_comercial, this.item.producto.descripcion].filter(x => x).join(' - ') + ` ${this.item.producto.presentacion_comercial}${this.item.producto.unidades}` : '',
             subTitle: `${this.item.EstadoJunta}`,
-            classSubTitle: this.item.EstJM === 2 ? 'error--text' : 'success--text',
+            classSubTitle: [2,4].find(x => x === this.item.EstJM) ? 'red--text' : 'green--text',
             cantidadFormulada: (this.item.CantTotalF !== null ? this.item.CantTotalF + (this.item.forma_cantidad_total ? ' ' + this.item.forma_cantidad_total.descripcion : '') : ''),
             table: [
               {
@@ -464,7 +473,7 @@ export default {
             TipoTec: 'P',
             title: this.item.cup ? this.item.cup.codigo + ' | ' + this.item.cup.descripcion : '',
             subTitle: `${this.item.estado_junta}`,
-            classSubTitle: this.item.EstJM === 2 ? 'error--text' : 'success--text',
+            classSubTitle: [2,4].find(x => x === this.item.EstJM) ? 'red--text' : 'green--text',
             cantidadFormulada: (this.item.CantTotal !== null ? this.item.CantTotal : ''),
             table: [
               {label: 'Tipo prestación', text: this.item.tipo_prestacion},
@@ -548,7 +557,7 @@ export default {
             TipoTec: 'D',
             title: this.item.dispositivo ? this.item.dispositivo.codigo + ' | ' + this.item.dispositivo.descripcion : '',
             subTitle: `${this.item.EstadoJunta}`,
-            classSubTitle: this.item.EstJM === 2 ? 'error--text' : 'success--text',
+            classSubTitle: [2,4].find(x => x === this.item.EstJM) ? 'red--text' : 'green--text',
             cantidadFormulada: (this.item.CantTotal !== null ? this.item.CantTotal : ''),
             table: [
               {label: 'Tipo prestación', text: this.item.tipo_prestador},

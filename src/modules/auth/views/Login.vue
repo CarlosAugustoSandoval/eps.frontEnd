@@ -83,9 +83,6 @@ export default {
     remember: false,
     loading: false
   }),
-  created() {
-    this.$store.commit('SET_SNACKBAR', {color: 'success', message: 'un mensaje de prueba.'})
-  },
   methods: {
     login() {
       this.$refs.formLogin.validate().then(result => {

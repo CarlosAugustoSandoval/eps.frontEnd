@@ -125,6 +125,7 @@
             <v-col cols="12">
               <template v-for="(medicamento, indexMedicamento) in tutela.medicamentos">
                 <card-servtec
+                    @actualizado="$emit('actualizado')"
                     class="mb-3"
                     :key="`Medicamento${indexMedicamento}`"
                     key-tecnologia="medicamentos"
@@ -135,6 +136,7 @@
               </template>
               <template v-for="(complementario, indexComplementario) in tutela.complementarios">
                 <card-servtec
+                    @actualizado="$emit('actualizado')"
                     class="mb-3"
                     :key="`Complementario${indexComplementario}`"
                     key-tecnologia="complementarios"
@@ -145,6 +147,7 @@
               </template>
               <template v-for="(nutricional, indexNutricional) in tutela.nutricionales">
                 <card-servtec
+                    @actualizado="$emit('actualizado')"
                     class="mb-3"
                     :key="`nutricional${indexNutricional}`"
                     key-tecnologia="nutricionales"
@@ -155,6 +158,7 @@
               </template>
               <template v-for="(procedimiento, indexProcedimiento) in tutela.procedimientos">
                 <card-servtec
+                    @actualizado="$emit('actualizado')"
                     class="mb-3"
                     :key="`procedimiento${indexProcedimiento}`"
                     key-tecnologia="procedimientos"
@@ -165,6 +169,7 @@
               </template>
               <template v-for="(dispositivo, indexDispositivo) in tutela.dispositivos">
                 <card-servtec
+                    @actualizado="$emit('actualizado')"
                     class="mb-3"
                     :key="`dispositivo${indexDispositivo}`"
                     key-tecnologia="dispositivos"
