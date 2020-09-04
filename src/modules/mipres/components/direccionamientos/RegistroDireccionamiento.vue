@@ -7,7 +7,12 @@
       <v-container fluid>
         <v-row>
           <v-col cols="12">
-            formulario fireccionamientos
+            <input-serach
+                :documento="documento"
+                :tipo="tipo"
+                :item="item"
+                @retornaCodigo="codigo => direccionamiento.CodSerTecAEntregar = codigo"
+            />
           </v-col>
         </v-row>
       </v-container>
@@ -33,8 +38,24 @@
 </template>
 
 <script>
+import InputSerach from '../servtecs/InputSerach'
 export default {
   name: 'RegistroDireccionamiento',
+  components: {InputSerach},
+  props: {
+    documento: {
+      type: Object,
+      default: null
+    },
+    tipo: {
+      type: String,
+      default: 'prescripción'
+    },
+    item: {
+      type: Object,
+      default: null
+    }
+  },
   data: () => ({
     loading: false,
     direccionamiento: null,

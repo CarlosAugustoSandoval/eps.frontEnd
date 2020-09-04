@@ -20,7 +20,6 @@
                 <dialog-direccionamientos
                     @actualizado="$emit('actualizado')"
                     v-if="botonDireccionamientos"
-                    :key-tecnologia="keyTecnologia"
                     :documento="documento"
                     :item="data"
                     :tipo="tipo"
@@ -73,7 +72,6 @@
             <dialog-direccionamientos
                 @actualizado="$emit('actualizado')"
                 v-if="botonDireccionamientos"
-                :key-tecnologia="keyTecnologia"
                 :documento="documento"
                 :item="data"
                 :tipo="tipo"
@@ -126,7 +124,7 @@
 
 <script>
 import DialogFullServtec from '@/modules/mipres/components/servtecs/DialogFullServtec'
-import DialogDireccionamientos from '@/modules/mipres/components/servtecs/direccionamientos/DialogDireccionamientos'
+import DialogDireccionamientos from '@/modules/mipres/components/direccionamientos/DialogDireccionamientos'
 
 export default {
   name: 'CardServtec',
@@ -161,7 +159,7 @@ export default {
     },
     keyTecnologia: {
       type: String,
-      default: 'medicamentos'
+      default: 'M'
     }
   },
   components: {
@@ -187,7 +185,7 @@ export default {
   methods: {
     assignData() {
       switch (this.keyTecnologia) {
-        case 'medicamentos': {
+        case 'M': {
           this.data = {
             objeto: this.item,
             cantidadTotal: (this.item.CantTotalF !== null ? Number(this.item.CantTotalF) : 0),
@@ -295,7 +293,7 @@ export default {
           }
           break
         }
-        case 'complementarios': {
+        case 'S': {
           this.data = {
             objeto: this.item,
             cantidadTotal: (this.item.CantTotal !== null ? Number(this.item.CantTotal) : 0),
@@ -347,7 +345,7 @@ export default {
           }
           break
         }
-        case 'nutricionales': {
+        case 'N': {
           this.data = {
             objeto: this.item,
             cantidadTotal: (this.item.CantTotalF !== null ? Number(this.item.CantTotalF) : 0),
@@ -465,7 +463,7 @@ export default {
           }
           break
         }
-        case 'procedimientos': {
+        case 'P': {
           this.data = {
             objeto: this.item,
             cantidadTotal: (this.item.CantTotal !== null ? Number(this.item.CantTotal) : 0),
@@ -549,7 +547,7 @@ export default {
           }
           break
         }
-        case 'dispositivos': {
+        case 'D': {
           this.data = {
             objeto: this.item,
             cantidadTotal: (this.item.CantTotal !== null ? Number(this.item.CantTotal) : 0),

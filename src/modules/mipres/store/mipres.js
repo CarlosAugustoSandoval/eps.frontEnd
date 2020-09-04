@@ -1,16 +1,73 @@
-// import Vue from 'vue'
-// state
-import Vue from "vue";
+import Vue from 'vue'
+import Soda from 'soda-js'
 
+// state
 const state = {
+    cups: [],
+    complementarios: [],
+    nutricionales: [],
+    dispositivos: [],
+    prestadores: [],
+    departamentos: []
 }
 
 // getters
 const getters = {
+    cups: (state) => {
+        return state.cups
+    },
+    complementarios: (state) => {
+        return state.complementarios
+    },
+    nutricionales: (state) => {
+        return state.nutricionales
+    },
+    dispositivos: (state) => {
+        return state.dispositivos
+    },
+    prestadores: (state) => {
+        return state.prestadores
+    },
+    departamentos: (state) => {
+        return state.departamentos
+    }
 }
 
 // actions
 const actions = {
+    async getCUMs(context, parametro) {
+        let param = !parametro ? this.searchCUM.split('-') : parametro.split('-')
+        let cums1 = await new Promise((resolve1, reject1) => {
+            context.dispatch('apiCums', {param: param, resource: 'i7cb-raxc'}).then(result => resolve1(result)).catch(e => reject1(e))
+        })
+        let cums2 = await new Promise((resolve2, reject2) => {
+            context.dispatch('apiCums', {param: param, resource: 'vgr4-gemg'}).then(result => resolve2(result)).catch(e => reject2(e))
+        })
+        console.log('el cums2', cums2)
+        let rowsTotal = cums1.concat(cums2).sort((a, b) => a.expediente - b.expediente).sort((a, b) => a.consecutivocum - b.consecutivocum)
+        return (param[1] ? rowsTotal.filter(x => x.consecutivocum.search(param[1]) !== -1) : rowsTotal)
+    },
+    apiCums (context, params) {
+        return new Promise((resolve, reject) => {
+            let urlComplement = isNaN(Number(params.param[0])) ? `descripcioncomercial like "%${params.param[0].toUpperCase()}%" OR principioactivo like "%${params.param[0].toUpperCase()}%"` : `expediente = ${params.param[0]}`
+            const config = {
+                hostDomain: 'datos.gov.co',
+                resource: params.resource
+            }
+            const api = new Soda.Consumer(config.hostDomain)
+            api.query()
+                .withDataset(config.resource)
+                .limit(50)
+                .where(urlComplement)
+                .getRows()
+                .on('success', (rows) => {
+                    resolve(rows)
+                })
+                .on('error', (error) => {
+                    reject(error)
+                })
+        })
+    },
     async getPrescripcion (context, NoPrescripcion) {
         return await new Promise(resolve => {
             Vue.axios.get(`mipres/prescripciones/${NoPrescripcion}`)
@@ -44,11 +101,33 @@ const actions = {
                     resolve(null)
                 })
         })
-    }
+    },
+    async getComplementosMipres (context) {
+        Vue.axios.get(`mipres/complementos`)
+            .then(response => {
+                console.log('prescripciones', response.data)
+                context.commit('SET_COMPLEMENTOS', response.data)
+            })
+            .catch(() => {
+                Vue.swal({
+                    icon: 'error',
+                    title: `Error al recuperar los complementos.`,
+                    text: ''
+                })
+            })
+    },
 }
 
 // mutations
 const mutations = {
+    SET_COMPLEMENTOS (state, data) {
+        state.cups = data.cups
+        state.departamentos = data.departamentos
+        state.complementarios = data.productos_complementarios
+        state.nutricionales = data.productos_nutricionales
+        state.dispositivos = data.tipos_dispositivos
+        state.prestadores = data.prestadores
+    }
 }
 
 export default {

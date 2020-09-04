@@ -52,7 +52,7 @@
           <v-col cols="12">
             <card-servtec
                 class="mb-3"
-                :key-tecnologia="keyTecnologia"
+                :key-tecnologia="item.TipoTec"
                 :documento="documento"
                 :item="item.objeto"
                 :boton-detalle="false"
@@ -169,7 +169,11 @@
           </v-window-item>
           <v-window-item>
             <registro-direccionamiento
+                v-if="window === 1"
                 @cancelar="window = 0"
+                :documento="documento"
+                :tipo="tipo"
+                :item="item"
             />
           </v-window-item>
         </v-window>
@@ -207,10 +211,6 @@ export default {
     item: {
       type: Object,
       default: null
-    },
-    keyTecnologia: {
-      type: String,
-      default: 'medicamentos'
     }
   },
   components: {
