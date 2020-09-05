@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <loading :value="loading"></loading>
+    <loading :value="loading"/>
     <v-col cols="12" md="6" lg="7" xl="8" class="info d-none d-md-flex align-center justify-center">
       <v-container>
         <div class="pa-10">

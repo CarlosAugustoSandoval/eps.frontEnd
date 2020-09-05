@@ -41,7 +41,7 @@
         <v-spacer></v-spacer>
         <v-btn
             icon
-            @click="dialog = false"
+            @click="close"
         >
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -63,10 +63,11 @@
         </v-row>
         <v-window
             v-model="window"
-            class="elevation-1"
+            class="elevation-0"
         >
           <v-window-item>
             <v-card>
+              <loading :value="loadingDocumento" absolute/>
               <v-list dense two-line class="py-0">
                 <v-list-item style="background-color: transparent !important;">
                   <v-list-item-content class="truncate-content py-0">
@@ -174,11 +175,12 @@
                 :documento="documento"
                 :tipo="tipo"
                 :item="item"
+                @guardado="$emit('actualizado')"
             />
           </v-window-item>
         </v-window>
       </v-container>
-      <loading :value="processingSection"></loading>
+      <loading :value="processingSection"/>
     </v-card>
     <!--    <detail-technologi-dialog ref="dialogInfoTechnologi"-->
     <!--                              @onProcess="processingSection = false"></detail-technologi-dialog>-->
@@ -196,6 +198,7 @@
 
 <script>
 import RegistroDireccionamiento from './RegistroDireccionamiento'
+import Loading from "../../../../components/globalComponents/Loading";
 
 export default {
   name: 'DialogDireccionamientos',
@@ -211,9 +214,14 @@ export default {
     item: {
       type: Object,
       default: null
+    },
+    loadingDocumento: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
+    Loading,
     RegistroDireccionamiento,
     // RegistroEntrega: () => import('@/components/Prescripciones/ServiciosTecnologias/RegistroEntrega'),
     CardServtec: () => import('@/modules/mipres/components/servtecs/CardServtec')
@@ -271,6 +279,9 @@ export default {
       this.processingSection = true
       this.$refs.dialogInfoTechnologi.getDetail(type, code)
     },
+    close() {
+      this.dialog = false
+    },
     async anularDireccionamiento(direccionamiento) {
       let borrardo = await this.confirm(
           {
@@ -289,40 +300,11 @@ export default {
           message: `El direccionamiento se anuló correctamente.`
         })
       }
-    },
-    openDialogCancel(item) {
-      this.selectedEntrega = item
-      this.$refs.dialogCancel.open()
-    },
-    cancelEntrega() {
-      this.$refs.dialogCancel.loading()
-      this.axios.delete(`entregas/${this.selectedEntrega.item.id}`)
-          .then(response => {
-            console.log('okkk', response)
-            this.item.objeto.entregas.splice(this.selectedEntrega.index, 1)
-            this.$store.commit('snackbar', {
-              color: 'success',
-              message: `Se anuló la entrega No. ${this.selectedEntrega.item.id} de forma correcta`
-            })
-            this.$refs.dialogCancel.close()
-          }).catch(e => {
-        this.$refs.dialogCancel.loading(false)
-        this.$store.commit('snackbar', {
-          color: 'error',
-          message: `al tratar de anular la entrega No. ${this.selectedEntrega.item.id}`,
-          error: e
-        })
-      })
     }
   }
 }
 </script>
 
-<style>
-.badge-btn-entregas > span.v-badge__badge {
-  height: 15px !important;
-  width: 15px !important;
-  font-size: 10px !important;
-  right: -4px !important;
-}
+<style scoped>
+
 </style>

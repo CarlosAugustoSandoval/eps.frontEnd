@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="down-top-padding">
     <view-title :adicional-title="` No. ${NoTutela}`"/>
-    <loading :value="loading"></loading>
+    <loading :value="loading"/>
     <template v-if="tutela">
       <v-row>
         <v-col cols="12" sm="12" md="6" lg="6" xl="7">

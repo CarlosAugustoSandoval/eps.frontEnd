@@ -18,6 +18,7 @@
               </v-list-item-content>
               <v-list-item-action v-if="botonDireccionamientos">
                 <dialog-direccionamientos
+                    :loading-documento="loadingDocumento"
                     @actualizado="$emit('actualizado')"
                     v-if="botonDireccionamientos"
                     :documento="documento"
@@ -70,6 +71,7 @@
                 :key-tecnologia="keyTecnologia"
             />
             <dialog-direccionamientos
+                :loading-documento="loadingDocumento"
                 @actualizado="$emit('actualizado')"
                 v-if="botonDireccionamientos"
                 :documento="documento"
@@ -140,6 +142,10 @@ export default {
     tipo: {
       type: String,
       default: 'prescripción'
+    },
+    loadingDocumento: {
+      type: Boolean,
+      default: false
     },
     expand: {
       type: Boolean,

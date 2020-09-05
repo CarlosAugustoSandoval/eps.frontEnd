@@ -31,7 +31,7 @@
       </v-tooltip>
     </v-toolbar>
     <v-divider class="my-2"></v-divider>
-    <loading :value="loading"></loading>
+    <loading :value="loading"/>
     <v-simple-table>
       <template v-slot:default>
         <thead>

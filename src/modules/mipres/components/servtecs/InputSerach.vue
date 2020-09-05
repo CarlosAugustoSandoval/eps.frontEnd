@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ValidationProvider :name="name" :vid="vid" :rules="rules" v-slot="{ errors }">
+    <ValidationProvider :name="servicioTecnologiaName" :rules="rules" v-slot="{ errors }">
       <v-autocomplete
           v-if="tipoControl === 'CUM'"
           key="tipoControlCUM"
@@ -220,14 +220,6 @@ export default {
       type: Object,
       default: null
     },
-    name: {
-      type: String,
-      default: null
-    },
-    vid: {
-      type: String,
-      default: null
-    },
     rules: {
       type: String,
       default: null
@@ -239,6 +231,7 @@ export default {
     search: '',
     cums: [],
     servicioTecnologiaObjeto: null,
+    servicioTecnologiaName: null,
     servicioTecnologia: null,
     filterTecnologias: (item, queryText) => {
       const hasValue = val => val != null ? val : ''
@@ -272,9 +265,7 @@ export default {
       'cups',
       'complementarios',
       'nutricionales',
-      'dispositivos',
-      'prestadores',
-      'departamentos'
+      'dispositivos'
     ])
   },
   created() {
@@ -283,6 +274,7 @@ export default {
         switch (this.item.objeto.TipoMed) {
           case 1:
             this.tipoControl = 'CUM'
+            this.servicioTecnologiaName = 'medicamento CUM'
             if (this.item.title) {
               const rTemporal = this.item.title.split('[')
               const rFinal = rTemporal[1] ? rTemporal[1].split(']') : null
@@ -291,24 +283,30 @@ export default {
             break
           case 2:
             this.tipoControl = 'IUM'
+            this.servicioTecnologiaName = 'código medicamento IUM'
             break
           case 3:
             this.tipoControl = 'MAGISTRAL'
+            this.servicioTecnologiaName = 'medicamento formula magistral'
             this.servicioTecnologia = ' '
             break
         }
         break
       case 'P' :
         this.tipoControl = 'P'
+        this.servicioTecnologiaName = 'procedimiento'
         break
       case 'D' :
         this.tipoControl = 'D'
+        this.servicioTecnologiaName = 'dispositivo médico'
         break
       case 'N' :
         this.tipoControl = 'N'
+        this.servicioTecnologiaName = 'producto de soporte nutricional'
         break
       case 'S' :
         this.tipoControl = 'S'
+        this.servicioTecnologiaName = 'servicio complementario'
         break
     }
   },

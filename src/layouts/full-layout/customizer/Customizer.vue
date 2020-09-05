@@ -7,7 +7,7 @@
         clipped
         :right="!$vuetify.rtl"
     >
-      <Loading :value="loading"></Loading>
+      <loading :value="loading"/>
       <!---USer Area -->
       <v-list-item two-line class="profile-bg" v-if="user">
         <v-list-item-avatar>

@@ -5,7 +5,7 @@
       persistent
   >
     <v-card>
-      <loading :value="loading" absolute></loading>
+      <loading :value="loading" absolute/>
       <v-card-title>
         <v-avatar v-if="accesorios" :color="accesorios.color" class="mr-2">
           <v-icon dark>{{ accesorios.icon }}</v-icon>

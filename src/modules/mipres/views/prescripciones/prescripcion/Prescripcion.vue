@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="down-top-padding">
     <view-title :adicional-title="` No. ${NoPrescripcion}`"/>
-    <loading :value="loading"></loading>
+    <loading :value="loading"/>
     <template v-if="prescripcion">
       <v-row>
         <v-col cols="12" sm="12" md="6" lg="6" xl="7">
@@ -102,55 +102,60 @@
             <v-col cols="12">
               <template v-for="(medicamento, indexMedicamento) in prescripcion.medicamentos">
                 <card-servtec
-                    @actualizado="$emit('actualizado')"
+                    @actualizado="getPrescripcion"
                     class="mb-3"
                     :key="`Medicamento${indexMedicamento}`"
                     key-tecnologia="M"
                     :documento="prescripcion"
                     :item="medicamento"
+                    :loading-documento="loading"
                 ></card-servtec>
               </template>
               <template v-for="(complementario, indexComplementario) in prescripcion.complementarios">
                 <card-servtec
-                    @actualizado="$emit('actualizado')"
+                    @actualizado="getPrescripcion"
                     class="mb-3"
                     :key="`Complementario${indexComplementario}`"
                     key-tecnologia="S"
                     :documento="prescripcion"
                     tipo="prescripción"
                     :item="complementario"
+                    :loading-documento="loading"
                 ></card-servtec>
               </template>
               <template v-for="(nutricional, indexNutricional) in prescripcion.nutricionales">
                 <card-servtec
-                    @actualizado="$emit('actualizado')"
+                    @actualizado="getPrescripcion"
                     class="mb-3"
                     :key="`nutricional${indexNutricional}`"
                     key-tecnologia="N"
                     :documento="prescripcion"
                     :item="nutricional"
+                    :loading-documento="loading"
                 ></card-servtec>
               </template>
               <template v-for="(procedimiento, indexProcedimiento) in prescripcion.procedimientos">
                 <card-servtec
-                    @actualizado="$emit('actualizado')"
+                    @actualizado="getPrescripcion"
                     class="mb-3"
                     :key="`procedimiento${indexProcedimiento}`"
                     key-tecnologia="P"
                     :documento="prescripcion"
                     tipo="prescripción"
                     :item="procedimiento"
+                    :loading-documento="loading"
                 ></card-servtec>
               </template>
               <template v-for="(dispositivo, indexDispositivo) in prescripcion.dispositivos">
                 <card-servtec
-                    @actualizado="$emit('actualizado')"
+                    @actualizado="getPrescripcion"
                     class="mb-3"
                     :key="`dispositivo${indexDispositivo}`"
                     key-tecnologia="D"
                     :documento="prescripcion"
                     tipo="prescripción"
                     :item="dispositivo"
+                    :loading-documento="loading"
                 ></card-servtec>
               </template>
             </v-col>
@@ -179,11 +184,16 @@ export default {
   }),
   created() {
     console.log('NoPrescripcion', this.NoPrescripcion)
-    this.loading = true
-    this.$store.dispatch('getPrescripcion', this.NoPrescripcion).then(prescripcion => {
-      this.prescripcion = prescripcion
-      this.loading = false
-    })
+    this.getPrescripcion()
+  },
+  methods: {
+    getPrescripcion() {
+      this.loading = true
+      this.$store.dispatch('getPrescripcion', this.NoPrescripcion).then(prescripcion => {
+        this.prescripcion = prescripcion
+        this.loading = false
+      })
+    }
   }
 }
 </script>

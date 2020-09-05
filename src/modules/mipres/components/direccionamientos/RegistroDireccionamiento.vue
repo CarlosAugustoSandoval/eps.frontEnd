@@ -1,20 +1,166 @@
 <template>
   <v-card flat>
-    <loading :value="loading" absolute></loading>
+    <loading :value="loading" absolute/>
     <v-card-title class="py-2">Nuevo Direccionamiento</v-card-title>
     <v-divider></v-divider>
     <ValidationObserver ref="formDireccionamiento" tag="form" autocomplete="off">
       <v-container fluid>
         <v-row>
           <v-col cols="12">
-            <input-serach
-                :documento="documento"
-                :tipo="tipo"
-                :item="item"
-                @retornaCodigo="codigo => direccionamiento.CodSerTecAEntregar = codigo"
-            />
+            <v-list three-line>
+              <v-list-item class="pl-0">
+                <v-list-item-avatar color="primary" class="white--text font-weight-bold">
+                  <v-icon dark>fas fa-user</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content class="truncate-content pa-0">
+                  <v-list-item-subtitle class="caption">Paciente</v-list-item-subtitle>
+                  <v-list-item-title class="body-1">{{ [documento.PAPaciente, documento.SAPaciente, documento.PNPaciente, documento.SNPaciente].filter(x => x).join(' ') }}</v-list-item-title>
+                  <v-list-item-subtitle>
+                    {{ documento.TipoIDPaciente }}{{documento.NroIDPaciente}}
+                  </v-list-item-subtitle>
+                  <v-list-item-action-text class="mt-2">
+                    <c-texto
+                        v-model="direccionamiento.DirPaciente"
+                        label="Direccion del Paciente"
+                        rules="required"
+                        name="direccion del paciente"
+                        upper-case
+                    />
+                  </v-list-item-action-text>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
           </v-col>
         </v-row>
+        <v-card class="mb-4">
+          <v-card-text>
+            <h4>
+              <v-icon left>fas fa-cubes</v-icon>
+              Servicio / Tecnología
+            </h4>
+          </v-card-text>
+          <v-card-text class="py-0">
+            <v-row>
+              <v-col cols="12" class="pb-0">
+                <input-serach
+                    :documento="documento"
+                    :tipo="tipo"
+                    :item="item"
+                    rules="required"
+                    @retornaCodigo="codigo => direccionamiento.CodSerTecAEntregar = codigo"
+                />
+              </v-col>
+              <v-col cols="12" sm="6" md="4" class="pb-0">
+                <c-date
+                    v-model="direccionamiento.FecDireccionamiento"
+                    :rules="`required|mindate:${moment(fechaMinimaDireccionamiento).format('DD/MM/YYYY')}`"
+                    label="Fecha Direccionamiento"
+                    name="fecha direccionamiento"
+                    :min="moment(fechaMinimaDireccionamiento).format('YYYY-MM-DD')"
+                />
+              </v-col>
+              <v-col cols="12" sm="6" md="4" class="pb-0">
+                <c-date
+                    v-model="direccionamiento.FecMaxEnt"
+                    :rules="`required|mindate:${direccionamiento.FecDireccionamiento ? moment(direccionamiento.FecDireccionamiento).format('DD/MM/YYYY') : moment().format('DD/MM/YYYY')}`"
+                    label="Fecha Maxima de Entrega"
+                    name="fecha maxima de entrega"
+                    :min="direccionamiento.FecDireccionamiento ? moment(direccionamiento.FecDireccionamiento).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')"
+                />
+              </v-col>
+              <v-col cols="12" sm="6" md="4" class="pb-0">
+                <c-number
+                    v-model="direccionamiento.CantTotAEntregar"
+                    label="Cantidad Total a Entregar"
+                    :rules="`required|max:${cantidadMaximaAEntregar}`"
+                    name="cantidad total a entregar"
+                    min="0"
+                    :max="cantidadMaximaAEntregar"
+                    step="0.1"
+                />
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+        <v-card>
+          <v-card-text>
+            <h4>
+              <v-icon left>fas fa-store</v-icon>
+              Proveedor
+            </h4>
+          </v-card-text>
+          <v-card-text class="py-0">
+            <v-row>
+              <v-col cols="12" class="pb-0">
+                <ValidationProvider name="entidad" rules="required" v-slot="{ errors }">
+                  <v-autocomplete
+                      label="Entidad"
+                      v-model="prestadorObjeto"
+                      item-value="codigohabilitacion"
+                      :items="prestadores"
+                      :filter="filterPrestadores"
+                      placehoder="Buscar por número de identificación, código de habilitación o nombre"
+                      no-data-text="No hay resultados para mostrar"
+                      return-object
+                      outlined
+                      :error-messages="errors"
+                      hide-selected
+                      @change="prestador => asignaPrestador(prestador)"
+                      persistent-hint
+                      :hint="prestadorObjeto ? [prestadorObjeto.telefono ? `Tel.${prestadorObjeto.telefono}`: null, `${prestadorObjeto.direccion} ${prestadorObjeto.nompio}, ${prestadorObjeto.nomdepto}`].filter(x => x).join(' | '): null"
+                  >
+                    <template v-slot:selection="data">
+                      <v-list-item class="pa-0" style="width: 100% !important;">
+                        <v-list-item-content class="text-truncate pa-0">
+                          <v-list-item-title class="body-2">{{ data.item.nombre }}</v-list-item-title>
+                          <v-list-item-subtitle class="caption">{{ `${data.item.tipo_identificacion}${data.item.nitsnit} | Código:${data.item.codigohabilitacion}` }}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </template>
+                    <template v-slot:item="data">
+                      <div style="width: 100% !important;">
+                        <v-list-item class="pa-0">
+                          <v-list-item-content class="text-truncate pa-0">
+                            <v-list-item-title class="body-2">{{ data.item.nombre }}</v-list-item-title>
+                            <v-list-item-subtitle class="caption">{{ `${data.item.tipo_identificacion}${data.item.nitsnit} | Código:${data.item.codigohabilitacion}` }}</v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                        <v-divider></v-divider>
+                      </div>
+                    </template>
+                  </v-autocomplete>
+                </ValidationProvider>
+              </v-col>
+              <v-col class="pb-0" cols="12" sm="12" md="6">
+                <c-select-complete
+                    :disabled="!direccionamiento.NoIDProv"
+                    v-model="direccionamiento.CodDepEnt"
+                    label="Departamento de Entrega"
+                    name="departamento de entrega"
+                    rules="required"
+                    :items="departamentos"
+                    item-text="nombre"
+                    item-value="codigo_dane"
+                    @change="direccionamiento.CodMunEnt = null"
+                >
+                </c-select-complete>
+              </v-col>
+              <v-col class="pb-0" cols="12" sm="12" md="6">
+                <c-select-complete
+                    :disabled="!direccionamiento.CodDepEnt"
+                    v-model="direccionamiento.CodMunEnt"
+                    label="Municipio de Entrega"
+                    name="municipio de entrega"
+                    rules="required"
+                    :items="departamentos.length && direccionamiento.CodDepEnt ? departamentos.find(x => x.codigo_dane === direccionamiento.CodDepEnt).municipios : []"
+                    item-text="nombre"
+                    item-value="codigo_dane"
+                >
+                </c-select-complete>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
       </v-container>
     </ValidationObserver>
     <v-card-actions>
@@ -39,6 +185,7 @@
 
 <script>
 import InputSerach from '../servtecs/InputSerach'
+import {mapGetters} from 'vuex'
 export default {
   name: 'RegistroDireccionamiento',
   components: {InputSerach},
@@ -58,6 +205,7 @@ export default {
   },
   data: () => ({
     loading: false,
+    prestadorObjeto: null,
     direccionamiento: null,
     makeDireccionamiento: {
       ID: null,
@@ -73,6 +221,7 @@ export default {
       TipoIdProv: null,
       NoIDProv: null,
       CodMunEnt: null,
+      CodDepEnt: null,
       FecMaxEnt: null,
       CantTotAEntregar: null,
       DirPaciente: null,
@@ -83,8 +232,29 @@ export default {
       created_at: null,
       updated_at: null,
       user_id: null
+    },
+    filterPrestadores: (item, queryText) => {
+      const hasValue = val => val != null ? val : ''
+      const text = hasValue(`${item.codigohabilitacion} ${item.nitsnit} ${item.nombre}`)
+      const query = hasValue(queryText)
+      return text.toString().toLowerCase().includes(query.toString().toLowerCase())
     }
   }),
+  computed: {
+    cantidadMaximaAEntregar() {
+      return this && this.item && this.cantidadDireccionada !== null ? Number(this.item.cantidadTotal) - this.cantidadDireccionada : 0
+    },
+    fechaMinimaDireccionamiento() {
+      return this && this.item && this.item.objeto && this.item.objeto.direccionamientos.length ? (window.lodash.last(this.item.objeto.direccionamientos).FecMaxEnt) : this.moment().format('YYYY-MM-DD')
+    },
+    cantidadDireccionada() {
+      return this.item.objeto.direccionamientos && this.item.objeto.direccionamientos.length ? window.lodash.sum(this.item.objeto.direccionamientos.filter(z => (z.EstDireccionamiento === 1 || z.EstDireccionamiento === null) && !z.FecAnulacion).map(x => Number(x.CantTotAEntregar))) : 0
+    },
+    ...mapGetters([
+      'prestadores',
+      'departamentos'
+    ])
+  },
   created() {
     this.direccionamiento = this.clone(this.makeDireccionamiento)
   },
@@ -93,14 +263,23 @@ export default {
       this.$refs.formDireccionamiento.validate().then(result => {
         if (result) {
           this.loading = true
+          this.direccionamiento.NoPrescripcion = this.documento.NoPrescripcion
+          this.direccionamiento.TipoTec = this.item.TipoTec
+          this.direccionamiento.ConTec = this.item.objeto.ConOrden
+          this.direccionamiento.TipoIDPaciente = this.documento.TipoIDPaciente
+          this.direccionamiento.NoIDPaciente = this.documento.NroIDPaciente
+          this.direccionamiento.NoEntrega = this.item.objeto.direccionamientos.length + 1
+
+          this.direccionamiento.TipoIdProv = 'NI'
           this.axios.post(`mipres/direccionamientos`, this.direccionamiento)
               .then(async response => {
                 this.$store.commit('SET_SNACKBAR', {
                   color: 'success',
                   message: `El direccionamiento se ha guardado correctamente.`
                 })
-                console.log('el response del edit', response)
+                console.log('el response del guardadio de l direccionamiento', response)
                 this.$emit('guardado', response.data)
+                this.cancelar()
                 this.loading = false
               })
               .catch(() => {
@@ -114,8 +293,15 @@ export default {
         }
       })
     },
+    asignaPrestador(prestador) {
+      this.direccionamiento.TipoIdProv = prestador ? prestador.tipo_identificacion : null
+      this.direccionamiento.NoIDProv = prestador ? prestador.nitsnit : null
+      this.direccionamiento.CodDepEnt = prestador ? prestador.iddepto : null
+      this.direccionamiento.CodMunEnt = prestador ? prestador.idmpio : null
+    },
     cancelar() {
       this.$emit('cancelar')
+      this.prestadorObjeto = null
       this.direccionamiento = this.clone(this.makeDireccionamiento)
     }
   }

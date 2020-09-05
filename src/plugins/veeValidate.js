@@ -75,6 +75,16 @@ extend('mindate', {
     message: 'El campo {_field_} debe ser mayor o igual a {minimo}'
 })
 
+extend('maxdate', {
+    params: ['maximo'],
+    validate(value, { maximo }) {
+        let newValue = Vue.prototype.moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD')
+        let newMaximo = Vue.prototype.moment(maximo, 'DD/MM/YYYY').format('YYYY-MM-DD')
+        return Vue.prototype.moment(newValue).valueOf() <= Vue.prototype.moment(newMaximo).valueOf()
+    },
+    message: 'El campo {_field_} debe ser menor o igual a {maximo}'
+})
+
 extend('max', {
   params: ['maximo'],
   validate(value, { maximo }) {
