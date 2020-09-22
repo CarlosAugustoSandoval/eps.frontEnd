@@ -6,7 +6,11 @@ const state = {
         tablaTutelas: 0,
         tablaTutelasVersion: 1,
         tablaUsuarios: 0,
-        tablaUsuariosVersion: 1
+        tablaUsuariosVersion: 1,
+        tablaPrestadores: 0,
+        tablaPrestadoresVersion: 1,
+        tablaSuministros: 0,
+        tablaSuministrosVersion: 1
     }
 }
 

@@ -6,6 +6,7 @@ import store from "../store/store";
 import mipresRoutes from '@/modules/mipres/router'
 import authenticationRoutes from '@/modules/auth/router'
 import administrativoRoutes from '@/modules/administrativo/router'
+import reportesRoutes from '@/modules/reportes/router'
 
 Vue.use(Router)
 
@@ -53,7 +54,8 @@ const router = new Router({
         },
         mipresRoutes,
         authenticationRoutes,
-        administrativoRoutes
+        administrativoRoutes,
+        reportesRoutes
     ]
 })
 

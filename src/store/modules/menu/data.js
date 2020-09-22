@@ -28,7 +28,7 @@ export const itemsMenu = [
         id: 4,
         title: 'Direccionamientos',
         icon: 'fas fa-map-signs',
-        iconbg: 'success',
+        iconbg: 'green',
         desc: '',
         routeName: 'Direccionamientos'
     },
@@ -47,5 +47,29 @@ export const itemsMenu = [
         iconbg: 'orange',
         desc: '',
         routeName: 'Administrativo'
+    },
+    {
+        id: 7,
+        title: 'Prestadores',
+        icon: 'fas fa-user-tie',
+        iconbg: 'deep-purple',
+        desc: '',
+        routeName: 'Prestadores'
+    },
+    {
+        id: 8,
+        title: 'Suministros',
+        icon: 'fas fa-cubes',
+        iconbg: 'light-green',
+        desc: '',
+        routeName: 'Suministros'
+    },
+    {
+        id: 9,
+        title: 'Reportes',
+        icon: 'mdi-file-table',
+        iconbg: 'green',
+        desc: '',
+        routeName: 'Reportes'
     }
 ]

@@ -15,8 +15,8 @@
               fab
               bottom
               small
-              :color="item.objeto.EstJM && (item.objeto.EstJM === 1 || item.objeto.EstJM === 3) ? 'green' : 'red'"
-              @click="dialog = (item.objeto.EstJM && (item.objeto.EstJM === 1 || item.objeto.EstJM === 3))"
+              :color="esPrecripcion ? (item.objeto.EstJM && (item.objeto.EstJM === 1 || item.objeto.EstJM === 3) ? 'green' : item.objeto.EstJM === 2 ? 'red' : 'grey lighten-2') : 'green'"
+              @click="dialog = esPrecripcion ? (item.objeto.EstJM && (item.objeto.EstJM === 1 || item.objeto.EstJM === 3)) : true"
           >
             <v-icon>fas fa-map-signs</v-icon>
           </v-btn>
@@ -33,7 +33,7 @@
             <v-list-item-content class="truncate-content">
               <v-list-item-title class="title">Direccionamientos de {{ item.type }}</v-list-item-title>
               <v-list-item-subtitle class="caption">
-                Prescripción: {{ documento.NoPrescripcion }}
+                {{ esPrecripcion ? `Prescripción: ${documento.NoPrescripcion}` : `Tutela: ${documento.NoTutela}`}}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -55,6 +55,7 @@
                 :key-tecnologia="item.TipoTec"
                 :documento="documento"
                 :item="item.objeto"
+                :tipo="tipo"
                 :boton-detalle="false"
                 :boton-direccionamientos="false"
                 expand
@@ -66,7 +67,7 @@
             class="elevation-0"
         >
           <v-window-item>
-            <v-card>
+            <v-card flat class="elevation-0">
               <loading :value="loadingDocumento" absolute/>
               <v-list dense two-line class="py-0">
                 <v-list-item style="background-color: transparent !important;">
@@ -99,73 +100,28 @@
                   </v-list-item-action>
                 </v-list-item>
               </v-list>
-              <v-divider class="my-0"></v-divider>
-              <v-simple-table dense v-if="item.objeto.direccionamientos.length">
-                <template v-slot:default>
-                  <thead>
-                  <tr>
-                    <th class="text-center"></th>
-                    <th>Id</th>
-                    <th>Código</th>
-                    <th>Estado</th>
-                    <th>Fecha</th>
-                    <th>Cantidad</th>
-                    <th>Servicio/Tecnología</th>
-                    <th>
-                      <c-tooltip top tooltip="Fecha Maxima de Entrega">
-                        <a>Fecha M.E.</a>
-                      </c-tooltip>
-                    </th>
-                    <th>
-                      <c-tooltip top tooltip="Municipio de Entrega">
-                        <a>Municipio</a>
-                      </c-tooltip>
-                    </th>
-                    <th>Proveedor</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr v-for="(direccionamiento, indexDireccionamiento) in item.objeto.direccionamientos"
-                      :key="`trDir${indexDireccionamiento}`">
-                    <td class="text-center">
-                      <c-tooltip top :tooltip="permisos.anular ? 'Anular' : 'Sin permisos para anular'">
-                        <v-btn
-                            dark
-                            fab
-                            x-small
-                            depressed
-                            :color="permisos.anular ? 'error' : 'grey'"
-                            class="mr-1"
-                            @click="anularDireccionamiento(direccionamiento)"
-                        >
-                          <v-icon>mdi-trash-can</v-icon>
-                        </v-btn>
-                      </c-tooltip>
-                    </td>
-                    <td>{{ direccionamiento.id_interno }}</td>
-                    <td>{{ direccionamiento.IDDireccionamiento }}</td>
-                    <td>
-                      {{
-                        direccionamiento.FecAnulacion
-                            ? 'Anulado'
-                            : direccionamiento.EstDireccionamiento === null
-                            ? 'Preregistro'
-                            : direccionamiento.EstDireccionamiento
-                      }}
-                    </td>
-                    <td>{{ direccionamiento.FecDireccionamiento }}</td>
-                    <td>{{ direccionamiento.CantTotAEntregar }}</td>
-                    <td>{{ `${direccionamiento.TipoTec}${direccionamiento.CodSerTecAEntregar}` }}</td>
-                    <td>{{ direccionamiento.FecMaxEnt }}</td>
-                    <td>{{ direccionamiento.CodMunEnt }}</td>
-                    <td>{{ `${direccionamiento.TipoIdProv}${direccionamiento.NoIDProv}` }}</td>
-                  </tr>
-                  </tbody>
-                </template>
-              </v-simple-table>
-              <v-row v-else justify="center" align="center" class="pa-3">
-                <span class="text-body-1 grey--text">No hay direccionamientos registrados</span>
-              </v-row>
+              <template v-if="item.objeto.nodireccionamientos.length">
+                <v-card>
+                  <v-subheader class="font-weight-bold">Registro de No Direccionamiento</v-subheader>
+                  <tabla-no-direccionamientos
+                      @actualizado="$emit('actualizado')"
+                      :nodireccionamientos="item.objeto.nodireccionamientos"
+                  />
+                </v-card>
+                <v-card class="mt-3">
+                  <v-subheader class="font-weight-bold">Registros de Direccionamientos</v-subheader>
+                  <tabla-direccionamientos
+                      @actualizado="$emit('actualizado')"
+                      :direccionamientos="item.objeto.direccionamientos"
+                  />
+                </v-card>
+              </template>
+              <v-card v-else>
+                <tabla-direccionamientos
+                    @actualizado="$emit('actualizado')"
+                    :direccionamientos="item.objeto.direccionamientos"
+                />
+              </v-card>
             </v-card>
           </v-window-item>
           <v-window-item>
@@ -182,23 +138,13 @@
       </v-container>
       <loading :value="processingSection"/>
     </v-card>
-    <!--    <detail-technologi-dialog ref="dialogInfoTechnologi"-->
-    <!--                              @onProcess="processingSection = false"></detail-technologi-dialog>-->
-    <!--    <confirmation-dialog-->
-    <!--        ref="dialogCancel"-->
-    <!--        color="error"-->
-    <!--        heading="¿Anulación de entrega?"-->
-    <!--        :message="`¿Está seguro de anular la entrega No. <strong>${selectedEntrega ? selectedEntrega.item.id : ''}</strong>?`"-->
-    <!--        @onConfirm="cancelEntrega"-->
-    <!--        @onCancel="selectedEntrega = null"-->
-    <!--    >-->
-    <!--    </confirmation-dialog>-->
   </v-dialog>
 </template>
 
 <script>
 import RegistroDireccionamiento from './RegistroDireccionamiento'
-import Loading from "../../../../components/globalComponents/Loading";
+import TablaDireccionamientos from './TablaDireccionamientos'
+import TablaNoDireccionamientos from './TablaNoDireccionamientos'
 
 export default {
   name: 'DialogDireccionamientos',
@@ -221,14 +167,17 @@ export default {
     }
   },
   components: {
-    Loading,
+    TablaNoDireccionamientos,
+    TablaDireccionamientos,
     RegistroDireccionamiento,
-    // RegistroEntrega: () => import('@/components/Prescripciones/ServiciosTecnologias/RegistroEntrega'),
     CardServtec: () => import('@/modules/mipres/components/servtecs/CardServtec')
   },
   computed: {
+    esPrecripcion() {
+      return this && this.tipo === 'prescripción'
+    },
     cantidadDireccionada() {
-      return this.item.objeto.direccionamientos && this.item.objeto.direccionamientos.length ? window.lodash.sum(this.item.objeto.direccionamientos.filter(z => (z.EstDireccionamiento === 1 || z.EstDireccionamiento === null) && !z.FecAnulacion).map(x => Number(x.CantTotAEntregar))) : 0
+      return this.item.objeto.direccionamientos && this.item.objeto.direccionamientos.length ? window.lodash.sum(this.item.objeto.direccionamientos.filter(z => (z.EstDireccionamiento === 1 || z.EstDireccionamiento === 2 || z.EstDireccionamiento === null) && !z.FecAnulacion).map(x => Number(x.CantTotAEntregar))) : 0
     },
     permisos() {
       return {
@@ -275,31 +224,8 @@ export default {
     ]
   }),
   methods: {
-    getDetalleTechnologi(type, code) {
-      this.processingSection = true
-      this.$refs.dialogInfoTechnologi.getDetail(type, code)
-    },
     close() {
       this.dialog = false
-    },
-    async anularDireccionamiento(direccionamiento) {
-      let borrardo = await this.confirm(
-          {
-            title: 'Anular Direccionamiento',
-            subtitle: `¿Está seguro de anular el direccionamiento id <strong>${direccionamiento.id_interno}</strong>?`,
-            route: `mipres/direccionamientos/${direccionamiento.id_interno}`,
-            catchMessage: 'No ha sido posible anular el direccionamiento:',
-            buttonText: 'Si, Anular'
-          }
-      )
-      console.log('borrardo', borrardo)
-      if (borrardo.confirm) {
-        this.$emit('actualizado')
-        this.$store.commit('SET_SNACKBAR', {
-          color: 'success',
-          message: `El direccionamiento se anuló correctamente.`
-        })
-      }
     }
   }
 }

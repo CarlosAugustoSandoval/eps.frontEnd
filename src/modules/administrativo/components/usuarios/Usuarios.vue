@@ -112,7 +112,7 @@ export default {
     },
     resetOptions(item) {
       item.options = []
-      item.options.push({event: 'borrarUsuario', icon: 'mdi-trash-can', tooltip: 'Eliminar Usuario', color: 'red'})
+      item.options.push({event: 'borrarUsuario', icon: 'mdi-trash-can', tooltip: 'Eliminar Usuario', color: 'red', btnClass: 'mr-1'})
       item.options.push({event: 'editarUsuario', icon: 'mdi-pencil', tooltip: 'Editar Usuario', color: 'orange'})
       return item
     }

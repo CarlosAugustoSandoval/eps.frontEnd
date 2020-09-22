@@ -91,6 +91,44 @@ export default {
                     ]
                 }
             }
+        },
+        {
+            name: 'Prestadores',
+            path: 'prestadores',
+            component: () => import('@/modules/mipres/views/prestadores/Prestadores'),
+            meta: {
+                requiresAuth: true,
+                title: {
+                    text: 'Prestadores',
+                    icon: 'fas fa-user-tie',
+                    color: 'deep-purple',
+                    breadcrumbs: [
+                        {
+                            text: 'Prestadores',
+                            disabled: true
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            name: 'Suministros',
+            path: 'suministros',
+            component: () => import('@/modules/mipres/views/suministros/Suministros'),
+            meta: {
+                requiresAuth: true,
+                title: {
+                    text: 'Suministros',
+                    icon: 'fas fa-cubes',
+                    color: 'light-green',
+                    breadcrumbs: [
+                        {
+                            text: 'Suministros',
+                            disabled: true
+                        }
+                    ]
+                }
+            }
         }
     ]
 }

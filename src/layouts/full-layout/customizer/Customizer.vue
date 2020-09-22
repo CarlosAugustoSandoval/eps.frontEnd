@@ -76,7 +76,7 @@ import { mapGetters } from 'vuex'
       dark: false,
     }),
     computed: {
-      ...mapGetters(['themeColors', 'themeColor', 'darkMode', 'user']),
+      ...mapGetters(['themeColors', 'themeColor']),
       Customizer_drawer: {
           get () { return this.$store.state.sidebar.Customizer_drawer },
           set (val) { this.$store.commit('SET_CUSTOMIZER_DRAWER', val) }

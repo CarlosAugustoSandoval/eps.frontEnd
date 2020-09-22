@@ -30,6 +30,9 @@
               </template>
             </v-breadcrumbs>
           </v-toolbar-title>
+          <slot name="action">
+            
+          </slot>
         </v-toolbar>
       </v-card>
     </v-col>

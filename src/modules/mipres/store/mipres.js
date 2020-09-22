@@ -8,7 +8,8 @@ const state = {
     nutricionales: [],
     dispositivos: [],
     prestadores: [],
-    departamentos: []
+    departamentos: [],
+    causasnoentrega: []
 }
 
 // getters
@@ -30,6 +31,9 @@ const getters = {
     },
     departamentos: (state) => {
         return state.departamentos
+    },
+    causasnoentrega: (state) => {
+        return state.causasnoentrega
     }
 }
 
@@ -105,7 +109,6 @@ const actions = {
     async getComplementosMipres (context) {
         Vue.axios.get(`mipres/complementos`)
             .then(response => {
-                console.log('prescripciones', response.data)
                 context.commit('SET_COMPLEMENTOS', response.data)
             })
             .catch(() => {
@@ -127,6 +130,7 @@ const mutations = {
         state.nutricionales = data.productos_nutricionales
         state.dispositivos = data.tipos_dispositivos
         state.prestadores = data.prestadores
+        state.causasnoentrega = data.causasnoentrega
     }
 }
 

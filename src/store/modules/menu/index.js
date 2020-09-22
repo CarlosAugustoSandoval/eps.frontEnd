@@ -11,7 +11,10 @@ const getters = {
         menuPrincipal.push(state.itemsMenu.find(x => x.id === 1))
         menuPrincipal.push(state.itemsMenu.find(x => x.id === 2))
         menuPrincipal.push(state.itemsMenu.find(x => x.id === 3))
+        menuPrincipal.push(state.itemsMenu.find(x => x.id === 8))
         menuPrincipal.push(state.itemsMenu.find(x => x.id === 6))
+        menuPrincipal.push(state.itemsMenu.find(x => x.id === 7))
+        menuPrincipal.push(state.itemsMenu.find(x => x.id === 9))
         return menuPrincipal
     }
 }

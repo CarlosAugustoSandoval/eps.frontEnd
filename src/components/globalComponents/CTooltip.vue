@@ -1,7 +1,7 @@
 <template>
   <v-tooltip :disabled="disabled" :top="top" :right="right" :bottom="bottom" :left="left">
     <template v-slot:activator="{on}">
-      <div v-on="on" style="display:inline-block !important; margin-left:auto !important; margin-right:auto !important;">
+      <div v-on="on" style="display:inline-block !important; margin: auto !important;">
         <slot/>
       </div>
     </template>

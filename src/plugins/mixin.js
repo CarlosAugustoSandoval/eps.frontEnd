@@ -1,10 +1,12 @@
 import Vue from 'vue'
+import {mapGetters} from 'vuex'
 const Swal = require('sweetalert2')
 Vue.mixin({
     data: () => ({
         esMovil: false
     }),
     computed: {
+        ...mapGetters(['darkMode', 'user'])
     },
     watch: {
         '$vuetify.breakpoint.name': {
