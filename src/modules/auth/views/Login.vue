@@ -22,13 +22,13 @@
     </v-col>
     <v-col cols="12" md="6" lg="5" xl="4" class="d-flex align-center">
       <v-container fluid>
-        <div class="pa-10">
+        <div class="pa-10" :class="$vuetify.breakpoint.xsOnly ? 'py-0' : ''">
           <v-row justify="center">
             <v-col cols="12" sm="8" md="12">
               <v-row justify="center">
-                <img src="@/assets/images/logo-session.png"/>
+                <img :height="$vuetify.breakpoint.smAndUp ? 400 : 280" src="@/assets/images/logo-session.png"/>
               </v-row>
-              <v-row justify="center" class="my-4" no-gutters>
+              <v-row justify="center" class="mb-4" no-gutters>
                 <v-col cols="12" class="text-center">
                   <h2 class="font-weight-bold blue-grey--text text--darken-2">Inicio de Sesión</h2>
                 </v-col>

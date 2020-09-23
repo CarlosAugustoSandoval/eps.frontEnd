@@ -241,6 +241,9 @@ export default {
       this.$store.dispatch('getPrescripcion', this.NoPrescripcion).then(prescripcion => {
         this.prescripcion = prescripcion
         this.loading = false
+        this.$store.dispatch('getAfiliadoIdentificacion', { identificacion: this.prescripcion.NroIDPaciente }).then(afiliado => {
+          this.prescripcion.afiliado = afiliado
+        })
       })
     }
   }

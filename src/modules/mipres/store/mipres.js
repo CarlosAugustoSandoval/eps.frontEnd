@@ -72,11 +72,31 @@ const actions = {
                 })
         })
     },
+    async getPrescripcionMipres (context, data) {
+        console.log('data', data)
+        return await new Promise(resolve => {
+            Vue.axios.get(`mipres/prescripciones-mipres/${data.NoPrescripcion}`)
+                .then(response => {
+                    console.log('laprescripciones', response.data)
+                    resolve(response.data)
+                })
+                .catch(() => {
+                    Vue.swal({
+                        icon: 'error',
+                        title: `Error al recuperar la prescripción No. ${data.NoPrescripcion}.`,
+                        text: ''
+                    })
+                    resolve(null)
+                })
+        })
+    },
     async getPrescripcion (context, NoPrescripcion) {
         return await new Promise(resolve => {
             Vue.axios.get(`mipres/prescripciones/${NoPrescripcion}`)
                 .then(response => {
-                    console.log('prescripciones', response.data)
+                    response.data.afiliado = null
+                    response.data.nombre_completo = [response.data.PAPaciente, response.data.SAPaciente, response.data.PNPaciente, response.data.SNPaciente].filter(x => x).join(' ')
+                    response.data.identificacion_completa = `${response.data.TipoIDPaciente}${response.data.NroIDPaciente}`
                     resolve(response.data)
                 })
                 .catch(() => {
@@ -93,7 +113,9 @@ const actions = {
         return await new Promise(resolve => {
             Vue.axios.get(`mipres/tutelas/${NoTutela}`)
                 .then(response => {
-                    console.log('tutelas', response.data)
+                    response.data.afiliado = null
+                    response.data.nombre_completo = [response.data.PAPaciente, response.data.SAPaciente, response.data.PNPaciente, response.data.SNPaciente].filter(x => x).join(' ')
+                    response.data.identificacion_completa = `${response.data.TipoIDPaciente}${response.data.NroIDPaciente}`
                     resolve(response.data)
                 })
                 .catch(() => {

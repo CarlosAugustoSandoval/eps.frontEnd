@@ -4,7 +4,8 @@ import '@/scss/vuetify/overrides.scss'
 Vue.use(Vuetify)
 
 const theme = {
-    primary: '#1e88e5',
+    // primary: '#1e88e5',
+    primary: '#00a1e5',
     info: '#1e88e5',
     success: '#21c1d6',
     accent: '#fc4b6c',

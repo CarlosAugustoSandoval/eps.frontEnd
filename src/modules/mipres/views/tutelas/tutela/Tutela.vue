@@ -217,6 +217,9 @@ export default {
       this.$store.dispatch('getTutela', this.NoTutela).then(tutela => {
         this.tutela = tutela
         this.loading = false
+        this.$store.dispatch('getAfiliadoIdentificacion', { identificacion: this.tutela.NroIDPaciente }).then(afiliado => {
+          this.tutela.afiliado = afiliado
+        })
       })
     }
   }

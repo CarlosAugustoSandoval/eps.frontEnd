@@ -1,7 +1,7 @@
 <template>
     <v-footer app class="footerpart" inset>
       <v-col cols="12" class="pa-1">
-        <span>© {{ new Date().getFullYear() }} — EasyMIPRES EPS por <a href="https://easymipres.co" target="_blank">EasyMIPRES</a></span>
+        <span>© {{ new Date().getFullYear() }} — eps<strong>tools</strong> por <a>PUNTUALTIC</a></span>
       </v-col>
     </v-footer>
 </template>

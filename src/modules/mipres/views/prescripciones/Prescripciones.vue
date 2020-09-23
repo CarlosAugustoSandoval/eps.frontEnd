@@ -1,6 +1,25 @@
 <template>
   <v-container fluid class="down-top-padding">
-    <view-title/>
+    <view-title>
+      <template v-slot:action>
+        <v-spacer></v-spacer>
+        <c-tooltip
+            top
+            tooltip="Sincronizar Prescripción"
+        >
+          <v-btn
+              dark
+              fab
+              bottom
+              small
+              color="light-blue"
+              @click="getPres"
+          >
+            <v-icon>fas fa-sync-alt</v-icon>
+          </v-btn>
+        </c-tooltip>
+      </template>
+    </view-title>
     <v-row>
       <v-col cols="12">
         <v-card>
@@ -160,6 +179,9 @@ export default {
       item.options = []
       item.options.push({event: 'detallePrescripcion', icon: 'mdi-file-find', tooltip: 'Ver Prescripción', color: 'success'})
       return item
+    },
+    getPres () {
+      this.$store.dispatch('getPrescripcionMipres', {NoPrescripcion: '20200918171023141227'})
     }
   }
 }

@@ -16,7 +16,6 @@
           return-object
           outlined
           :error-messages="errors"
-          hide-selected
           persistent-hint
           :hint="servicioTecnologiaObjeto ? servicioTecnologiaObjeto.descripcioncomercial : ''"
           @change="cum => servicioTecnologia = cum ? `${cum.expediente}-${cum.consecutivocum}` : null"
@@ -249,7 +248,7 @@ export default {
   watch: {
     'search' : {
       handler (val) {
-        val && this.buscarCUM()
+        val && this.buscarCUM(val)
       },
       immediate: false
     },
@@ -278,7 +277,7 @@ export default {
             if (this.item.title) {
               const rTemporal = this.item.title.split('[')
               const rFinal = rTemporal[1] ? rTemporal[1].split(']') : null
-              rFinal[0] && this.buscarCUM(rFinal[0])
+              if(rFinal[0]) this.buscarCUM(rFinal[0])
             }
             break
           case 2:
@@ -311,10 +310,10 @@ export default {
     }
   },
   methods: {
-    buscarCUM: window.lodash.debounce( async function () {
-      if (this.search) {
+    buscarCUM: window.lodash.debounce( async function (parametro) {
+      if (parametro) {
         this.loading = true
-        await this.$store.dispatch('getCUMs', this.search)
+        await this.$store.dispatch('getCUMs', parametro)
             .then(response => {
               this.cums = response
             })

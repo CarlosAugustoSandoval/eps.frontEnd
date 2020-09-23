@@ -10,6 +10,7 @@ import dataTable from './modules/dataTable'
 import snackbar from './modules/snackbar'
 import auth from '../modules/auth/store/auth'
 import mipres from '../modules/mipres/store/mipres'
+import afiliados from '../modules/afiliados/store/afiliados'
 
 Vue.use(Vuex)
 
@@ -21,7 +22,8 @@ export default new Vuex.Store({
         auth,
         dataTable,
         snackbar,
-        mipres
+        mipres,
+        afiliados
     },
     plugins: [createPersistedState({
         paths: ['theme', 'auth']

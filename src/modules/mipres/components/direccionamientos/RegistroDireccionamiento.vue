@@ -29,29 +29,28 @@
             </c-radio>
           </v-col>
           <v-col cols="12">
-            <v-list :three-line="direccionamiento.tipo_registro" :two-line="!direccionamiento.tipo_registro" class="py-0">
-              <v-list-item class="pl-0">
-                <v-list-item-avatar color="primary" class="white--text font-weight-bold">
-                  <v-icon dark>fas fa-user</v-icon>
-                </v-list-item-avatar>
-                <v-list-item-content class="truncate-content pa-0">
-                  <v-list-item-subtitle class="caption">Paciente</v-list-item-subtitle>
-                  <v-list-item-title class="body-1">{{ [documento.PAPaciente, documento.SAPaciente, documento.PNPaciente, documento.SNPaciente].filter(x => x).join(' ') }}</v-list-item-title>
-                  <v-list-item-subtitle>
-                    {{ documento.TipoIDPaciente }}{{documento.NroIDPaciente}}
-                  </v-list-item-subtitle>
-                  <v-list-item-action-text class="mt-2" v-if="direccionamiento.tipo_registro">
-                    <c-texto
-                        v-model="direccionamiento.DirPaciente"
-                        label="Direccion del Paciente"
-                        rules="required"
-                        name="direccion del paciente"
-                        upper-case
-                    />
-                  </v-list-item-action-text>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
+            <datos-persona-list
+                v-if="documento"
+                :three-line="direccionamiento.tipo_registro"
+                :two-line="!direccionamiento.tipo_registro"
+                :sexo="direccionamiento.sexo"
+                definicion="Paciente"
+                :title="documento.nombre_completo"
+                :subtitle="documento.identificacion_completa"
+                :subtitle2="[direccionamiento.email ? `<i class='mdi mdi-email'></i> ${direccionamiento.email}` : null, direccionamiento.celular ? `<a href='tel:${direccionamiento.celular}'><i class='mdi mdi-cellphone-iphone'></i>${direccionamiento.celular}</a>` : null].filter(x => x).join(' - ') "
+            >
+              <template v-slot:actiontext>
+                <c-texto
+                    v-if="direccionamiento.tipo_registro"
+                    class="mt-2"
+                    v-model="direccionamiento.DirPaciente"
+                    label="Dirección del Paciente"
+                    rules="required"
+                    name="dirección del paciente"
+                    upper-case
+                />
+              </template>
+            </datos-persona-list>
           </v-col>
         </v-row>
         <template v-if="direccionamiento.tipo_registro">
@@ -268,7 +267,10 @@ export default {
       updated_at: null,
       user_id: null,
       tipo_registro: true,
-      CausaNoEntrega: null
+      CausaNoEntrega: null,
+      sexo: null,
+      email: null,
+      celular: null
     },
     filterPrestadores: (item, queryText) => {
       const hasValue = val => val != null ? val : ''
@@ -297,6 +299,12 @@ export default {
   },
   created() {
     this.direccionamiento = this.clone(this.makeDireccionamiento)
+    if(this.documento.afiliado) {
+      this.direccionamiento.sexo = this.documento.afiliado.gn_sexo_id
+      this.direccionamiento.email = this.documento.afiliado.correo_electronico
+      this.direccionamiento.celular = this.documento.afiliado.celular
+      this.direccionamiento.DirPaciente = this.documento.afiliado.direccion
+    }
   },
   methods: {
     guardarDireccionamiento() {
