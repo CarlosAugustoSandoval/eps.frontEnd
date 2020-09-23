@@ -13,7 +13,6 @@
         {{ !rol.id ? 'Nuevo Rol' : `Edición de Rol ID: ${rol.id}` }}
         <v-spacer></v-spacer>
         <v-btn
-            dark
             icon
             @click="close"
         >
@@ -60,14 +59,16 @@
               </ValidationProvider>
             </ValidationObserver>
           </v-col>
-          <v-col cols="12" v-if="rol && rol.id && permissions && permissions.length">
-            <v-subheader style="height: 12px !important;">
-              <v-icon left small>mdi-key</v-icon>
+          <v-col cols="12" v-if="rol && rol.id && permissions">
+            <v-subheader style="height: 24px !important;" class="title mb-2">
+              <v-icon left>mdi-key</v-icon>
               Permisos
             </v-subheader>
-            <v-list dense>
-              <template v-for="(permiso, indexPermiso) in permissions">
-                <v-list-item :key="`permiso${indexPermiso}`">
+            <v-divider></v-divider>
+            <v-list dense subheader>
+              <template v-for="(permisos, indexModulo) in permissions">
+                <v-subheader style="height: 12px !important;" class="body-1 mt-3" :key="`modulo${indexModulo}`">{{indexModulo}}</v-subheader>
+                <v-list-item v-for="(permiso, indexPermiso) in permisos" :key="`modulo${indexModulo}permiso${indexPermiso}`">
                   <v-list-item-content>
                     <v-list-item-title>{{ permiso.name }}</v-list-item-title>
                     <v-list-item-subtitle>{{ permiso.description }}</v-list-item-subtitle>
@@ -82,9 +83,7 @@
           </v-col>
         </v-row>
       </v-container>
-
       <v-divider></v-divider>
-
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn
@@ -155,11 +154,7 @@ export default {
                   color: 'success',
                   message: `El rol se ha ${this.rol.id ? 'editado' : 'guardado'} correctamente.`
                 })
-                if (this.rol.id) {
-                  this.rol = response.data
-                } else {
-                  await this.cleanShow(response)
-                }
+                if (!this.rol.id) await this.cleanShow(response)
                 this.$emit('guardado')
                 this.loading = false
               })
@@ -183,7 +178,13 @@ export default {
         x.loading = false
       })
       this.rol = response.data.role
-      this.permissions = response.data.permissions
+      console.log('sddddsdsd', response.data.permissions)
+      this.permissions = response.data.permissions.reduce((value, key) => {
+        (value[key['module']] = value[key['module']] || []).push(key)
+        return value
+      }, {})
+
+      console.log('permissions', this.permissions)
     },
     open(rolId = null) {
       if (rolId) {

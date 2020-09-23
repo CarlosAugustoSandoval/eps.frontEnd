@@ -74,8 +74,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import lodash from "lodash";
+import {mapGetters} from 'vuex'
 
 const RegistroReporte = () => import('@/modules/reportes/components/RegistroReporte')
 const GeneradorReporte = () => import('@/modules/reportes/components/GeneradorReporte')
@@ -106,7 +105,7 @@ export default {
     this.getReportes()
   },
   methods: {
-    buscarReportes: lodash.debounce(function () {
+    buscarReportes: window.lodash.debounce(function () {
       this.reportesFiltrados = this.search ? this.reportesFull.filter(x => (x.id === parseInt(this.search) || x.nombre.toLowerCase().search(this.search.toLowerCase()) > -1) || (x.descripcion.toLowerCase().search(this.search.toLowerCase()) > -1)) : this.reportesFull
     }, 200),
     crearReporte() {

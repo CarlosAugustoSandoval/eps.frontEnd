@@ -9,6 +9,7 @@
       <v-btn
           v-if="$vuetify.breakpoint.smAndUp"
           color="primary"
+          @click="crearUsuario"
       >
         <v-icon left dark>mdi-plus</v-icon>
         Crear Usuario

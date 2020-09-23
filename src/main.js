@@ -13,6 +13,8 @@ import './plugins/base'
 import './plugins/veeValidate'
 import './plugins/mixin'
 import VueSkycons from 'vue-skycons'
+import lodash from 'lodash'
+window.lodash = lodash
 
 moment.locale('es')
 Vue.prototype.moment = moment
