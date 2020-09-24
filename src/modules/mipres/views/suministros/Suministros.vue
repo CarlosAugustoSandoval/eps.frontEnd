@@ -1,6 +1,13 @@
 <template>
   <v-container fluid class="down-top-padding">
-    <view-title/>
+    <view-title>
+      <template v-slot:action>
+        <v-spacer></v-spacer>
+        <sincronizador
+            @sincronizado="$refs && $refs.tablaSuministros.reloadPage()"
+        />
+      </template>
+    </view-title>
     <v-row>
       <v-col cols="12">
         <v-card>
@@ -22,9 +29,13 @@
 
 <script>
 import RegistroSuministro from '@/modules/mipres/components/suministros/RegistroSuministro'
+import Sincronizador from "@/modules/mipres/components/sincronizador/Sincronizador";
 export default {
   name: 'Suministros',
-  components: {RegistroSuministro},
+  components: {
+    RegistroSuministro,
+    Sincronizador
+  },
   data: (vm) => ({
     dataTable: {
       buttonZone: false,
@@ -428,23 +439,33 @@ export default {
     },
     sincronizarSuministro(item) {
       item.loading = true
-      this.axios.get(`mipres/sincronizar-suministro/${item.NoPrescripcion || item.NoTutela}`)
+      this.$store.dispatch('getSuministroMipres', { NoPrescripcion: item.NoPrescripcion || item.NoTutela })
           .then(() => {
             this.$refs.tablaSuministros.reloadPage()
             item.loading = false
             this.$store.commit('SET_SNACKBAR', {
               color: 'success',
-              message: `Sincronización Completa, Registro ID: ${item.ID}.`
+              message: `Sincronización Completa, Prescripción No ${item.ID}.`
             })
           })
-          .catch((e) => {
-            this.$swal({
-              icon: 'error',
-              title: `Error al sincronizar el suministro.`,
-              text: `Error ${e.response.data.type}, ${e.response.data.message}`
-            })
-            item.loading = false
-          })
+
+      // this.axios.get(`mipres/sincronizar-suministro/${item.NoPrescripcion || item.NoTutela}`)
+      //     .then(() => {
+      //       this.$refs.tablaSuministros.reloadPage()
+      //       item.loading = false
+      //       this.$store.commit('SET_SNACKBAR', {
+      //         color: 'success',
+      //         message: `Sincronización Completa, Registro ID: ${item.ID}.`
+      //       })
+      //     })
+      //     .catch((e) => {
+      //       this.$swal({
+      //         icon: 'error',
+      //         title: `Error al sincronizar el suministro.`,
+      //         text: `Error ${e.response.data.type}, ${e.response.data.message}`
+      //       })
+      //       item.loading = false
+      //     })
     },
     resetOptions(item) {
       item.options = []

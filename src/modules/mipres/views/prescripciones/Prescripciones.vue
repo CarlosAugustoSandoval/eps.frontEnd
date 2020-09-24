@@ -3,6 +3,9 @@
     <view-title>
       <template v-slot:action>
         <v-spacer></v-spacer>
+        <sincronizador
+            @sincronizado="$refs && $refs.tablaPrescripciones.reloadPage()"
+        />
       </template>
     </view-title>
     <v-row>
@@ -22,8 +25,12 @@
 </template>
 
 <script>
+import Sincronizador from "@/modules/mipres/components/sincronizador/Sincronizador";
 export default {
   name: 'Prescripciones',
+  components: {
+    Sincronizador
+  },
   data: () => ({
     dataTable: {
       buttonZone: false,

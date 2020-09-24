@@ -80,13 +80,32 @@ const actions = {
                     console.log('laprescripciones', response.data)
                     resolve(response.data)
                 })
-                .catch(() => {
+                .catch(e => {
+                    resolve(null)
+                    console.log('eeeee', e.response.data)
                     Vue.swal({
                         icon: 'error',
                         title: `Error al sincronizar la prescripción No. ${data.NoPrescripcion}.`,
-                        text: ''
+                        text: e.response.data ? `Error ${e.response.data.type}, ${e.response.data.message}` : ''
                     })
+                })
+        })
+    },
+    async getSuministroMipres (context, data) {
+        console.log('data', data)
+        return await new Promise(resolve => {
+            Vue.axios.get(`mipres/sincronizar-suministro/${data.NoPrescripcion}`)
+                .then(response => {
+                    resolve(response)
+                })
+                .catch(e => {
                     resolve(null)
+                    Vue.swal({
+                        icon: 'error',
+                        // title: `Error al sincronizar la prescripción No. ${data.NoPrescripcion}.`,
+                        title: `Error de sincronización.`,
+                        text: e.response.data ? `Error ${e.response.data.type}, ${e.response.data.message}` : ''
+                    })
                 })
         })
     },
