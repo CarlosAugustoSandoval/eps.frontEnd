@@ -3,21 +3,6 @@
     <view-title>
       <template v-slot:action>
         <v-spacer></v-spacer>
-        <c-tooltip
-            top
-            tooltip="Sincronizar Prescripción"
-        >
-          <v-btn
-              dark
-              fab
-              bottom
-              small
-              color="light-blue"
-              @click="getPres"
-          >
-            <v-icon>fas fa-sync-alt</v-icon>
-          </v-btn>
-        </c-tooltip>
       </template>
     </view-title>
     <v-row>
@@ -28,6 +13,7 @@
               v-model="dataTable"
               @resetOption="item => resetOptions(item)"
               @detallePrescripcion="item => $router.push({ name: 'Prescripcion', params: {NoPrescripcion: item.NoPrescripcion }})"
+              @sincronizarPrescripcion="item => sincronizarPrescripcion(item)"
           ></data-table>
         </v-card>
       </v-col>
@@ -177,11 +163,21 @@ export default {
   methods: {
     resetOptions(item) {
       item.options = []
-      item.options.push({event: 'detallePrescripcion', icon: 'mdi-file-find', tooltip: 'Ver Prescripción', color: 'success'})
+      item.options.push({event: 'detallePrescripcion', icon: 'mdi-file-find', tooltip: 'Ver Prescripción', color: 'success', btnClass: 'mr-1'})
+      item.options.push({event: 'sincronizarPrescripcion', icon: 'mdi-reload', tooltip: 'Sincronizar', color: 'blue'})
       return item
     },
-    getPres () {
-      this.$store.dispatch('getPrescripcionMipres', {NoPrescripcion: '20200918171023141227'})
+    sincronizarPrescripcion(item) {
+      item.loading = true
+      this.$store.dispatch('getPrescripcionMipres', { NoPrescripcion: item.NoPrescripcion, sync: true })
+          .then(() => {
+            this.$refs.tablaPrescripciones.reloadPage()
+            item.loading = false
+            this.$store.commit('SET_SNACKBAR', {
+              color: 'success',
+              message: `Sincronización Completa, Prescripción No ${item.NoPrescripcion}.`
+            })
+          })
     }
   }
 }

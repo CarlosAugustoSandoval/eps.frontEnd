@@ -1,12 +1,9 @@
 <template>
   <v-app-bar app clipped-left clipped-right color="primary" dark>
     <!---Logo part -->
-    <v-toolbar-title class="align-center d-flex mr-2">
-<!--      <span class="logo-icon">-->
-<!--        <img src="../../../assets/images/logo-light-icon.png" />-->
-<!--      </span>-->
-      <span class="logo-text ml-2" :class="`${showLogo ? '' : 'hidelogo'}`">
-        <img src="../../../assets/images/logo-light-text.png" class="mt-2" width="180" />
+    <v-toolbar-title class="align-center d-flex">
+      <span>
+        <img src="../../../assets/images/logo-light-text.png" class="mt-2" :width="$vuetify.breakpoint.smAndUp ? 200 : 140" />
       </span>
     </v-toolbar-title>
     <!---Logo part -->
@@ -19,10 +16,10 @@
 
     <!---right part -->
     <!---Notification -->
-    <notifications/>
+<!--    <notifications/>-->
     <!---Notification -->
     <!---Messages -->
-    <messages/>
+<!--    <messages/>-->
     <!---Messages -->
     <!---User -->
     <user/>
@@ -32,21 +29,24 @@
 
 <script>
 import AppMenu from '@/layouts/full-layout/header/components/AppMenu'
-import Notifications from '@/layouts/full-layout/header/components/Notifications'
-import Messages from '@/layouts/full-layout/header/components/Messages'
+// import Notifications from '@/layouts/full-layout/header/components/Notifications'
+// import Messages from '@/layouts/full-layout/header/components/Messages'
 import User from '@/layouts/full-layout/header/components/User'
 export default {
   name: 'Header',
   components: {
     AppMenu,
-    Notifications,
-    Messages,
+    // Notifications,
+    // Messages,
     User
   },
   data: () => ({
     showLogo: true
   }),
   computed: {
+  },
+  mounted() {
+    this.$store.dispatch('getComplementosMipres')
   },
   methods: {
   }
@@ -56,11 +56,5 @@ export default {
 <style lang="scss">
   .v-application #main-sidebar.theme--dark.white{
     background:#363636!important;
-  }
-  .hidelogo{
-    display: none;
-  }
-  .descpart{
-    max-width:220px;
   }
 </style>

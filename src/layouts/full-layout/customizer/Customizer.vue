@@ -20,14 +20,14 @@
       </v-list-item>
       <!---USer Area -->
       <v-list class="pa-0">
-        <v-list-item @click="true">
-          <v-list-item-avatar color="primary">
-            <v-icon dark>mdi-account</v-icon>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title>Perfil</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+<!--        <v-list-item @click="true">-->
+<!--          <v-list-item-avatar color="primary">-->
+<!--            <v-icon dark>mdi-account</v-icon>-->
+<!--          </v-list-item-avatar>-->
+<!--          <v-list-item-content>-->
+<!--            <v-list-item-title>Perfil</v-list-item-title>-->
+<!--          </v-list-item-content>-->
+<!--        </v-list-item>-->
         <v-list-item @click="logout">
           <v-list-item-avatar color="error">
             <v-icon dark>mdi-close</v-icon>

@@ -8,7 +8,7 @@ const state = {
 const getters = {
     itemsMenu: (state) => {
         let menuPrincipal = []
-        menuPrincipal.push(state.itemsMenu.find(x => x.id === 1))
+        // menuPrincipal.push(state.itemsMenu.find(x => x.id === 1))
         menuPrincipal.push(state.itemsMenu.find(x => x.id === 2))
         menuPrincipal.push(state.itemsMenu.find(x => x.id === 3))
         menuPrincipal.push(state.itemsMenu.find(x => x.id === 8))

@@ -7,9 +7,6 @@
 
 <script>
 export default {
-  name: 'App',
-  mounted() {
-    this.$store.dispatch('getComplementosMipres')
-  }
+  name: 'App'
 }
 </script>

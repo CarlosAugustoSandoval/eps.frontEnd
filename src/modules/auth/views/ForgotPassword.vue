@@ -12,7 +12,7 @@
                 <h6
                     class="subtitle-1 mt-4 white--text op-5 font-weight-regular"
                 >Solo configure su token y empiece a descargar y reportar la información de MIPRES.</h6>
-                <v-btn class="mt-4 text-capitalize" x-large outlined color="white">Leer más</v-btn>
+<!--                <v-btn class="mt-4 text-capitalize" x-large outlined color="white">Leer más</v-btn>-->
               </div>
             </v-col>
           </v-row>
@@ -20,12 +20,12 @@
       </v-container>
     </v-col>
     <v-col cols="12" md="6" lg="5" xl="4" class="d-flex align-center">
-      <v-container>
-        <div class="pa-10">
+      <v-container fluid class="py-0">
+        <div class="px-10 py-0">
           <v-row justify="center">
-            <v-col cols="12" sm="8" md="12">
+            <v-col cols="12" sm="8" md="12" class="py-0">
               <v-row justify="center">
-                <img src="@/assets/images/logo-session.png"/>
+                <img :height="$vuetify.breakpoint.smAndUp ? 360 : 280" src="@/assets/images/logo-session.png"/>
               </v-row>
               <v-row justify="center" class="my-4" no-gutters>
                 <v-col cols="12" class="text-center">

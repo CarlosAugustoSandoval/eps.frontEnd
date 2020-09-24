@@ -166,6 +166,7 @@
                         :color="option.color ? option.color : 'accent'"
                         @click.stop="$emit(option.event, propitem)"
                         :loading="propitem.loading"
+                        depressed
                     >
                       <v-icon
                           :size="option.size ? option.size : ''"

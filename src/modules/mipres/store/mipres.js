@@ -75,7 +75,7 @@ const actions = {
     async getPrescripcionMipres (context, data) {
         console.log('data', data)
         return await new Promise(resolve => {
-            Vue.axios.get(`mipres/prescripciones-mipres/${data.NoPrescripcion}`)
+            Vue.axios.get(`mipres/prescripciones-mipres/${data.NoPrescripcion}?sync_all=${data.sync ? 1 : 0}`)
                 .then(response => {
                     console.log('laprescripciones', response.data)
                     resolve(response.data)
@@ -83,7 +83,7 @@ const actions = {
                 .catch(() => {
                     Vue.swal({
                         icon: 'error',
-                        title: `Error al recuperar la prescripción No. ${data.NoPrescripcion}.`,
+                        title: `Error al sincronizar la prescripción No. ${data.NoPrescripcion}.`,
                         text: ''
                     })
                     resolve(null)

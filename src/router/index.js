@@ -34,6 +34,7 @@ const router = new Router({
                 {
                     name: 'Home',
                     path: 'home',
+                    redirect: { name: 'Prescripciones' },
                     component: () => import('@/views/Home'),
                     meta: {
                         requiresAuth: true,
