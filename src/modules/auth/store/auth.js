@@ -79,8 +79,8 @@ const mutations = {
         state.expires_at = data.expires_at
     },
     SET_DEFAULT_AXIOS () {
-        Vue.axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:8000/api`
-        // Vue.axios.defaults.baseURL = `https://api.epstools.app/api`
+        // Vue.axios.defaults.baseURL = `${window.location.protocol}//${window.location.hostname}:8000/api`
+        Vue.axios.defaults.baseURL = `https://api.epstools.app/api`
     },
     SET_TOKEN_AXIOS (state) {
         Vue.axios.defaults.headers.common['Authorization'] = `${state.token_type} ${state.access_token}`
