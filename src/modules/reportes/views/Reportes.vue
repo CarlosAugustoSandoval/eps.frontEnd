@@ -1,7 +1,8 @@
 <template>
   <v-container fluid>
-    <page-title-bar title="Reportes Covid-19">
-      <template slot="actions">
+    <view-title>
+      <template v-slot:action>
+        <v-spacer></v-spacer>
         <v-tooltip top v-if="permisos.crear" :disabled="$vuetify.breakpoint.smAndUp">
           <template v-slot:activator="{on}">
             <v-btn
@@ -17,8 +18,9 @@
           <span>Crear Reporte</span>
         </v-tooltip>
       </template>
-    </page-title-bar>
+    </view-title>
     <v-row>
+      <loading :value="loading"/>
       <v-col cols="12" sm="12" md="5">
         <v-card>
           <v-card-text>
@@ -36,11 +38,11 @@
           <v-card-text v-if="!reportesFiltrados.length" class="text-center body-1 grey--text">
             No hay reportes para mostrar
           </v-card-text>
-          <v-list v-else two-line class="notification-wrap">
-            <v-list-item-group v-model="indexSeleccionado" color="pink">
-              <template v-for="(reporte, indexReporte) in reportesFiltrados">
-                <v-hover v-slot:default="{ hover }" :key="`reporte${indexReporte}`">
-                  <v-list-item @click="seleccionarReporte(reporte)">
+          <v-list v-else two-line>
+            <v-list-item-group color="primary">
+              <template v-for="reporte in reportesFiltrados">
+                <v-hover v-slot:default="{ hover }" :key="`reporte${reporte.id}`">
+                  <v-list-item :class="reporte.id === indexSeleccionado ? 'v-item--active v-list-item--active' : ''" @click="seleccionarReporte(reporte)">
                     <v-list-item-avatar class="my-1 align-self-center">{{ reporte.id }}</v-list-item-avatar>
                     <v-list-item-content class="pa-0">
                       <v-list-item-title><h5 class="mb-0 text-truncate">{{ reporte.nombre }}</h5></v-list-item-title>
@@ -69,13 +71,10 @@
       </v-col>
     </v-row>
     <registro-reporte ref="registroReporte" @guardado="getReportes"></registro-reporte>
-    <app-section-loader :status="loading"></app-section-loader>
   </v-container>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-
 const RegistroReporte = () => import('@/modules/reportes/components/RegistroReporte')
 const GeneradorReporte = () => import('@/modules/reportes/components/GeneradorReporte')
 
@@ -95,11 +94,11 @@ export default {
   }),
   computed: {
     permisos() {
-      return this.$store.getters.getPermissionModule('reportesCovid')
-    },
-    ...mapGetters([
-      'roles'
-    ])
+      return {
+        crear: true
+      }
+      // return this.$store.getters.getPermissionModule('reportesCovid')
+    }
   },
   created() {
     this.getReportes()
@@ -115,6 +114,9 @@ export default {
       this.$refs.registroReporte.open(reporte.id)
     },
     seleccionarReporte(reporte) {
+      this.$nextTick(() => {
+        this.indexSeleccionado = reporte.id
+      })
       let copyReporte = this.clone(reporte)
       copyReporte.variables.map(x => {
         x.value = null
@@ -132,7 +134,7 @@ export default {
             this.loading = false
           })
           .catch(error => {
-            this.$store.commit('snackbar', {
+            this.$store.commit('SET_SNACKBAR', {
               color: 'error',
               message: `al recuperar los registros de los reportes.`,
               error: error

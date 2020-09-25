@@ -1,5 +1,6 @@
 <template>
     <v-card v-if="reporte">
+      <loading :value="loading" absolute/>
         <ValidationObserver ref="formVariables" autocomplete="off">
             <v-list two-line>
                 <v-list-item>
@@ -104,7 +105,6 @@
                 </v-btn>
             </v-card-actions>
         </ValidationObserver>
-        <app-section-loader :status="loading"></app-section-loader>
     </v-card>
 </template>
 
@@ -150,7 +150,7 @@
                             .then((response) => {
                                 console.log('numero', response)
                                 if (response.status === 204) {
-                                    this.$store.commit('snackbar', {color: 'info', message: `El reporte no contiene registros para exportar.`})
+                                    this.$store.commit('SET_SNACKBAR', {color: 'info', message: `El reporte no contiene registros para exportar.`})
                                 } else {
                                     const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}))
                                     window.open(url,'_blank')
@@ -159,7 +159,7 @@
                             })
                             .catch((error) => {
                                 this.loading = false
-                                this.$store.commit('snackbar', {color: 'error', message: `al descargar el reporte.`, error: error})
+                                this.$store.commit('SET_SNACKBAR', {color: 'error', message: `al descargar el reporte.`, error: error})
                             })
                     }
                 })
