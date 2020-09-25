@@ -48,11 +48,13 @@ name: 'ServTecProgress',
   created() {
     switch (this.tipo) {
       case 'M': {
+        console.log('this.prescripcion.porcentaje_m', this.prescripcion.porcentaje_m)
         this.properties = {
           cantidad: this.prescripcion.items_m,
           porcentaje: (this.prescripcion.porcentaje_m || 0) * 100,
           tooltip: `Medicamentos: ${((this.prescripcion.porcentaje_m || 0) * 100).toFixed(1)}%`
         }
+        console.log('this.prescripcion.porcentaje_m', ((this.prescripcion.porcentaje_m || 0) * 100))
         break
       }
       case 'P': {
