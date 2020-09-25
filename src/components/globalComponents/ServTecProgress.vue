@@ -38,6 +38,20 @@ name: 'ServTecProgress',
       default: ''
     }
   },
+  watch: {
+    'prescripcion': {
+      handler(val) {
+        this && val && this.getProresData()
+      },
+      immediate: true
+    },
+    'tipo': {
+      handler(val) {
+        this && val && this.getProresData()
+      },
+      immediate: true
+    }
+  },
   data: () => ({
     properties: {
       cantidad: null,
@@ -45,51 +59,55 @@ name: 'ServTecProgress',
       tooltip: null
     }
   }),
-  created() {
-    switch (this.tipo) {
-      case 'M': {
-        console.log('this.prescripcion.porcentaje_m', this.prescripcion.porcentaje_m)
-        this.properties = {
-          cantidad: this.prescripcion.items_m,
-          porcentaje: (this.prescripcion.porcentaje_m || 0) * 100,
-          tooltip: `Medicamentos: ${((this.prescripcion.porcentaje_m || 0) * 100).toFixed(1)}%`
+  methods: {
+  getProresData() {
+    if(this.tipo && this.prescripcion) {
+      switch (this.tipo) {
+        case 'M': {
+          console.log('this.prescripcion.porcentaje_m', this.prescripcion.porcentaje_m)
+          this.properties = {
+            cantidad: this.prescripcion.items_m,
+            porcentaje: (this.prescripcion.porcentaje_m || 0) * 100,
+            tooltip: `Medicamentos: ${((this.prescripcion.porcentaje_m || 0) * 100).toFixed(1)}%`
+          }
+          console.log('this.prescripcion.porcentaje_m', ((this.prescripcion.porcentaje_m || 0) * 100))
+          break
         }
-        console.log('this.prescripcion.porcentaje_m', ((this.prescripcion.porcentaje_m || 0) * 100))
-        break
-      }
-      case 'P': {
-        this.properties = {
-          cantidad: this.prescripcion.items_p,
-          porcentaje: (this.prescripcion.porcentaje_p || 0) * 100,
-          tooltip: `Procedimientos: ${((this.prescripcion.porcentaje_p || 0) * 100).toFixed(1)}%`
+        case 'P': {
+          this.properties = {
+            cantidad: this.prescripcion.items_p,
+            porcentaje: (this.prescripcion.porcentaje_p || 0) * 100,
+            tooltip: `Procedimientos: ${((this.prescripcion.porcentaje_p || 0) * 100).toFixed(1)}%`
+          }
+          break
         }
-        break
-      }
-      case 'D': {
-        this.properties = {
-          cantidad: this.prescripcion.items_d,
-          porcentaje: (this.prescripcion.porcentaje_d || 0) * 100,
-          tooltip: `Dispositivos médicos: ${((this.prescripcion.porcentaje_d || 0) * 100).toFixed(1)}%`
+        case 'D': {
+          this.properties = {
+            cantidad: this.prescripcion.items_d,
+            porcentaje: (this.prescripcion.porcentaje_d || 0) * 100,
+            tooltip: `Dispositivos médicos: ${((this.prescripcion.porcentaje_d || 0) * 100).toFixed(1)}%`
+          }
+          break
         }
-        break
-      }
-      case 'N': {
-        this.properties = {
-          cantidad: this.prescripcion.items_n,
-          porcentaje: (this.prescripcion.porcentaje_n || 0) * 100,
-          tooltip: `Productos nutricionales: ${((this.prescripcion.porcentaje_n || 0) * 100).toFixed(1)}%`
+        case 'N': {
+          this.properties = {
+            cantidad: this.prescripcion.items_n,
+            porcentaje: (this.prescripcion.porcentaje_n || 0) * 100,
+            tooltip: `Productos nutricionales: ${((this.prescripcion.porcentaje_n || 0) * 100).toFixed(1)}%`
+          }
+          break
         }
-        break
-      }
-      case 'S': {
-        this.properties = {
-          cantidad: this.prescripcion.items_s,
-          porcentaje: (this.prescripcion.porcentaje_s || 0) * 100,
-          tooltip: `Servicios complementarios: ${((this.prescripcion.porcentaje_s || 0) * 100).toFixed(1)}%`
+        case 'S': {
+          this.properties = {
+            cantidad: this.prescripcion.items_s,
+            porcentaje: (this.prescripcion.porcentaje_s || 0) * 100,
+            tooltip: `Servicios complementarios: ${((this.prescripcion.porcentaje_s || 0) * 100).toFixed(1)}%`
+          }
+          break
         }
-        break
       }
     }
+  }
   }
 }
 </script>
