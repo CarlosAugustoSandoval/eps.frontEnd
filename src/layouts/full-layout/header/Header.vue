@@ -45,7 +45,8 @@ export default {
   }),
   computed: {
   },
-  mounted() {
+  created() {
+    this.$store.dispatch('getUser')
     this.$store.dispatch('getComplementosMipres')
   },
   methods: {

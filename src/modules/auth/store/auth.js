@@ -9,8 +9,14 @@ const state = {
 
 // getters
 const getters = {
-    user: (state) => {
-        return state.user
+    user: state => {
+        return state.user && state.user.user
+    },
+    permisos: state => {
+        return state.user && state.user.user_permissions
+    },
+    permisoName: state => name => {
+        return state.user && state.user.user_permissions && !!state.user.user_permissions.find(x => x === name)
     }
 }
 
@@ -19,10 +25,10 @@ const actions = {
     async login (context, user) {
         return await new Promise(resolve => {
             Vue.axios.post('auth/login', user)
-                .then(async response => {
+                .then(response => {
                     context.commit('SET_DATA_AUTH', response.data)
                     context.commit('SET_TOKEN_AXIOS')
-                    resolve(await context.dispatch('getUser'))
+                    resolve(true)
                 })
                 .catch(() => {
                     Vue.swal({

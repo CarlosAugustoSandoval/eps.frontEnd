@@ -67,15 +67,34 @@
             <v-divider></v-divider>
             <v-list dense subheader>
               <template v-for="(permisos, indexModulo) in permissions">
-                <v-subheader style="height: 12px !important;" class="body-1 mt-3" :key="`modulo${indexModulo}`">{{indexModulo}}</v-subheader>
-                <v-list-item v-for="(permiso, indexPermiso) in permisos" :key="`modulo${indexModulo}permiso${indexPermiso}`">
-                  <v-list-item-content>
-                    <v-list-item-title>{{ permiso.name }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ permiso.description }}</v-list-item-subtitle>
+                <v-subheader
+                    style="height: 12px !important;"
+                    class="body-1 mt-5 mb-2"
+                    :key="`modulo${indexModulo}`"
+                >
+                  {{indexModulo}}
+                </v-subheader>
+                <v-list-item
+                    :ripple="false"
+                    class="py-1"
+                    @click.stop="!click"
+                    v-for="(permiso, indexPermiso) in permisos"
+                    :key="`modulo${indexModulo}permiso${indexPermiso}`"
+                >
+                  <v-list-item-content class="py-0">
+                    <v-list-item-title>{{ permiso.description }}</v-list-item-title>
+<!--                    <v-list-item-title>{{ permiso.name }}</v-list-item-title>-->
                   </v-list-item-content>
-                  <v-list-item-action>
-                    <v-switch @change="changePermiso(permiso)" :loading="permiso.loading" :readonly="permiso.loading"
-                              v-model="rol.permissions" :value="permiso"></v-switch>
+                  <v-list-item-action class="my-2">
+                    <v-switch
+                        inset
+                        hide-details
+                        @change="changePermiso(permiso)"
+                        :loading="permiso.loading"
+                        :readonly="permiso.loading"
+                        v-model="rol.permissions"
+                        :value="permiso"
+                    />
                   </v-list-item-action>
                 </v-list-item>
               </template>
@@ -109,6 +128,7 @@ export default {
     }
   },
   data: () => ({
+    click: false,
     dialog: false,
     loading: false,
     rol: null,
@@ -178,13 +198,10 @@ export default {
         x.loading = false
       })
       this.rol = response.data.role
-      console.log('sddddsdsd', response.data.permissions)
       this.permissions = response.data.permissions.reduce((value, key) => {
         (value[key['module']] = value[key['module']] || []).push(key)
         return value
       }, {})
-
-      console.log('permissions', this.permissions)
     },
     open(rolId = null) {
       if (rolId) {

@@ -6,15 +6,16 @@ const state = {
 
 // getters
 const getters = {
-    itemsMenu: (state) => {
+    itemsMenu: (state, getters) => {
+        console.log('getters', getters)
         let menuPrincipal = []
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 1))
-        menuPrincipal.push(state.itemsMenu.find(x => x.id === 2))
-        menuPrincipal.push(state.itemsMenu.find(x => x.id === 3))
-        menuPrincipal.push(state.itemsMenu.find(x => x.id === 8))
-        menuPrincipal.push(state.itemsMenu.find(x => x.id === 6))
-        menuPrincipal.push(state.itemsMenu.find(x => x.id === 7))
-        menuPrincipal.push(state.itemsMenu.find(x => x.id === 9))
+        if(getters.permisoName('prescripciones.inicio')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 2))
+        if(getters.permisoName('tutelas.inicio')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 3))
+        if(getters.permisoName('suministros.inicio')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 8))
+        if(getters.permisoName('usuarios.inicio') || getters.permisoName('roles.inicio')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 6))
+        if(getters.permisoName('prestadores.inicio')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 7))
+        if(getters.permisoName('reportes.inicio')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 9))
         return menuPrincipal
     }
 }

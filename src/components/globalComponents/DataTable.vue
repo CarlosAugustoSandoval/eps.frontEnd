@@ -290,12 +290,6 @@ export default {
     'value.search'(val) {
       !val && this.reloadPage()
     },
-    // 'pagination'(val) {
-    //     if (val) {
-    //         this.pagination.current_page = 1
-    //         this.reloadPage()
-    //     }
-    // },
     'sortBy': {
       handler(val, old) {
         if (val !== old) {
@@ -316,7 +310,6 @@ export default {
     }
   },
   created() {
-    // this.sortBy = this.value.makeHeaders.filter(x => x.sortable).map(z => z.value)
     this.$set(this.value, 'items', [])
     this.$set(this.value, 'loading', true)
     this.$set(this.value, 'filters', true)
@@ -360,18 +353,6 @@ export default {
       ])
     }
     this.pagination.per_page = this.value.optionsPerPage[0].value
-    // this.$set(this.value, 'pagination', {
-    //     current_page: 1,
-    //     from: 1,
-    //     last_page: 0,
-    //     per_page: this.value.optionsPerPage[0].value,
-    //     to: 15,
-    //     total: 0,
-    //     next: null,
-    //     prev: null,
-    //     descending: null,
-    //     sortBy: null
-    // })
     if (this.stateItem && localStorage.getItem(this.stateItem + 'Version') === null) {
       this.reloadHeaders(true)
     } else if (this.stateItem && localStorage.getItem(this.stateItem + 'Version') && localStorage.getItem(this.stateItem + 'Version') !== this.version.toString()) {
@@ -380,16 +361,11 @@ export default {
       this.reloadHeaders()
     }
     localStorage.setItem((this.stateItem + 'Version'), this.version)
-    // setTimeout(() => {
-    //     this.reloadCurrentPage()
-    // }, 500)
   },
   methods: {
     formarSort: lodash.debounce(function () {
       this.stringSort = ''
       if (this.sortBy[0] && (typeof this.sortDesc[0] !== 'undefined')) {
-        console.log('sortBy', this.sortBy[0])
-        console.log('sortDesc', this.sortDesc[0])
         this.stringSort = `&sort=${this.sortDesc[0] ? '-' : ''}${this.sortBy[0]}`
       }
       this.reloadPage()

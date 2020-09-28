@@ -190,7 +190,6 @@ export default {
                   color: 'success',
                   message: `El suministro se ha guardado correctamente.`
                 })
-                console.log('el response del guardar el suministro', response)
                 this.$emit('actualizado', response.data)
                 this.cancelar()
                 this.loading = false

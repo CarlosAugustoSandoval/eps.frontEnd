@@ -47,7 +47,6 @@ const actions = {
         let cums2 = await new Promise((resolve2, reject2) => {
             context.dispatch('apiCums', {param: param, resource: 'vgr4-gemg'}).then(result => resolve2(result)).catch(e => reject2(e))
         })
-        console.log('el cums2', cums2)
         let rowsTotal = cums1.concat(cums2).sort((a, b) => a.expediente - b.expediente).sort((a, b) => a.consecutivocum - b.consecutivocum)
         return (param[1] ? rowsTotal.filter(x => x.consecutivocum.search(param[1]) !== -1) : rowsTotal)
     },
@@ -73,16 +72,13 @@ const actions = {
         })
     },
     async getPrescripcionMipres (context, data) {
-        console.log('data', data)
         return await new Promise(resolve => {
             Vue.axios.get(`mipres/prescripciones-mipres/${data.NoPrescripcion}?sync_all=${data.sync ? 1 : 0}`)
                 .then(response => {
-                    console.log('laprescripciones', response.data)
                     resolve(response.data)
                 })
                 .catch(e => {
                     resolve(null)
-                    console.log('eeeee', e.response.data)
                     Vue.swal({
                         icon: 'error',
                         title: `Error al sincronizar la prescripción No. ${data.NoPrescripcion}.`,
@@ -92,7 +88,6 @@ const actions = {
         })
     },
     async getSuministroMipres (context, data) {
-        console.log('data', data)
         return await new Promise(resolve => {
             Vue.axios.get(`mipres/sincronizar-suministro/${data.NoPrescripcion}`)
                 .then(response => {

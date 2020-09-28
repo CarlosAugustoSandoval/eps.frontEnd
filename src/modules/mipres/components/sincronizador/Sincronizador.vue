@@ -127,7 +127,6 @@ export default {
       if(this.prescripcion) {
         this.$store.dispatch(this.item.id === 1 ? 'getPrescripcionMipres' : 'getSuministroMipres', { NoPrescripcion: this.prescripcion, sync: true })
             .then(response => {
-              console.log('sincronizado', response)
               if(response) {
                 this.$emit('sincronizado', response.message)
                 this.$store.commit('SET_SNACKBAR', {

@@ -148,7 +148,6 @@
                             responseType: 'blob'
                         })
                             .then((response) => {
-                                console.log('numero', response)
                                 if (response.status === 204) {
                                     this.$store.commit('SET_SNACKBAR', {color: 'info', message: `El reporte no contiene registros para exportar.`})
                                 } else {

@@ -99,7 +99,6 @@ export default {
           component: {
             functional: true,
             render: function (createElement, context) {
-              // console.log('value', context.props.value)
               let componentes = []
               if (context.props.value.items_m) componentes.push(createElement('ServTecProgress', {
                 class: ['mr-2'],

@@ -213,7 +213,6 @@ export default {
     }
   },
   created() {
-    console.log('NoPrescripcion', this.NoPrescripcion)
     this.getPrescripcion()
   },
   methods: {

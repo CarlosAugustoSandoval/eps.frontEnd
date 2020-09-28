@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import goTo from 'vuetify/es5/services/goto'
-import store from "../store/store";
+import store from '../store/store'
 
 import mipresRoutes from '@/modules/mipres/router'
 import authenticationRoutes from '@/modules/auth/router'
@@ -34,10 +34,11 @@ const router = new Router({
                 {
                     name: 'Home',
                     path: 'home',
-                    redirect: { name: 'Prescripciones' },
+                    // redirect: { name: 'Prescripciones' },
                     component: () => import('@/views/Home'),
                     meta: {
-                        requiresAuth: true,
+                        requiresAuth: false,
+                        withAccess: true,
                         title: {
                             text: 'Home',
                             icon: 'mdi-home',
@@ -63,10 +64,16 @@ const router = new Router({
 // navigation guards before each
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (store.getters.user === null) {
+        if (!store.state.auth.access_token) {
             next({ name: 'Login' })
-        } else {
+        } else if(to.meta.withAccess) {
             next()
+        } else {
+            console.log('to', to)
+            setTimeout(() => {
+                store.commit('SET_SNACKBAR', {color: 'warning', message: `No tiene permisos para entrar en ${to.meta.title.text}.`})
+            }, 200)
+            next({ name: 'Home' })
         }
     } else {
         next()

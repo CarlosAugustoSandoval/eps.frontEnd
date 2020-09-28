@@ -336,7 +336,6 @@ export default {
                   color: 'success',
                   message: `El ${this.direccionamiento.tipo_registro ? '' : 'no '}direccionamiento se ha guardado correctamente.`
                 })
-                console.log('el response del guardadio de l direccionamiento', response)
                 this.$emit('guardado', response.data)
                 this.cancelar()
                 this.loading = false

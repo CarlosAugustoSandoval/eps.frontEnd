@@ -191,7 +191,6 @@ export default {
                   color: 'success',
                   message: `El usuario se ha ${this.usuario.id ? 'editado' : 'guardado'} correctamente.`
                 })
-                console.log('el response del edit', response)
                 if (!this.usuario.id) await this.cleanShow(response)
                 this.$emit('guardado')
                 this.loading = false
@@ -237,6 +236,7 @@ export default {
     async cleanShow(response) {
       response.data.user.roles.forEach(x => {
         delete x.pivot
+        delete x.permissions
         x.loading = false
       })
       response.data.roles.forEach(x => {

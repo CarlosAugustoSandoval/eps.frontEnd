@@ -18,7 +18,6 @@ const actions = {
         return await new Promise(resolve => {
             Vue.axios.get(`afiliados/${data.identificacion}`)
                 .then(response => {
-                    console.log('el afiliado', response.data)
                     resolve(response.data)
                 })
                 .catch(() => {

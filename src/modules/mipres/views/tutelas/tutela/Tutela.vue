@@ -208,7 +208,6 @@ export default {
     tutela: null
   }),
   created() {
-    console.log('NoTutela', this.NoTutela)
     this.getTutela()
   },
   methods: {

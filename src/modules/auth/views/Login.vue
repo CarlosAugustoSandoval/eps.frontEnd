@@ -64,7 +64,6 @@
                     class="mr-4"
                     submit
                     type="submit"
-                    @click="login"
                 >Iniciar Sesión</v-btn>
               </ValidationObserver>
             </v-col>
