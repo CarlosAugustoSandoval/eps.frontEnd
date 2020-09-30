@@ -139,8 +139,8 @@ export default {
                   'CItemList', {
                     props: {
                       item: {
-                        title: `${context.props.value.FecDireccionamiento ? vm.moment(context.props.value.FecDireccionamiento).format('DD/MM/YYYY') : ''} - ${context.props.value.FecMaxEnt ? vm.moment(context.props.value.FecMaxEnt).format('DD/MM/YYYY') : ''}`,
-                        subtitle: `${context.props.value.TipoTec}${context.props.value.CodSerTecAEntregar} | ${context.props.value.CantTotAEntregar}`
+                        title: context.props.value.FecDireccionamiento ? `${context.props.value.FecDireccionamiento ? vm.moment(context.props.value.FecDireccionamiento).format('DD/MM/YYYY') : ''} - ${context.props.value.FecMaxEnt ? vm.moment(context.props.value.FecMaxEnt).format('DD/MM/YYYY') : ''}` : '',
+                        subtitle: context.props.value.FecDireccionamiento ? `${context.props.value.TipoTec}${context.props.value.CodSerTecAEntregar} | ${context.props.value.CantTotAEntregar}` : ''
                       }
                     }
                   })
@@ -305,9 +305,9 @@ export default {
                     props: {
                       item: {
                         title: `${context.props.value.FecFacturacion ? vm.moment(context.props.value.FecFacturacion).format('DD/MM/YYYY') : ''}`,
-                        subtitle: `${context.props.value.TipoTec}${context.props.value.CodSerTecAEntregado} | ${context.props.value.CantTotEntregada}`,
-                        subtitle2: context.props.value.ValorTotFacturado ? `Facturado: $${context.props.value.ValorTotFacturado}` : '',
-                        subtitle3: context.props.value.Copago ? `Copago: $${context.props.value.Copago}` : context.props.value.CuotaModer ? `Cuota Moderadora: $${context.props.value.CuotaModer}` : null
+                        subtitle: context.props.value.FecFacturacion ? `${context.props.value.TipoTec}${context.props.value.CodSerTecAEntregado} | ${context.props.value.CantTotEntregada}` : '',
+                        subtitle2: context.props.value.FecFacturacion ? context.props.value.ValorTotFacturado ? `Facturado: $${context.props.value.ValorTotFacturado}` : '' : '',
+                        subtitle3: context.props.value.FecFacturacion ? context.props.value.Copago ? `Copago: $${context.props.value.Copago}` : context.props.value.CuotaModer ? `Cuota Moderadora: $${context.props.value.CuotaModer}` : null : ''
                       }
                     }
                   })
