@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import store from '../../store/store'
 import Header from './header/Header'
 import Footer from './footer/Footer'
 import Customizer from './customizer/Customizer'
@@ -27,6 +28,9 @@ export default {
   },
   data: () => ({
   }),
+  async beforeCreate() {
+    await store.dispatch('getUser')
+  },
   computed: {
     },
     methods: {

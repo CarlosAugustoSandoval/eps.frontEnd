@@ -49,7 +49,7 @@
                       <v-list-item-subtitle class="grey--text fs-12 fw-normal text-truncate">{{ reporte.descripcion }}
                       </v-list-item-subtitle>
                     </v-list-item-content>
-                    <v-list-item-action v-if="hover && permisos.crear">
+                    <v-list-item-action v-if="hover && permisos.editar">
                       <v-btn icon color="warning" @click.stop="editarReporte(reporte)">
                         <v-icon>mdi-pencil</v-icon>
                       </v-btn>
@@ -94,10 +94,7 @@ export default {
   }),
   computed: {
     permisos() {
-      return {
-        crear: true
-      }
-      // return this.$store.getters.getPermissionModule('reportesCovid')
+      return this.$store.getters.permisosModule('reportes')
     }
   },
   created() {

@@ -1,5 +1,9 @@
-import store from '../../../store/store'
-
+const Prescripciones = () => import('@/modules/mipres/views/prescripciones/Prescripciones')
+const Prescripcion = () => import('@/modules/mipres/views/prescripciones/prescripcion/Prescripcion')
+const Tutelas = () => import('@/modules/mipres/views/tutelas/Tutelas')
+const Tutela = () => import('@/modules/mipres/views/tutelas/tutela/Tutela')
+const Prestadores = () => import('@/modules/mipres/views/prestadores/Prestadores')
+const Suministros = () => import('@/modules/mipres/views/suministros/Suministros')
 export default {
     path: '/',
     redirect: {name: 'Prescripciones'},
@@ -8,10 +12,10 @@ export default {
         {
             name: 'Prescripciones',
             path: 'prescripciones',
-            component: () => import('@/modules/mipres/views/prescripciones/Prescripciones'),
+            component: Prescripciones,
             meta: {
                 requiresAuth: true,
-                withAccess: store.getters.permisoName('prescripciones.inicio'),
+                withAccess: 'prescripciones.inicio',
                 title: {
                     text: 'Prescripciones',
                     icon: 'fas fa-prescription',
@@ -29,10 +33,10 @@ export default {
             name: 'Prescripcion',
             path: 'prescripciones/:NoPrescripcion',
             props: true,
-            component: () => import('@/modules/mipres/views/prescripciones/prescripcion/Prescripcion'),
+            component: Prescripcion,
             meta: {
                 requiresAuth: true,
-                withAccess: store.getters.permisoName('prescripciones.ver'),
+                withAccess: 'prescripciones.ver',
                 title: {
                     text: 'Prescripción',
                     icon: 'fas fa-file-prescription',
@@ -54,10 +58,10 @@ export default {
         {
             name: 'Tutelas',
             path: 'tutelas',
-            component: () => import('@/modules/mipres/views/tutelas/Tutelas'),
+            component: Tutelas,
             meta: {
                 requiresAuth: true,
-                withAccess: store.getters.permisoName('tutelas.inicio'),
+                withAccess: 'tutelas.inicio',
                 title: {
                     text: 'Tutelas',
                     icon: 'mdi-gavel',
@@ -75,10 +79,10 @@ export default {
             name: 'Tutela',
             path: 'tutelas/:NoTutela',
             props: true,
-            component: () => import('@/modules/mipres/views/tutelas/tutela/Tutela'),
+            component: Tutela,
             meta: {
                 requiresAuth: true,
-                withAccess: store.getters.permisoName('tutelas.ver'),
+                withAccess: 'tutelas.ver',
                 title: {
                     text: 'Tutela',
                     icon: 'FileShield',
@@ -101,10 +105,10 @@ export default {
         {
             name: 'Prestadores',
             path: 'prestadores',
-            component: () => import('@/modules/mipres/views/prestadores/Prestadores'),
+            component: Prestadores,
             meta: {
                 requiresAuth: true,
-                withAccess: store.getters.permisoName('prestadores.inicio'),
+                withAccess: 'prestadores.inicio',
                 title: {
                     text: 'Prestadores',
                     icon: 'fas fa-user-tie',
@@ -121,10 +125,10 @@ export default {
         {
             name: 'Suministros',
             path: 'suministros',
-            component: () => import('@/modules/mipres/views/suministros/Suministros'),
+            component: Suministros,
             meta: {
                 requiresAuth: true,
-                withAccess: store.getters.permisoName('suministros.inicio'),
+                withAccess: 'suministros.inicio',
                 title: {
                     text: 'Suministros',
                     icon: 'fas fa-cubes',

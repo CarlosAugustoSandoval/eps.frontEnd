@@ -5,19 +5,22 @@
         <v-icon dark>{{accesorios.icon}}</v-icon>
       </v-avatar>
       <v-toolbar-title>{{ accesorios.title }}</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-          v-if="$vuetify.breakpoint.smAndUp"
-          color="primary"
-          @click="crearRol"
-      >
-        <v-icon left dark>mdi-plus</v-icon>
-        Crear Rol
-      </v-btn>
-      <v-tooltip v-else top>
-        <template v-slot:activator="{ on }">
+      <template v-if="permisos.crear">
+        <v-spacer></v-spacer>
+        <v-btn
+            v-if="$vuetify.breakpoint.smAndUp"
+            color="primary"
+            @click="crearRol"
+        >
+          <v-icon left dark>mdi-plus</v-icon>
+          Crear Rol
+        </v-btn>
+        <c-tooltip
+            v-else
+            top
+            tooltip="Crear Rol"
+        >
           <v-btn
-              v-on="on"
               dark
               fab
               small
@@ -26,9 +29,8 @@
           >
             <v-icon>mdi-plus</v-icon>
           </v-btn>
-        </template>
-        <span>Crear Rol</span>
-      </v-tooltip>
+        </c-tooltip>
+      </template>
     </v-toolbar>
     <v-divider class="my-2"></v-divider>
     <loading :value="loading"/>
@@ -46,39 +48,39 @@
           <td>{{ rol.id }}</td>
           <td>{{ rol.name }}</td>
           <td class="text-center">
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                    v-on="on"
-                    dark
-                    fab
-                    x-small
-                    depressed
-                    color="red"
-                    class="mr-1"
-                    @click="borrarRol(rol)"
-                >
-                  <v-icon>mdi-trash-can</v-icon>
-                </v-btn>
-              </template>
-              <span>Eliminar Rol</span>
-            </v-tooltip>
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                    v-on="on"
-                    dark
-                    fab
-                    x-small
-                    depressed
-                    color="orange"
-                    @click="editarRol(rol.id)"
-                >
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-              </template>
-              <span>Editar Rol</span>
-            </v-tooltip>
+            <c-tooltip
+                top
+                tooltip="Eliminar Rol"
+                v-if="permisos.borrar"
+            >
+              <v-btn
+                  dark
+                  fab
+                  x-small
+                  depressed
+                  color="red"
+                  class="mr-1"
+                  @click="borrarRol(rol)"
+              >
+                <v-icon>mdi-trash-can</v-icon>
+              </v-btn>
+            </c-tooltip>
+            <c-tooltip
+                top
+                tooltip="Editar Rol"
+                v-if="permisos.editar"
+            >
+              <v-btn
+                  dark
+                  fab
+                  x-small
+                  depressed
+                  color="orange"
+                  @click="editarRol(rol.id)"
+              >
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+            </c-tooltip>
           </td>
         </tr>
         </tbody>
@@ -100,10 +102,14 @@ export default {
       default: null
     }
   },
+  computed: {
+    permisos() {
+      return this.$store.getters.permisosModule('roles')
+    }
+  },
   data: () => ({
     loading: false,
-    roles: [],
-    permisos: []
+    roles: []
   }),
   created() {
     this.getRoles()
@@ -137,7 +143,6 @@ export default {
       this.axios.get(`roles`)
           .then(response => {
             this.roles = response.data.roles
-            this.permisos = response.data.permisos
             this.loading = false
           })
           .catch(() => {

@@ -45,13 +45,34 @@
 <script>
 export default {
   name: 'Administrativo',
+  computed: {
+    permisos() {
+      return {
+        usuarios: this.$store.getters.permisosModule('usuarios'),
+        roles: this.$store.getters.permisosModule('roles')
+      }
+    }
+  },
+  watch: {
+    permisos: {
+      handler() {
+        this.createContent()
+      },
+      immediate: true,
+      deep: true
+    }
+  },
   data: () => ({
     currentMenu: 0,
-    items: [
-      { icon: 'mdi-account', color: 'blue', title: 'Usuarios', componente: 'Usuarios', dataComponent: () => import('@/modules/administrativo/components/usuarios/Usuarios') },
-      { icon: 'mdi-account-switch', color: 'cyan', title: 'Roles', componente: 'Roles', dataComponent: () => import('@/modules/administrativo/components/roles/Roles') },
-    ]
-  })
+    items: []
+  }),
+  methods: {
+    createContent() {
+      this.items = []
+      if(this.permisos.usuarios.inicio) this.items.push({ icon: 'mdi-account', color: 'blue', title: 'Usuarios', componente: 'Usuarios', dataComponent: () => import('@/modules/administrativo/components/usuarios/Usuarios') })
+      if(this.permisos.roles.inicio) this.items.push({ icon: 'mdi-account-switch', color: 'cyan', title: 'Roles', componente: 'Roles', dataComponent: () => import('@/modules/administrativo/components/roles/Roles') })
+    }
+  }
 }
 </script>
 

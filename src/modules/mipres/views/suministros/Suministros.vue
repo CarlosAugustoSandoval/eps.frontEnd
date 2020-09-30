@@ -181,7 +181,7 @@ export default {
                     {
                       props: {
                         top: true,
-                        tooltip: 'Registrar Suministro'
+                        tooltip: vm.permisos.suministros.crear ? 'Registrar Suministro' : 'Sin permisos para registrar suministros'
                       }
                     },
                     [
@@ -192,19 +192,19 @@ export default {
                               dark: true,
                               xSmall: true,
                               fab: true,
-                              color: 'green',
+                              color: vm.permisos.suministros.crear ? 'orange' : 'grey',
                               loading: context.props.value.loading
                             },
                             on: {
                               click: () => {
-                                vm.registrarSuministro(context.props.value)
+                                vm.permisos.suministros.crear ? vm.registrarSuministro(context.props.value) : ''
                               }
                             }
                           },
                           [
                             createElement(
                                 'v-icon',
-                                'mdi-clipboard-check'
+                                'mdi-alert'
                             ),
                           ]
                       )
@@ -227,7 +227,7 @@ export default {
                     {
                       props: {
                         top: true,
-                        tooltip: 'Anular Suministro'
+                        tooltip: vm.permisos.suministros.anular ? 'Anular Suministro' : 'Sin permisos para anular suministros'
                       }
                     },
                     [
@@ -238,12 +238,12 @@ export default {
                               dark: true,
                               xSmall: true,
                               fab: true,
-                              color: 'red',
+                              color: vm.permisos.suministros.anular ? 'red' : 'grey',
                               loading: context.props.value.loading
                             },
                             on: {
                               click: () => {
-                                vm.anularSuministro(context.props.value)
+                                vm.permisos.suministros.anular ? vm.anularSuministro(context.props.value) : ''
                               }
                             }
                           },
@@ -283,7 +283,7 @@ export default {
                       item: {
                         title: `${context.props.value.FecFacturacion ? vm.moment(context.props.value.FecFacturacion).format('DD/MM/YYYY') : ''}`,
                         subtitle: `${context.props.value.TipoTec}${context.props.value.CodSerTecAEntregado} | ${context.props.value.CantTotEntregada}`,
-                        subtitle2: `Facturado: $${context.props.value.ValorTotFacturado}`,
+                        subtitle2: context.props.value.ValorTotFacturado ? `Facturado: $${context.props.value.ValorTotFacturado}` : '',
                         subtitle3: context.props.value.Copago ? `Copago: $${context.props.value.Copago}` : context.props.value.CuotaModer ? `Cuota Moderadora: $${context.props.value.CuotaModer}` : null
                       }
                     }
@@ -306,7 +306,7 @@ export default {
                     {
                       props: {
                         top: true,
-                        tooltip: 'Registrar Datos Facturados'
+                        tooltip: vm.permisos.datosfacturacion.crear ? 'Registrar Datos Facturados' : 'Sin permisos para registrar datos de facturación'
                       }
                     },
                     [
@@ -317,19 +317,19 @@ export default {
                               dark: true,
                               xSmall: true,
                               fab: true,
-                              color: 'green',
+                              color: vm.permisos.datosfacturacion.crear ? 'orange' : 'grey',
                               loading: context.props.value.loading
                             },
                             on: {
                               click: () => {
-                                vm.registrarDatosFacturados(context.props.value)
+                                vm.permisos.datosfacturacion.crear ? vm.registrarDatosFacturados(context.props.value) : ''
                               }
                             }
                           },
                           [
                             createElement(
                                 'v-icon',
-                                'mdi-clipboard-check'
+                                'mdi-alert'
                             ),
                           ]
                       )
@@ -351,9 +351,10 @@ export default {
                 arrayComponet.push(createElement(
                     'c-tooltip',
                     {
+                      class: ['ml-1'],
                       props: {
                         top: true,
-                        tooltip: 'Anular Datos Facturados'
+                        tooltip: vm.permisos.datosfacturacion.anular ? 'Anular Datos Facturados' : 'Sin permisos para anular datos de facturación'
                       }
                     },
                     [
@@ -364,12 +365,12 @@ export default {
                               dark: true,
                               xSmall: true,
                               fab: true,
-                              color: 'red',
+                              color: vm.permisos.datosfacturacion.anular ? 'red' : 'grey',
                               loading: context.props.value.loading
                             },
                             on: {
                               click: () => {
-                                vm.anularDatosFacturados(context.props.value)
+                                vm.permisos.datosfacturacion.anular ? vm.anularDatosFacturados(context.props.value) : ''
                               }
                             }
                           },
@@ -405,6 +406,14 @@ export default {
       ]
     }
   }),
+  computed: {
+    permisos() {
+      return {
+        suministros: this.$store.getters.permisosModule('suministros'),
+        datosfacturacion: this.$store.getters.permisosModule('datosfacturacion')
+      }
+    }
+  },
   methods: {
     suministroActualizado(item) {
       console.log('item', item)
@@ -448,29 +457,11 @@ export default {
               message: `Sincronización Completa, Prescripción No ${item.ID}.`
             })
           })
-
-      // this.axios.get(`mipres/sincronizar-suministro/${item.NoPrescripcion || item.NoTutela}`)
-      //     .then(() => {
-      //       this.$refs.tablaSuministros.reloadPage()
-      //       item.loading = false
-      //       this.$store.commit('SET_SNACKBAR', {
-      //         color: 'success',
-      //         message: `Sincronización Completa, Registro ID: ${item.ID}.`
-      //       })
-      //     })
-      //     .catch((e) => {
-      //       this.$swal({
-      //         icon: 'error',
-      //         title: `Error al sincronizar el suministro.`,
-      //         text: `Error ${e.response.data.type}, ${e.response.data.message}`
-      //       })
-      //       item.loading = false
-      //     })
     },
     resetOptions(item) {
       item.options = []
       item.loading = false
-      item.options.push({event: 'sincronizar', icon: 'mdi-reload', tooltip: 'Sincronizar', color: 'blue'})
+      if(this.permisos.suministros.sincronizar) item.options.push({event: 'sincronizar', icon: 'mdi-reload', tooltip: 'Sincronizar', color: 'blue'})
       return item
     }
   }

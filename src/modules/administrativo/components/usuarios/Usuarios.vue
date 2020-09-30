@@ -5,19 +5,22 @@
         <v-icon dark>{{accesorios.icon}}</v-icon>
       </v-avatar>
       <v-toolbar-title>{{ accesorios.title }}</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-          v-if="$vuetify.breakpoint.smAndUp"
-          color="primary"
-          @click="crearUsuario"
-      >
-        <v-icon left dark>mdi-plus</v-icon>
-        Crear Usuario
-      </v-btn>
-      <v-tooltip v-else top>
-        <template v-slot:activator="{ on }">
+      <template v-if="permisos.crear">
+        <v-spacer></v-spacer>
+        <v-btn
+            v-if="$vuetify.breakpoint.smAndUp"
+            color="primary"
+            @click="crearUsuario"
+        >
+          <v-icon left dark>mdi-plus</v-icon>
+          Crear Usuario
+        </v-btn>
+        <c-tooltip
+            v-else
+            top
+            tooltip="Crear Usuario"
+        >
           <v-btn
-              v-on="on"
               dark
               fab
               small
@@ -26,19 +29,23 @@
           >
             <v-icon>mdi-plus</v-icon>
           </v-btn>
-        </template>
-        <span>Crear Usuario</span>
-      </v-tooltip>
+        </c-tooltip>
+      </template>
     </v-toolbar>
-    <v-divider class="my-2"></v-divider>
+    <v-divider class="my-2"/>
     <data-table
         ref="tablaUsuarios"
         v-model="dataTable"
         @resetOption="item => resetOptions(item)"
         @borrarUsuario="item => borrarUsuario(item)"
         @editarUsuario="item => editarUsuario(item.id)"
-    ></data-table>
-    <registro-usuario @guardado="$refs && $refs.tablaUsuarios ? $refs.tablaUsuarios.reloadPage() : ''" ref="registroUsuario" :accesorios="accesorios"></registro-usuario>
+    />
+    <registro-usuario
+        v-if="permisos.crear || permisos.editar"
+        @guardado="$refs && $refs.tablaUsuarios ? $refs.tablaUsuarios.reloadPage() : ''"
+        ref="registroUsuario"
+        :accesorios="accesorios"
+    />
   </div>
 </template>
 
@@ -51,6 +58,11 @@ export default {
     accesorios: {
       type: Object,
       default: null
+    }
+  },
+  computed: {
+    permisos() {
+      return this.$store.getters.permisosModule('usuarios')
     }
   },
   data: () => ({
@@ -113,8 +125,8 @@ export default {
     },
     resetOptions(item) {
       item.options = []
-      item.options.push({event: 'borrarUsuario', icon: 'mdi-trash-can', tooltip: 'Eliminar Usuario', color: 'red', btnClass: 'mr-1'})
-      item.options.push({event: 'editarUsuario', icon: 'mdi-pencil', tooltip: 'Editar Usuario', color: 'orange'})
+      if(this.permisos.borrar) item.options.push({event: 'borrarUsuario', icon: 'mdi-trash-can', tooltip: 'Eliminar Usuario', color: 'red', btnClass: 'mr-1'})
+      if(this.permisos.editar) item.options.push({event: 'editarUsuario', icon: 'mdi-pencil', tooltip: 'Editar Usuario', color: 'orange'})
       return item
     }
   }

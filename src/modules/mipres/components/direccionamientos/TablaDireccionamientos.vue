@@ -44,7 +44,7 @@
                   depressed
                   :color="permisos.anular ? 'error' : 'grey'"
                   class="my-1"
-                  @click="anularDireccionamiento(direccionamiento)"
+                  @click="permisos.anular ? anularDireccionamiento(direccionamiento) : ''"
               >
                 <v-icon>mdi-trash-can</v-icon>
               </v-btn>
@@ -88,11 +88,7 @@ export default {
   },
   computed: {
     permisos() {
-      return {
-        show: true,
-        add: true,
-        anular: true
-      }
+      return this.$store.getters.permisosModule('direccionamientos')
     }
   },
   methods: {

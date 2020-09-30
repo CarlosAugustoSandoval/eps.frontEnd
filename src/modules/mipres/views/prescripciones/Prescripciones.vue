@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import Sincronizador from "@/modules/mipres/components/sincronizador/Sincronizador";
+import Sincronizador from '@/modules/mipres/components/sincronizador/Sincronizador'
 export default {
   name: 'Prescripciones',
   components: {
@@ -166,11 +166,16 @@ export default {
       ]
     }
   }),
+  computed: {
+    permisos() {
+      return this.$store.getters.permisosModule('prescripciones')
+    }
+  },
   methods: {
     resetOptions(item) {
       item.options = []
-      item.options.push({event: 'detallePrescripcion', icon: 'mdi-file-find', tooltip: 'Ver Prescripción', color: 'success', btnClass: 'mr-1'})
-      item.options.push({event: 'sincronizarPrescripcion', icon: 'mdi-reload', tooltip: 'Sincronizar', color: 'blue'})
+      if(this.permisos.ver) item.options.push({event: 'detallePrescripcion', icon: 'mdi-file-find', tooltip: 'Ver Prescripción', color: 'success', btnClass: 'mr-1'})
+      if(this.permisos.sincronizar) item.options.push({event: 'sincronizarPrescripcion', icon: 'mdi-reload', tooltip: 'Sincronizar', color: 'blue'})
       return item
     },
     sincronizarPrescripcion(item) {

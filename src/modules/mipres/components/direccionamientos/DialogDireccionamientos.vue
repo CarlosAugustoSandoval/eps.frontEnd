@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" persistent max-width="1200px" v-if="permisos.show">
+  <v-dialog v-model="dialog" persistent max-width="1200px">
     <template v-slot:activator="{ on }">
       <v-badge
           v-on="on"
@@ -81,7 +81,7 @@
                     <c-tooltip
                         left
                         :tooltip="
-                          permisos.add
+                          permisos.crear
                             ? cantidadDireccionada >= Number(item.cantidadTotal)
                               ? 'Ya está cubierta la cantidad total a direccionar'
                               : 'Registrar direccionamiento'
@@ -91,8 +91,8 @@
                           dark
                           fab
                           small
-                          :color="permisos.add && !(cantidadDireccionada >= Number(item.cantidadTotal)) ? 'blue' : 'grey'"
-                          @click="window = permisos.add && !(cantidadDireccionada >= Number(item.cantidadTotal)) ? 1 : 0"
+                          :color="permisos.crear && !(cantidadDireccionada >= Number(item.cantidadTotal)) ? 'blue' : 'grey'"
+                          @click="window = permisos.crear && !(cantidadDireccionada >= Number(item.cantidadTotal)) ? 1 : 0"
                       >
                         <v-icon>mdi-plus</v-icon>
                       </v-btn>
@@ -180,12 +180,7 @@ export default {
       return this.item.objeto.direccionamientos && this.item.objeto.direccionamientos.length ? window.lodash.sum(this.item.objeto.direccionamientos.filter(z => (z.EstDireccionamiento === 1 || z.EstDireccionamiento === 2 || z.EstDireccionamiento === null) && !z.FecAnulacion).map(x => Number(x.CantTotAEntregar))) : 0
     },
     permisos() {
-      return {
-        show: true,
-        add: true,
-        anular: true
-      }
-      // return this.$store.getters.getPermissionModule('entregas')
+      return this.$store.getters.permisosModule('direccionamientos')
     }
   },
   watch: {

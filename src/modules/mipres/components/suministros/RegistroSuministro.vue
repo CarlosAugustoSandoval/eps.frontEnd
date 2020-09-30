@@ -194,11 +194,11 @@ export default {
                 this.cancelar()
                 this.loading = false
               })
-              .catch(() => {
+              .catch(e => {
                 this.$swal({
                   icon: 'error',
                   title: `Error al guardar el suministro.`,
-                  text: ''
+                  text: e.response.data && e.response.data.type ? `Error ${e.response.data.type}, ${e.response.data.message}` : ''
                 })
                 this.loading = false
               })

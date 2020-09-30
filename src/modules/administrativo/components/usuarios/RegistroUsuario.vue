@@ -181,7 +181,6 @@ export default {
       this.$refs.formUsuario.validate().then(result => {
         if (result) {
           this.loading = true
-          if(!this.usuario.id) this.usuario.password = 'xxszae3422d#'
           let request = this.usuario.id
               ? this.axios.put(`users/${this.usuario.id}`, this.usuario)
               : this.axios.post(`users`, this.usuario)

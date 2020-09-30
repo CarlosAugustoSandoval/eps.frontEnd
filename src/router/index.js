@@ -34,7 +34,6 @@ const router = new Router({
                 {
                     name: 'Home',
                     path: 'home',
-                    // redirect: { name: 'Prescripciones' },
                     component: () => import('@/views/Home'),
                     meta: {
                         requiresAuth: false,
@@ -62,11 +61,11 @@ const router = new Router({
 })
 
 // navigation guards before each
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!store.state.auth.access_token) {
             next({ name: 'Login' })
-        } else if(to.meta.withAccess) {
+        } else if(await store.getters.permisoName(to.meta.withAccess)) {
             next()
         } else {
             console.log('to', to)

@@ -1,6 +1,5 @@
-import store from '../../../store/store'
+const Administrativo = () => import('@/modules/administrativo/views/Administrativo')
 
-console.log('storeeeee', store)
 export default {
     path: '/',
     redirect: {name: 'Administrativo'},
@@ -8,11 +7,11 @@ export default {
     children: [
         {
             name: 'Administrativo',
-            path: 'adnimistrativo',
-            component: () => import('@/modules/administrativo/views/Administrativo'),
+            path: 'administrativo',
+            component: Administrativo,
             meta: {
                 requiresAuth: true,
-                withAccess: store.getters.permisoName('usuarios.inicio') || store.getters.permisoName('roles.inicio'),
+                withAccess: 'administrativo.inicio',
                 title: {
                     text: 'Administrativo',
                     icon: 'fas fa-cog',

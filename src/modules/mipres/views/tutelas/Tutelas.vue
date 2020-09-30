@@ -184,10 +184,15 @@ export default {
       ]
     }
   }),
+  computed: {
+    permisos() {
+      return this.$store.getters.permisosModule('tutelas')
+    }
+  },
   methods: {
     resetOptions(item) {
       item.options = []
-      item.options.push({event: 'detalleTutela', icon: 'mdi-file-find', tooltip: 'Ver Tutela', color: 'success'})
+      if(this.permisos.ver) item.options.push({event: 'detalleTutela', icon: 'mdi-file-find', tooltip: 'Ver Tutela', color: 'success'})
       return item
     }
   }

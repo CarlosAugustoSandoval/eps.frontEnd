@@ -46,7 +46,6 @@ export default {
   computed: {
   },
   created() {
-    this.$store.dispatch('getUser')
     this.$store.dispatch('getComplementosMipres')
   },
   methods: {

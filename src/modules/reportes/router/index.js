@@ -1,5 +1,4 @@
-import store from "../../../store/store";
-
+const Reportes = () => import('@/modules/reportes/views/Reportes')
 export default {
     path: '/',
     redirect: {name: 'Reportes'},
@@ -8,10 +7,10 @@ export default {
         {
             name: 'Reportes',
             path: 'reportes',
-            component: () => import('@/modules/reportes/views/Reportes'),
+            component: Reportes,
             meta: {
                 requiresAuth: true,
-                withAccess: store.getters.permisoName('reportes.inicio'),
+                withAccess: 'reportes.inicio',
                 title: {
                     text: 'Reportes',
                     icon: 'mdi-file-table',
