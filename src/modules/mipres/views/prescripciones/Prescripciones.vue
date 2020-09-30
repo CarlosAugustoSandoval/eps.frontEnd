@@ -15,21 +15,28 @@
               ref="tablaPrescripciones"
               v-model="dataTable"
               @resetOption="item => resetOptions(item)"
-              @detallePrescripcion="item => $router.push({ name: 'Prescripcion', params: {NoPrescripcion: item.NoPrescripcion }})"
+              @detallePrescripcion="item => verPrescripcion(item)"
               @sincronizarPrescripcion="item => sincronizarPrescripcion(item)"
           ></data-table>
         </v-card>
       </v-col>
     </v-row>
+    <dialog-prescripcion
+        v-if="permisos.ver"
+        ref="dialogPrescripcion"
+    />
   </v-container>
 </template>
 
 <script>
+// @detallePrescripcion="item => $router.push({ name: 'Prescripcion', params: {NoPrescripcion: item.NoPrescripcion }})"
 import Sincronizador from '@/modules/mipres/components/sincronizador/Sincronizador'
+import DialogPrescripcion from '@/modules/mipres/components/prescripciones/DialogPrescripcion'
 export default {
   name: 'Prescripciones',
   components: {
-    Sincronizador
+    Sincronizador,
+    DialogPrescripcion
   },
   data: () => ({
     dataTable: {
@@ -177,6 +184,9 @@ export default {
       if(this.permisos.ver) item.options.push({event: 'detallePrescripcion', icon: 'mdi-file-find', tooltip: 'Ver Prescripción', color: 'success', btnClass: 'mr-1'})
       if(this.permisos.sincronizar) item.options.push({event: 'sincronizarPrescripcion', icon: 'mdi-reload', tooltip: 'Sincronizar', color: 'blue'})
       return item
+    },
+    verPrescripcion(item) {
+      this.$refs.dialogPrescripcion.open(item)
     },
     sincronizarPrescripcion(item) {
       item.loading = true

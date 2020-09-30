@@ -24,17 +24,23 @@
         ref="registroSuministro"
         @actualizado="item => suministroActualizado(item)"
     />
+    <dialog-prescripcion
+        ref="dialogPrescripcion"
+    />
   </v-container>
 </template>
 
 <script>
 import RegistroSuministro from '@/modules/mipres/components/suministros/RegistroSuministro'
 import Sincronizador from "@/modules/mipres/components/sincronizador/Sincronizador";
+import DialogPrescripcion from '@/modules/mipres/components/prescripciones/DialogPrescripcion'
+
 export default {
   name: 'Suministros',
   components: {
     RegistroSuministro,
-    Sincronizador
+    Sincronizador,
+    DialogPrescripcion
   },
   data: (vm) => ({
     dataTable: {
@@ -58,7 +64,7 @@ export default {
             functional: true,
             render: function (createElement, context) {
               let arrayComponet = []
-              if(context.props.value.NoPrescripcion || context.props.value.NoTutela) {
+              if (context.props.value.NoPrescripcion || context.props.value.NoTutela) {
                 arrayComponet.push(
                     createElement(
                         'c-tooltip',
@@ -82,9 +88,26 @@ export default {
                     ),
                     createElement(
                         'CItemList', {
+                          scopedSlots: {
+                            title: () => createElement(
+                                ((vm.permisos.prescripciones.ver && context.props.value.NoPrescripcion) || (vm.permisos.tutelas.ver && context.props.value.NoTutela)) ? 'a' : 'div',
+                                {
+                                  class: ['v-list-item__title'],
+                                  on: {
+                                    click: () => {
+                                      (vm.permisos.prescripciones.ver && context.props.value.NoPrescripcion)
+                                          ? vm.verPrescripcion(context.props.value)
+                                          : (vm.permisos.tutelas.ver && context.props.value)
+                                          ? vm.verTutela(context.props.value.NoTutela)
+                                          : ''
+                                    }
+                                  }
+                                },
+                                context.props.value.NoPrescripcion || context.props.value.NoTutela
+                            )
+                          },
                           props: {
                             item: {
-                              title: context.props.value.NoPrescripcion || context.props.value.NoTutela,
                               subtitle: context.props.value.FPrescripcion ? vm.moment(context.props.value.FPrescripcion).format('DD/MM/YYYY') : context.props.value.FPrescripcion ? vm.moment(context.props.value.FPrescripcion).format('DD/MM/YYYY') : '',
                               maxWidth: '400px'
                             }
@@ -158,7 +181,7 @@ export default {
                     props: {
                       item: {
                         title: `${context.props.value.FecRepEntrega ? vm.moment(context.props.value.FecRepEntrega).format('DD/MM/YYYY') : ''}`,
-                        subtitle: context.props.value.EstRepEntrega ? `Estado:${context.props.value.EstRepEntrega}` : null,
+                        // subtitle: context.props.value.EstRepEntrega ? `Estado:${context.props.value.EstRepEntrega}` : null,
                         subtitle2: `$${context.props.value.ValorEntregado}`
                       }
                     }
@@ -409,6 +432,8 @@ export default {
   computed: {
     permisos() {
       return {
+        tutelas: this.$store.getters.permisosModule('tutelas'),
+        prescripciones: this.$store.getters.permisosModule('prescripciones'),
         suministros: this.$store.getters.permisosModule('suministros'),
         datosfacturacion: this.$store.getters.permisosModule('datosfacturacion')
       }
@@ -448,7 +473,7 @@ export default {
     },
     sincronizarSuministro(item) {
       item.loading = true
-      this.$store.dispatch('getSuministroMipres', { NoPrescripcion: item.NoPrescripcion || item.NoTutela })
+      this.$store.dispatch('getSuministroMipres', {NoPrescripcion: item.NoPrescripcion || item.NoTutela})
           .then(() => {
             this.$refs.tablaSuministros.reloadPage()
             item.loading = false
@@ -458,10 +483,22 @@ export default {
             })
           })
     },
+    verPrescripcion(item) {
+      console.log('item', item)
+      this.$refs.dialogPrescripcion.open(item)
+    },
+    verTutela(item) {
+      console.log('item', item)
+    },
     resetOptions(item) {
       item.options = []
       item.loading = false
-      if(this.permisos.suministros.sincronizar) item.options.push({event: 'sincronizar', icon: 'mdi-reload', tooltip: 'Sincronizar', color: 'blue'})
+      if (this.permisos.suministros.sincronizar) item.options.push({
+        event: 'sincronizar',
+        icon: 'mdi-reload',
+        tooltip: 'Sincronizar',
+        color: 'blue'
+      })
       return item
     }
   }

@@ -4,10 +4,11 @@
       <v-icon v-text="item.icon" />
     </v-list-item-icon>
     <v-list-item-content class="px-0 py-1">
-      <v-list-item-title v-if="item.title" class="text-truncate" v-text="item.title" />
-      <v-list-item-subtitle v-if="item.subtitle" class="text-truncate" v-text="item.subtitle" />
-      <v-list-item-subtitle v-if="item.subtitle2" class="text-truncate" v-text="item.subtitle2" />
-      <v-list-item-subtitle v-if="item.subtitle3" class="text-truncate" v-text="item.subtitle3" />
+      <slot name="title"></slot>
+      <v-list-item-title v-if="item.title" class="text-truncate" v-html="item.title"></v-list-item-title>
+      <v-list-item-subtitle v-if="item.subtitle" class="text-truncate" v-html="item.subtitle" />
+      <v-list-item-subtitle v-if="item.subtitle2" class="text-truncate" v-html="item.subtitle2" />
+      <v-list-item-subtitle v-if="item.subtitle3" class="text-truncate" v-html="item.subtitle3" />
     </v-list-item-content>
   </v-list-item>
 </template>

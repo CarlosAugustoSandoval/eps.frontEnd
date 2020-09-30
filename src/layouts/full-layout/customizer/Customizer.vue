@@ -28,6 +28,14 @@
 <!--            <v-list-item-title>Perfil</v-list-item-title>-->
 <!--          </v-list-item-content>-->
 <!--        </v-list-item>-->
+        <v-list-item @click="$refs && $refs.dialogChangePassword.open()">
+          <v-list-item-avatar color="warning">
+            <v-icon dark>mdi-key</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title>Cambiar contraseña</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item @click="logout">
           <v-list-item-avatar color="error">
             <v-icon dark>mdi-close</v-icon>
@@ -61,6 +69,7 @@
         </v-item-group>
         <v-switch v-model="dark" class="mt-4"  hide-details primary  label="Modo Oscuro" />
       </div>
+      <change-password ref="dialogChangePassword"></change-password>
     </v-navigation-drawer>
 </template>
 
@@ -69,6 +78,9 @@ import Proxyable from 'vuetify/lib/mixins/proxyable'
 import { mapGetters } from 'vuex'
   export default {
     name: 'Customizer',
+    components: {
+      ChangePassword: () => import('./components/ChangePassword')
+    },
     mixins: [Proxyable],
     data: () => ({
       loading: false,

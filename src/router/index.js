@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import goTo from 'vuetify/es5/services/goto'
 import store from '../store/store'
+const Prescripciones = () => import('@/modules/mipres/views/prescripciones/Prescripciones')
 
 import mipresRoutes from '@/modules/mipres/router'
 import authenticationRoutes from '@/modules/auth/router'
@@ -34,23 +35,42 @@ const router = new Router({
                 {
                     name: 'Home',
                     path: 'home',
-                    component: () => import('@/views/Home'),
+                    component: Prescripciones,
                     meta: {
                         requiresAuth: false,
-                        withAccess: true,
                         title: {
-                            text: 'Home',
-                            icon: 'mdi-home',
-                            color: 'red',
+                            text: 'Prescripciones',
+                            icon: 'fas fa-prescription',
+                            color: 'light-blue',
                             breadcrumbs: [
                                 {
-                                    text: 'Inicio',
+                                    text: 'Prescripciones',
                                     disabled: true
                                 }
                             ]
                         }
                     }
-                },
+                }
+                // {
+                //     name: 'Home',
+                //     path: 'home',
+                //     component: () => import('@/views/Home'),
+                //     meta: {
+                //         requiresAuth: false,
+                //         withAccess: true,
+                //         title: {
+                //             text: 'Home',
+                //             icon: 'mdi-home',
+                //             color: 'red',
+                //             breadcrumbs: [
+                //                 {
+                //                     text: 'Inicio',
+                //                     disabled: true
+                //                 }
+                //             ]
+                //         }
+                //     }
+                // },
             ]
         },
         mipresRoutes,

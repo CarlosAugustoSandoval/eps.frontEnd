@@ -99,6 +99,7 @@
               label="Buscar"
               clearable
               hide-details
+              :autocomplete="false"
               prepend-inner-icon="mdi-magnify"
               @keyup.enter="reloadCurrentPage"
           >
