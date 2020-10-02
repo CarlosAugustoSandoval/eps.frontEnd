@@ -288,18 +288,16 @@ export default {
                     ]
                 ))
               } else {
-                arrayComponet.push(
-                    createElement(
-                        'CItemList', {
-                          class: ['mr-1'],
-                          props: {
-                            item: {
-                              title: vm.moment(context.props.value.FecSuministro).format('DD/MM/YYYY')
-                            }
-                          }
-                        })
-                )
-                arrayComponet.push(createElement(
+                arrayComponet[0] = createElement(
+                    'CItemList', {
+                      class: ['mr-1'],
+                      props: {
+                        item: {
+                          title: vm.moment(context.props.value.FecSuministro).format('DD/MM/YYYY')
+                        }
+                      }
+                    })
+                arrayComponet[1] = createElement(
                     'c-tooltip',
                     {
                       props: {
@@ -332,7 +330,7 @@ export default {
                           ]
                       )
                     ]
-                ))
+                )
               }
               return createElement(
                   'div',

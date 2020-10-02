@@ -127,7 +127,7 @@ export default {
       this.$refs.formPassword.validate().then(result => {
         if (result) {
           this.loading = true
-          this.axios.post('changepassword', {
+          this.axios.put('changepassword', {
             current_password: this.current_password,
             password: this.password,
             password_confirmation: this.password_confirmation
