@@ -8,17 +8,26 @@
               ref="tablaTutelas"
               v-model="dataTable"
               @resetOption="item => resetOptions(item)"
-              @detalleTutela="item => $router.push({ name: 'Tutela', params: {NoTutela: item.NoTutela }})"
+              @detalleTutela="item => verTutela(item)"
           ></data-table>
         </v-card>
       </v-col>
     </v-row>
+    <dialog-tutela
+        v-if="permisos.ver"
+        ref="dialogTutela"
+    />
   </v-container>
 </template>
 
 <script>
+// @detalleTutela="item => $router.push({ name: 'Tutela', params: {NoTutela: item.NoTutela }})"
+import DialogTutela from '@/modules/mipres/components/tutelas/DialogTutela'
 export default {
   name: 'Tutelas',
+  components: {
+    DialogTutela
+  },
   data: (vm) => ({
     dataTable: {
       buttonZone: false,
@@ -190,6 +199,9 @@ export default {
     }
   },
   methods: {
+    verTutela(item) {
+      this.$refs.dialogTutela.open(item)
+    },
     resetOptions(item) {
       item.options = []
       if(this.permisos.ver) item.options.push({event: 'detalleTutela', icon: 'mdi-file-find', tooltip: 'Ver Tutela', color: 'success'})

@@ -1,13 +1,13 @@
 <template>
   <v-app id="inspire">
-    <Header></Header>
+    <Header/>
     <v-main>
       <v-container fluid class="page-wrapper">
-        <router-view />
+        <router-view/>
       </v-container>
     </v-main>
-    <Customizer></Customizer>
-    <Footer></Footer>
+    <Customizer/>
+    <Footer/>
   </v-app>
 </template>
 

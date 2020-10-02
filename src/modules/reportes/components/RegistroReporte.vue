@@ -78,7 +78,6 @@
                       <th style="height: 30px !important;">Referencia</th>
                       <th style="height: 30px !important;">Label Control</th>
                       <th style="height: 30px !important;">Tipo Control</th>
-                      <th style="height: 15px !important;">Parametros</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -108,20 +107,6 @@
                             :items="tiposControl"
                             item-text="nombre"
                             item-value="id"
-                        >
-                        </c-select-complete>
-                      </td>
-                      <td style="height: 15px !important;">
-                        <c-select-complete
-                            v-if="variable.type === 'text'"
-                            v-model="variable.parameter"
-                            placeholder="Parametro"
-                            name="parametro"
-                            :vid="`tipo${indexVariable}`"
-                            :outlined="false"
-                            :items="parametros"
-                            item-text="label"
-                            item-value="value"
                         >
                         </c-select-complete>
                       </td>
@@ -207,11 +192,6 @@ export default {
       {id: 'number', nombre: 'Número'},
       {id: 'date', nombre: 'Fecha'}
     ],
-    parametros: [
-      {label: 'Ninguno', value: null, item_text: null, item_value: null},
-      {label: 'Departamentos', value: 'departamentos', item_text: 'nombre', item_value: 'id'},
-      {label: 'Municipios', value: 'municipios', item_text: 'nombre', item_value: 'id'}
-    ],
     loading: false,
     dialog: false,
     item: null,
@@ -251,9 +231,13 @@ export default {
             this.$store.commit('SET_SNACKBAR', {color: 'success', message: `La sentencia SQL se ha probado correctamente.`})
             this.loading = false
           })
-          .catch(error => {
+          .catch(e => {
             this.loading = false
-            this.$store.commit('SET_SNACKBAR', {color: 'error', message: `al probar la sentencia SQL.`, error: error})
+            this.$swal({
+              icon: 'error',
+              title: `Error al probar la sentencia SQL.`,
+              text: e.response.data.message
+            })
           })
     },
     reloadVariables() {
@@ -292,10 +276,6 @@ export default {
         if (result) {
           this.loading = true
           let copy = this.clone(this.item)
-          copy.variables.forEach((element) => {
-            element.item_text = this.parametros.find(x => x.value === element.parameter).item_text
-            element.item_value = this.parametros.find(x => x.value === element.parameter).item_value
-          })
           copy.columns = copy.columns && copy.columns.length ? copy.columns.map(x => x.text).join(',') : null
           let request = copy.id ? this.axios.put(`reportes/${copy.id}`, copy) : this.axios.post(`reportes`, copy)
           request
@@ -304,9 +284,13 @@ export default {
                 this.$store.commit('SET_SNACKBAR', {color: 'success', message: `El reporte se guardo correctamente.`})
                 this.close()
               })
-              .catch(error => {
+              .catch(e => {
                 this.loading = false
-                this.$store.commit('SET_SNACKBAR', {color: 'error', message: `al guardar el reporte.`, error: error})
+                this.$swal({
+                  icon: 'error',
+                  title: `Error al guardar el reporte.`,
+                  text: e.response.data.message
+                })
               })
         }
       })
@@ -338,9 +322,12 @@ export default {
             this.item = response.data
             this.loading = false
           })
-          .catch(error => {
+          .catch(() => {
             this.loading = false
-            this.$store.commit('SET_SNACKBAR', {color: 'error', message: `al recuperar el reporte.`, error: error})
+            this.$swal({
+              icon: 'error',
+              title: `Error al recuperar el reporte para edición.`
+            })
           })
     },
     getRoles() {
@@ -348,11 +335,10 @@ export default {
           .then(response => {
             this.roles = response.data.roles
           })
-          .catch(error => {
+          .catch(() => {
             this.$store.commit('SET_SNACKBAR', {
               color: 'error',
-              message: `al solicitar los roles disponibles.`,
-              error: error
+              message: `Error al solicitar los roles disponibles.`
             })
           })
     }

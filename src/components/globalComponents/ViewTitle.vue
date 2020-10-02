@@ -39,7 +39,7 @@
   </v-row>
 </template>
 <script>
-import FileShield from '../icons/FileShield'
+import FileShield from '@/components/icons/FileShield'
 export default {
   name: 'ViewTitle',
   components: {FileShield},

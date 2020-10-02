@@ -27,17 +27,25 @@
     <dialog-prescripcion
         ref="dialogPrescripcion"
     />
+    <dialog-tutela
+        ref="dialogTutela"
+    />
+    <dialog-producto
+        ref="dialogProducto"
+    />
   </v-container>
 </template>
 
 <script>
 import RegistroSuministro from '@/modules/mipres/components/suministros/RegistroSuministro'
-import Sincronizador from "@/modules/mipres/components/sincronizador/Sincronizador";
+import Sincronizador from '@/modules/mipres/components/sincronizador/Sincronizador'
 import DialogPrescripcion from '@/modules/mipres/components/prescripciones/DialogPrescripcion'
+import DialogTutela from '@/modules/mipres/components/tutelas/DialogTutela'
 
 export default {
   name: 'Suministros',
   components: {
+    DialogTutela,
     RegistroSuministro,
     Sincronizador,
     DialogPrescripcion
@@ -98,7 +106,7 @@ export default {
                                       (vm.permisos.prescripciones.ver && context.props.value.NoPrescripcion)
                                           ? vm.verPrescripcion(context.props.value)
                                           : (vm.permisos.tutelas.ver && context.props.value)
-                                          ? vm.verTutela(context.props.value.NoTutela)
+                                          ? vm.verTutela(context.props.value)
                                           : ''
                                     }
                                   }
@@ -139,9 +147,32 @@ export default {
                   'CItemList', {
                     props: {
                       item: {
-                        title: context.props.value.FecDireccionamiento ? `${context.props.value.FecDireccionamiento ? vm.moment(context.props.value.FecDireccionamiento).format('DD/MM/YYYY') : ''} - ${context.props.value.FecMaxEnt ? vm.moment(context.props.value.FecMaxEnt).format('DD/MM/YYYY') : ''}` : '',
-                        subtitle: context.props.value.FecDireccionamiento ? `${context.props.value.TipoTec}${context.props.value.CodSerTecAEntregar} | ${context.props.value.CantTotAEntregar}` : ''
+                        title: context.props.value.FecDireccionamiento ? `${context.props.value.FecDireccionamiento ? vm.moment(context.props.value.FecDireccionamiento).format('DD/MM/YYYY') : ''} - ${context.props.value.FecMaxEnt ? vm.moment(context.props.value.FecMaxEnt).format('DD/MM/YYYY') : ''}` : ''
                       }
+                    },
+                    scopedSlots: {
+                      subtitle: () => context.props.value.FecDireccionamiento
+                          ? createElement(
+                              'div',
+                              {
+                                class: ['v-list-item__subtitle text-truncate']
+                              },
+                              [
+                                createElement(
+                                    'a',
+                                    {
+                                      on: {
+                                        click: () => {
+                                          vm && vm.$refs && vm.$refs.dialogProducto.getDetail(context.props.value.TipoTec, context.props.value.CodSerTecAEntregar)
+                                        }
+                                      }
+                                    },
+                                    `${context.props.value.TipoTec}${context.props.value.CodSerTecAEntregar}`
+                                ),
+                                ` | ${context.props.value.CantTotAEntregar}`
+                              ]
+                          )
+                          : createElement('')
                     }
                   })
             }
@@ -159,10 +190,33 @@ export default {
                   'CItemList', {
                     props: {
                       item: {
-                        title: `${context.props.value.FecEntrega ? vm.moment(context.props.value.FecEntrega).format('DD/MM/YYYY') : ''}`,
-                        subtitle: `${context.props.value.TipoTec}${context.props.value.CodTecEntregado} | ${context.props.value.CantTotEntregada}`,
+                        title: context.props.value.FecEntrega ? vm.moment(context.props.value.FecEntrega).format('DD/MM/YYYY') : '',
                         subtitle2: context.props.value.CausaNoEntrega ? `CNE:${context.props.value.CausaNoEntrega}` : null
                       }
+                    },
+                    scopedSlots: {
+                      subtitle: () => context.props.value.FecEntrega
+                          ? createElement(
+                              'div',
+                              {
+                                class: ['v-list-item__subtitle text-truncate']
+                              },
+                              [
+                                createElement(
+                                    'a',
+                                    {
+                                      on: {
+                                        click: () => {
+                                          vm && vm.$refs && vm.$refs.dialogProducto.getDetail(context.props.value.TipoTec, context.props.value.CodTecEntregado)
+                                        }
+                                      }
+                                    },
+                                    `${context.props.value.TipoTec}${context.props.value.CodSerTecAEntregar}`
+                                ),
+                                ` | ${context.props.value.CantTotEntregada}`
+                              ]
+                          )
+                          : createElement('')
                     }
                   })
             }
@@ -484,11 +538,10 @@ export default {
           })
     },
     verPrescripcion(item) {
-      console.log('item', item)
       this.$refs.dialogPrescripcion.open(item)
     },
     verTutela(item) {
-      console.log('item', item)
+      this.$refs.dialogTutela.open(item)
     },
     resetOptions(item) {
       item.options = []
