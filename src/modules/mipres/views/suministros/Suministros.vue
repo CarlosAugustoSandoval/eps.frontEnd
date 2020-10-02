@@ -211,7 +211,7 @@ export default {
                                         }
                                       }
                                     },
-                                    `${context.props.value.TipoTec}${context.props.value.CodSerTecAEntregar}`
+                                    `${context.props.value.TipoTec}${context.props.value.CodTecEntregado}`
                                 ),
                                 ` | ${context.props.value.CantTotEntregada}`
                               ]
@@ -359,10 +359,33 @@ export default {
                     props: {
                       item: {
                         title: `${context.props.value.FecFacturacion ? vm.moment(context.props.value.FecFacturacion).format('DD/MM/YYYY') : ''}`,
-                        subtitle: context.props.value.FecFacturacion ? `${context.props.value.TipoTec}${context.props.value.CodSerTecAEntregado} | ${context.props.value.CantTotEntregada}` : '',
                         subtitle2: context.props.value.FecFacturacion ? context.props.value.ValorTotFacturado ? `Facturado: $${context.props.value.ValorTotFacturado}` : '' : '',
                         subtitle3: context.props.value.FecFacturacion ? context.props.value.Copago ? `Copago: $${context.props.value.Copago}` : context.props.value.CuotaModer ? `Cuota Moderadora: $${context.props.value.CuotaModer}` : null : ''
                       }
+                    },
+                    scopedSlots: {
+                      subtitle: () => context.props.value.FecFacturacion
+                          ? createElement(
+                              'div',
+                              {
+                                class: ['v-list-item__subtitle text-truncate']
+                              },
+                              [
+                                createElement(
+                                    'a',
+                                    {
+                                      on: {
+                                        click: () => {
+                                          vm && vm.$refs && vm.$refs.dialogProducto.getDetail(context.props.value.TipoTec, context.props.value.CodSerTecAEntregado)
+                                        }
+                                      }
+                                    },
+                                    `${context.props.value.TipoTec}${context.props.value.CodSerTecAEntregado}`
+                                ),
+                                ` | ${context.props.value.CantUnMinDis}`
+                              ]
+                          )
+                          : createElement('')
                     }
                   })
             }
