@@ -17,7 +17,44 @@
               @resetOption="item => resetOptions(item)"
               @detallePrescripcion="item => verPrescripcion(item)"
               @sincronizarPrescripcion="item => sincronizarPrescripcion(item)"
-          ></data-table>
+              @applyFilters="$refs && $refs.filtrosPrescripciones && $refs.filtrosPrescripciones.aplicaFiltros()"
+          >
+            <filtros
+                slot="filters"
+                ref="filtrosPrescripciones"
+                :ruta-base="rutaBase"
+                @filtra="val => dataTable.route = val"
+            ></filtros>
+            <template v-slot:tagsfilters="{tags}">
+              <v-col cols="12" class="py-0">
+                <c-chip-filters
+                    v-for="(tag, keytag) in tags.CodAmbAte"
+                    :key="`tag${keytag}`"
+                    :text="tag.text"
+                    @close="() => {
+                      tags.CodAmbAte.splice(keytag, 1)
+                      $refs && $refs.filtrosPrescripciones && $refs.filtrosPrescripciones.aplicaFiltros()
+                    }"
+                />
+                <c-chip-filters
+                    v-if="tags.direccionado"
+                    :text="tags.direccionado.text"
+                    @close="() => {
+                      tags.direccionado = null
+                      $refs && $refs.filtrosPrescripciones && $refs.filtrosPrescripciones.aplicaFiltros()
+                    }"
+                />
+                <c-chip-filters
+                    v-if="tags.fecha_between && tags.fecha_between.length"
+                    :text="`Desde ${tags.fecha_between[0]} hasta ${tags.fecha_between[1]}`"
+                    @close="() => {
+                      tags.fecha_between = []
+                      $refs && $refs.filtrosPrescripciones && $refs.filtrosPrescripciones.aplicaFiltros()
+                    }"
+                />
+              </v-col>
+            </template>
+          </data-table>
         </v-card>
       </v-col>
     </v-row>
@@ -32,16 +69,20 @@
 // @detallePrescripcion="item => $router.push({ name: 'Prescripcion', params: {NoPrescripcion: item.NoPrescripcion }})"
 import Sincronizador from '@/modules/mipres/components/sincronizador/Sincronizador'
 import DialogPrescripcion from '@/modules/mipres/components/prescripciones/DialogPrescripcion'
+import Filtros from '@/modules/mipres/components/prescripciones/filtros/Filtros'
 export default {
   name: 'Prescripciones',
   components: {
     Sincronizador,
-    DialogPrescripcion
+    DialogPrescripcion,
+    Filtros
   },
-  data: () => ({
+  data: (vm) => ({
+    rutaBase: 'mipres/prescripciones',
     dataTable: {
       buttonZone: false,
       advanceFilters: true,
+      titleFilters: 'Filtros Prescripciones',
       nameItemState: 'tablaPrescripciones',
       route: 'mipres/prescripciones',
       makeHeaders: [
@@ -49,7 +90,21 @@ export default {
           text: 'Prescripción',
           align: 'left',
           sortable: false,
-          value: 'NoPrescripcion'
+          value: 'NoPrescripcion',
+          component: {
+            functional: true,
+            render: function (createElement, context) {
+              return createElement(
+                  'CItemList', {
+                    props: {
+                      item: {
+                        title: context.props.value.NoPrescripcion,
+                        subtitle: context.props.value.FPrescripcion ? vm.moment(context.props.value.FPrescripcion).format('DD/MM/YYYY') : ''
+                      }
+                    }
+                  })
+            }
+          }
         },
         {
           text: 'Amb. Atención',

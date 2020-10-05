@@ -16,7 +16,32 @@
               v-model="dataTable"
               @resetOption="item => resetOptions(item)"
               @sincronizar="item => sincronizarSuministro(item)"
-          ></data-table>
+              @applyFilters="$refs && $refs.filtrosSuministros && $refs.filtrosSuministros.aplicaFiltros()"
+          >
+            <filtros
+                slot="filters"
+                ref="filtrosSuministros"
+                :ruta-base="rutaBase"
+                @filtra="val => dataTable.route = val"
+            ></filtros>
+            <template v-slot:tagsfilters="{tags}">
+              <v-col cols="12" class="py-0">
+                <v-chip
+                    v-for="(tag, keytag) in tags.CodAmbAte"
+                    :key="`tag${keytag}`"
+                    class="ma-1"
+                    close
+                    color="primary darken-2"
+                    label
+                    outlined
+                    v-model="tag.value"
+                    @click:close="tags.CodAmbAte.splice(keytag, 1)"
+                >
+                  {{ tag.text }}
+                </v-chip>
+              </v-col>
+            </template>
+          </data-table>
         </v-card>
       </v-col>
     </v-row>
@@ -41,6 +66,7 @@ import RegistroSuministro from '@/modules/mipres/components/suministros/Registro
 import Sincronizador from '@/modules/mipres/components/sincronizador/Sincronizador'
 import DialogPrescripcion from '@/modules/mipres/components/prescripciones/DialogPrescripcion'
 import DialogTutela from '@/modules/mipres/components/tutelas/DialogTutela'
+import Filtros from '@/modules/mipres/components/suministros/filtros/Filtros'
 
 export default {
   name: 'Suministros',
@@ -48,12 +74,15 @@ export default {
     DialogTutela,
     RegistroSuministro,
     Sincronizador,
-    DialogPrescripcion
+    DialogPrescripcion,
+    Filtros
   },
   data: (vm) => ({
+    rutaBase: 'mipres/suministros',
     dataTable: {
       buttonZone: false,
-      advanceFilters: true,
+      advanceFilters: false,
+      titleFilters: 'Filtros Suministros',
       nameItemState: 'tablaSuministros',
       route: 'mipres/suministros',
       makeHeaders: [

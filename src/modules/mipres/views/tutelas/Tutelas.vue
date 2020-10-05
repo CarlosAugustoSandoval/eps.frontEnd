@@ -124,44 +124,37 @@ export default {
           component: {
             functional: true,
             render: function (createElement, context) {
-              // console.log('value', context.props.value)
               let componentes = []
-              componentes.push(createElement('ServTecProgress', {
+              if (context.props.value.medicamentos.length) componentes.push(createElement('ServTecProgress', {
                 props: {
                   prescripcion: context.props.value,
                   tipo: 'M'
                 }
               }))
-              // if (context.props.value.medicamentos.length) componentes.push(createElement('ServTecProgress', {
-              //   props: {
-              //     prescripcion: context.props.value,
-              //     tipo: 'M'
-              //   }
-              // }))
-              // if (context.props.value.procedimientos.length) componentes.push(createElement('ServTecProgress', {
-              //   props: {
-              //     prescripcion: context.props.value,
-              //     tipo: 'P'
-              //   }
-              // }))
-              // if (context.props.value.complementarios.length) componentes.push(createElement('ServTecProgress', {
-              //   props: {
-              //     prescripcion: context.props.value,
-              //     tipo: 'S'
-              //   }
-              // }))
-              // if (context.props.value.nutricionales.length) componentes.push(createElement('ServTecProgress', {
-              //   props: {
-              //     prescripcion: context.props.value,
-              //     tipo: 'N'
-              //   }
-              // }))
-              // if (context.props.value.dispositivos.length) componentes.push(createElement('ServTecProgress', {
-              //   props: {
-              //     prescripcion: context.props.value,
-              //     tipo: 'D'
-              //   }
-              // }))
+              if (context.props.value.procedimientos.length) componentes.push(createElement('ServTecProgress', {
+                props: {
+                  prescripcion: context.props.value,
+                  tipo: 'P'
+                }
+              }))
+              if (context.props.value.complementarios.length) componentes.push(createElement('ServTecProgress', {
+                props: {
+                  prescripcion: context.props.value,
+                  tipo: 'S'
+                }
+              }))
+              if (context.props.value.nutricionales.length) componentes.push(createElement('ServTecProgress', {
+                props: {
+                  prescripcion: context.props.value,
+                  tipo: 'N'
+                }
+              }))
+              if (context.props.value.dispositivos.length) componentes.push(createElement('ServTecProgress', {
+                props: {
+                  prescripcion: context.props.value,
+                  tipo: 'D'
+                }
+              }))
               return createElement(
                   `div`,
                   componentes

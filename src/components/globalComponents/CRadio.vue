@@ -24,7 +24,7 @@
                         :key="`radio${indexRadio}`"
                         class="ml-2"
                         :class="classitempb"
-                        :value="radio[itemValue]"
+                        :value="itemValue ? radio[itemValue] : radio"
                 >
                     <template v-slot:label>
                         <div>

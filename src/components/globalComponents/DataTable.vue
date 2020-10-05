@@ -4,7 +4,7 @@
         v-if="value.filters || value.advanceFilters"
         fluid
         grid-list-md
-        class="py-1 px-2"
+        class="pa-0"
     >
       <v-card
           v-if="value.buttonZone"
@@ -14,64 +14,38 @@
           <slot name="top-actions-left"></slot>
           <v-spacer></v-spacer>
           <slot name="top-actions-right"></slot>
-          <v-btn v-if="value.advanceFilters" text color="primary"
-                 @click="panelAdvanceFilters = !panelAdvanceFilters">
-            <v-icon>{{ panelAdvanceFilters ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-            Filtros
-          </v-btn>
         </v-card-actions>
-
-        <v-expand-transition v-if="value.advanceFilters">
-          <div v-show="panelAdvanceFilters">
-            <v-divider></v-divider>
-            <v-card flat>
-              <v-container
-                  fluid
-                  grid-list-md
-                  class="py-1 px-3"
-              >
-                <slot name="filters"></slot>
-              </v-container>
-              <v-divider class="ma-0 pa-0"></v-divider>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn small color="primary" @click.stop="$emit('apply-filters')">
-                  Aplicar filtros
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </div>
-        </v-expand-transition>
       </v-card>
-      <v-row align="center" justify="end" v-if="value.filters">
-        <v-col cols="1" sm="2" md="1">
-          <v-row align="center" justify="center">
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <v-btn v-on="on" icon large @click="reloadCurrentPage">
-                  <v-icon color="grey">mdi-cached</v-icon>
-                </v-btn>
-              </template>
-              <span>Recargar Registros</span>
-            </v-tooltip>
-          </v-row>
-        </v-col>
-        <v-col cols="11" sm="5" md="3" lg="2">
-          <v-select
-              label="Columnas visibles"
-              multiple
-              v-model="value.headers"
-              :items="value.makeHeaders.filter(x => !x.selectable)"
-              item-text="text"
-              item-value="id"
-              return-object
-              clearable
-              hide-details
-          >
-            <template
-                slot="selection"
-                slot-scope="{ item, index }"
+      <v-container fluid class="py-0">
+        <v-row align="center" justify="end" v-if="value.filters">
+          <v-col cols="1" sm="2" md="1">
+            <v-row align="center" justify="center">
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <v-btn v-on="on" icon large @click="reloadCurrentPage">
+                    <v-icon color="grey">mdi-cached</v-icon>
+                  </v-btn>
+                </template>
+                <span>Recargar Registros</span>
+              </v-tooltip>
+            </v-row>
+          </v-col>
+          <v-col cols="11" sm="5" md="3" lg="2">
+            <v-select
+                label="Columnas visibles"
+                multiple
+                v-model="value.headers"
+                :items="value.makeHeaders.filter(x => !x.selectable)"
+                item-text="text"
+                item-value="id"
+                return-object
+                clearable
+                hide-details
             >
+              <template
+                  slot="selection"
+                  slot-scope="{ item, index }"
+              >
               <span
                   v-if="index === 0"
                   class="grey--text caption"
@@ -79,34 +53,107 @@
                   {{ `${value.headers.length} de ${value.makeHeaders.length}` }}
                 <!--                  {{`${value.headers.length} ${value.headers.length === 1 ? 'columna ' : 'columnas'} de ${value.makeHeaders.length} disponible${value.makeHeaders.length === 1 ? '' : 's'}`}}-->
               </span>
-            </template>
-          </v-select>
-        </v-col>
-        <v-col cols="12" sm="5" md="3" lg="2">
-          <v-select
-              label="Registros por página"
-              v-model="pagination.per_page"
-              :items="value.optionsPerPage"
-              item-text="text"
-              item-value="value"
-              @change="reloadCurrentPage"
-              hide-details
-          ></v-select>
-        </v-col>
-        <v-col cols="12" sm="12" md="5" lg="6">
-          <v-text-field
-              v-model="value.search"
-              label="Buscar"
-              clearable
-              hide-details
-              :autocomplete="false"
-              prepend-inner-icon="mdi-magnify"
-              @keyup.enter="reloadCurrentPage"
-          >
-          </v-text-field>
-        </v-col>
-      </v-row>
+              </template>
+            </v-select>
+          </v-col>
+          <v-col cols="12" sm="5" md="3" lg="2">
+            <v-select
+                label="Registros por página"
+                v-model="pagination.per_page"
+                :items="value.optionsPerPage"
+                item-text="text"
+                item-value="value"
+                @change="reloadCurrentPage"
+                hide-details
+            ></v-select>
+          </v-col>
+          <v-col cols="12" sm="12" md="5" lg="6">
+            <v-container fluid class="py-0">
+              <v-row justify="center" align="center">
+                <v-text-field
+                    v-model="value.search"
+                    label="Buscar"
+                    clearable
+                    hide-details
+                    :autocomplete="false"
+                    prepend-inner-icon="mdi-magnify"
+                    @keyup.enter="reloadCurrentPage"
+                >
+                </v-text-field>
+                <v-dialog
+                    v-if="value.advanceFilters"
+                    v-model="dialog"
+                    persistent max-width="1020px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        small
+                        class="ml-2"
+                        :class="$vuetify.breakpoint.xsOnly ? 'mt-2' : ''"
+                        color="primary"
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="$emit('openFilters')"
+                    >
+                      <v-icon left>mdi-tune</v-icon>
+                      Filtros
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-toolbar class="elevation-0">
+                      <v-toolbar-title>
+                        <v-avatar color="primary" size="40">
+                          <v-icon dark>mdi-tune</v-icon>
+                        </v-avatar>
+                        {{ value.titleFilters }}
+                      </v-toolbar-title>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                          icon
+                          @click="() => {
+                            dialog = false
+                            $emit('applyFilters')
+                          }"
+                      >
+                        <v-icon>mdi-close</v-icon>
+                      </v-btn>
+                    </v-toolbar>
+                    <v-divider class="my-0"></v-divider>
+                    <v-container fluid>
+                      <slot name="filters"></slot>
+                    </v-container>
+                    <loading :value="loadingFilter"/>
+                    <v-card-actions>
+                      <v-btn
+                          text
+                          color="primary"
+                          @click="() => {
+                            dialog = false
+                            $emit('applyFilters')
+                          }"
+                      >
+                        Cerrar
+                      </v-btn>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                          color="primary"
+                          @click.stop="() => {
+                            dialog = false
+                            $emit('applyFilters')
+                          }"
+                      >
+                        Aplicar Filtros
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-row>
+            </v-container>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-container>
+    <slot name="tagsfilters" v-bind="{tags: tagsfilters }"></slot>
     <v-data-table
         item-key="id"
         :search="value.search"
@@ -225,7 +272,10 @@ export default {
     value: Object
   },
   data: () => ({
-    panelAdvanceFilters: false,
+    tagsfilters: [],
+    dialog: false,
+    loadingFilter: false,
+    // Data de Tabla
     selecteds: [],
     activePetition: false,
     filtrado: false,
@@ -424,6 +474,7 @@ export default {
               this.pagination.total = response.data.total
               this.pagination.next = response.data.next_page_url
               this.pagination.prev = response.data.prev_page_url
+              this.tagsfilters = this.$slots && this.$slots.filters && this.$slots.filters[0] && this.$slots.filters[0].componentInstance ? this.$slots.filters[0].componentInstance.filters.models : []
               this.value.items = Object.freeze(response.data.data)
               this.value.loading = false
               this.activePetition = true

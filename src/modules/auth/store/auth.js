@@ -74,7 +74,6 @@ const actions = {
                         title: 'Error al recuperar el usuario actual.',
                         text: ''
                     })
-                    // context.commit('SET_SNACKBAR', {color: 'error', message: `al recuperar el usuario actual.`, error: error})
                     resolve(false)
                 })
         })

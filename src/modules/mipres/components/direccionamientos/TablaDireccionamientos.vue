@@ -5,12 +5,12 @@
         <thead>
         <tr>
           <th class="text-center"></th>
+          <th>ID</th>
           <th>
             <c-tooltip top tooltip="Número de Entrega">
               <a>Entrega</a>
             </c-tooltip>
           </th>
-          <th>Direccionamiento</th>
           <th>Estado</th>
           <th>Fecha</th>
           <th>Cantidad</th>
@@ -50,8 +50,8 @@
               </v-btn>
             </c-tooltip>
           </td>
+          <td>{{ direccionamiento.ID }}</td>
           <td>{{ direccionamiento.NoEntrega }}</td>
-          <td>{{ direccionamiento.IDDireccionamiento }}</td>
           <td>
             {{
               direccionamiento.FecAnulacion
@@ -66,7 +66,12 @@
           <td>{{ `${direccionamiento.TipoTec}${direccionamiento.CodSerTecAEntregar}` }}</td>
           <td>{{ direccionamiento.FecMaxEnt }}</td>
           <td>{{ direccionamiento.CodMunEnt }}</td>
-          <td>{{ `${direccionamiento.TipoIdProv}${direccionamiento.NoIDProv}` }}</td>
+          <td>
+            <c-item-list
+                v-if="direccionamiento.prestador"
+                :item="{ title:direccionamiento.prestador.nombre, subtitle:`${direccionamiento.prestador.tipo_identificacion}${direccionamiento.prestador.nitsnit}` }"
+            />
+          </td>
         </tr>
         </tbody>
       </template>

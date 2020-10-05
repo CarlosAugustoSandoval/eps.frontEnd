@@ -28,32 +28,56 @@
             >
             </c-radio>
           </v-col>
-          <v-col cols="12">
-            <datos-persona-list
-                v-if="documento"
-                :three-line="direccionamiento.tipo_registro"
-                :two-line="!direccionamiento.tipo_registro"
-                :sexo="direccionamiento.sexo"
-                definicion="Paciente"
-                :title="documento.nombre_completo"
-                :subtitle="documento.identificacion_completa"
-                :subtitle2="[direccionamiento.email ? `<i class='mdi mdi-email'></i> ${direccionamiento.email}` : null, direccionamiento.celular ? `<a href='tel:${direccionamiento.celular}'><i class='mdi mdi-cellphone-iphone'></i>${direccionamiento.celular}</a>` : null].filter(x => x).join(' - ') "
-            >
-              <template v-slot:actiontext>
-                <c-texto
-                    v-if="direccionamiento.tipo_registro"
-                    class="mt-2"
-                    v-model="direccionamiento.DirPaciente"
-                    label="Dirección del Paciente"
-                    rules="required"
-                    name="dirección del paciente"
-                    upper-case
-                />
-              </template>
-            </datos-persona-list>
-          </v-col>
         </v-row>
         <template v-if="direccionamiento.tipo_registro">
+          <v-card class="mb-4">
+            <v-card-text>
+              <h4>
+                <v-icon left>fas fa-user</v-icon>
+                Paciente
+              </h4>
+            </v-card-text>
+            <v-card-text class="py-0">
+              <v-row>
+                <v-col cols="12" class="py-0">
+                  <datos-persona-list
+                      v-if="documento"
+                      two-line
+                      :sexo="direccionamiento.sexo"
+                      :title="documento.nombre_completo"
+                      :subtitle="documento.identificacion_completa"
+                      :subtitle2="[direccionamiento.email ? `<i class='mdi mdi-email'></i> ${direccionamiento.email}` : null, direccionamiento.celular ? `<a href='tel:${direccionamiento.celular}'><i class='mdi mdi-cellphone-iphone'></i>${direccionamiento.celular}</a>` : null].filter(x => x).join(' - ') "
+                  />
+                </v-col>
+                <v-col cols="12" class="pb-0">
+                  <c-texto
+                      v-model="direccionamiento.DirPaciente"
+                      label="Dirección del Paciente"
+                      rules="required"
+                      name="dirección del paciente"
+                      upper-case
+                  />
+                </v-col>
+                <v-col cols="12" sm="6" class="pb-0">
+                  <c-texto
+                      v-model="direccionamiento.email"
+                      label="Correo Electrónico"
+                      rules="email"
+                      name="correo electrónico"
+                      lower-case
+                  />
+                </v-col>
+                <v-col cols="12" sm="6" class="pb-0">
+                  <c-texto
+                      v-model="direccionamiento.celular"
+                      rules="numeric|minlength:10"
+                      name="Celular"
+                      label="Celular"
+                  />
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
           <v-card class="mb-4">
             <v-card-text>
               <h4>
@@ -251,8 +275,8 @@ export default {
       TipoIDPaciente: null,
       NoIDPaciente: null,
       NoEntrega: null,
-      NoSubEntrega: null,
-      TipoIdProv: null,
+      NoSubEntrega: 0,
+      TipoIDProv: null,
       NoIDProv: null,
       CodMunEnt: null,
       CodDepEnt: null,
@@ -340,11 +364,11 @@ export default {
                 this.cancelar()
                 this.loading = false
               })
-              .catch(() => {
+              .catch(e => {
                 this.$swal({
                   icon: 'error',
                   title: `Error al guardar el ${this.direccionamiento.tipo_registro ? '' : 'no '}direccionamiento.`,
-                  text: ''
+                  text: e.response.data && e.response.data.type ? `Error ${e.response.data.type}, ${e.response.data.message}` : ''
                 })
                 this.loading = false
               })
@@ -352,7 +376,7 @@ export default {
       })
     },
     asignaPrestador(prestador) {
-      this.direccionamiento.TipoIdProv = prestador ? prestador.tipo_identificacion : null
+      this.direccionamiento.TipoIDProv = prestador ? prestador.tipo_identificacion : null
       this.direccionamiento.NoIDProv = prestador ? prestador.nitsnit : null
       this.direccionamiento.CodDepEnt = prestador ? prestador.iddepto : null
       this.direccionamiento.CodMunEnt = prestador ? prestador.idmpio : null
