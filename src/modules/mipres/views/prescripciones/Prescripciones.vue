@@ -163,35 +163,35 @@ export default {
             render: function (createElement, context) {
               let componentes = []
               if (context.props.value.items_m) componentes.push(createElement('ServTecProgress', {
-                class: ['mr-2'],
+                class: ['mr-2 mt-2'],
                 props: {
                   prescripcion: context.props.value,
                   tipo: 'M'
                 }
               }))
               if (context.props.value.items_p) componentes.push(createElement('ServTecProgress', {
-                class: ['mr-2'],
+                class: ['mr-2 mt-2'],
                 props: {
                   prescripcion: context.props.value,
                   tipo: 'P'
                 }
               }))
               if (context.props.value.items_s) componentes.push(createElement('ServTecProgress', {
-                class: ['mr-2'],
+                class: ['mr-2 mt-2'],
                 props: {
                   prescripcion: context.props.value,
                   tipo: 'S'
                 }
               }))
               if (context.props.value.items_n) componentes.push(createElement('ServTecProgress', {
-                class: ['mr-2'],
+                class: ['mr-2 mt-2'],
                 props: {
                   prescripcion: context.props.value,
                   tipo: 'N'
                 }
               }))
               if (context.props.value.items_d) componentes.push(createElement('ServTecProgress', {
-                class: ['mr-2'],
+                class: ['mt-2'],
                 props: {
                   prescripcion: context.props.value,
                   tipo: 'D'

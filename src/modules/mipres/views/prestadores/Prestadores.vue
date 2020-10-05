@@ -21,7 +21,7 @@ export default {
   data: () => ({
     dataTable: {
       buttonZone: false,
-      advanceFilters: true,
+      advanceFilters: false,
       nameItemState: 'tablaPrestadores',
       route: 'mipres/reps',
       makeHeaders: [
