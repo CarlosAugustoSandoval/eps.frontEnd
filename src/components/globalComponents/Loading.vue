@@ -3,7 +3,7 @@
       :absolute="absolute"
       :opacity="opacity"
       :value="value"
-      :color="color"
+      :color="darkMode ? 'black' : 'white'"
   >
     <v-progress-circular color="primary" indeterminate size="64"></v-progress-circular>
   </v-overlay>
@@ -24,10 +24,6 @@ export default {
     opacity: {
       type: Number,
       default: 0.7
-    },
-    color: {
-      type: String,
-      default: 'white'
     }
   }
 }

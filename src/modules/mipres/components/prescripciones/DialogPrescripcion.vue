@@ -15,7 +15,7 @@
           </v-list-item>
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <template>
+        <template v-if="botonJuntas">
           <c-tooltip
               :disabled="!$vuetify.breakpoint.smAndDown"
               left
@@ -266,7 +266,7 @@ export default {
         this.prescripcion = prescripcion
         this.loading = false
         this.$store.dispatch('getAfiliadoIdentificacion', { identificacion: this.prescripcion.NroIDPaciente }).then(afiliado => {
-          this.prescripcion.afiliado = afiliado
+          if(this.prescripcion) this.prescripcion.afiliado = afiliado
         })
       })
     },
@@ -277,6 +277,7 @@ export default {
     close() {
       this.dialog = false
       this.loading = false
+      this.prescripcion = null
     }
   }
 }
