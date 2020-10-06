@@ -66,18 +66,11 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
-      <v-container fluid class="py-0">
-        <v-row justify="center" align="center">
-          <v-col cols="12" class="pb-0">
-            <c-texto
-                v-model="prescripcion"
-                label="Número de prescripción"
-                rules="required"
-                name="número de prescripción"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+      <ValidationObserver ref="formSincronizador" tag="form" autocomplete="off">
+        <v-container fluid class="py-0">
+          <component :is="item.dataComponent" v-model="model"></component>
+        </v-container>
+      </ValidationObserver>
       <v-divider></v-divider>
       <v-card-actions>
         <v-btn
@@ -95,7 +88,7 @@
           Ejecutar
         </v-btn>
       </v-card-actions>
-      <loading :value="loading"/>
+      <loading :value="loading" absolute/>
     </v-card>
   </v-dialog>
 </template>
@@ -113,39 +106,66 @@ export default {
   },
   data: () => ({
     loading: null,
-    prescripcion: null,
+    model: null,
     dialog: false,
     item: null,
     items: [
-      { id: 1, title: 'Prescripción por número', subtitle: 'Requiere ingresar número de prescripción' },
-      { id: 2, title: 'Suministro por número de prescripción', subtitle: 'Requiere ingresar número de prescripción' }
+      {
+        id: 1,
+        title: 'Prescripción por número',
+        subtitle: 'Requiere ingresar número de prescripción',
+        model: {NoPrescripcion: null, sync: true},
+        dispatch: 'getPrescripcionMipres',
+        dataComponent: () => import('@/modules/mipres/components/sincronizador/forms/PrescripcionNumero')
+      },
+      {
+        id: 2,
+        title: 'Suministro por número de prescripción',
+        subtitle: 'Requiere ingresar número de prescripción',
+        model: {NoPrescripcion: null},
+        dispatch: 'getSuministroMipres',
+        dataComponent: () => import('@/modules/mipres/components/sincronizador/forms/PrescripcionNumero')
+      },
+      {
+        id: 3,
+        title: 'Tutela por número',
+        subtitle: 'Requiere ingresar número de tutela',
+        model: {NoTutela: null, sync: true},
+        dispatch: 'getTutelasMipres',
+        dataComponent: () => import('@/modules/mipres/components/sincronizador/forms/TutelaNumero')
+      }
     ]
   }),
   methods: {
     sincronizar() {
-      this.loading = true
-      if(this.prescripcion) {
-        this.$store.dispatch(this.item.id === 1 ? 'getPrescripcionMipres' : 'getSuministroMipres', { NoPrescripcion: this.prescripcion, sync: true })
-            .then(response => {
-              if(response) {
-                this.$emit('sincronizado', response.message)
-                this.$store.commit('SET_SNACKBAR', {
-                  color: 'success',
-                  message: `Sincronización Completa${response && response.message ? `, ${response.message}` : '.'}`
-                })
-                this.close()
-              }
-              this.loading = false
-            })
-      }
+      this.$refs.formSincronizador.validate().then(result => {
+        if (result) {
+          this.loading = true
+          this.$store.dispatch(this.item.dispatch, this.model)
+              .then(response => {
+                if(response) {
+                  this.$emit('sincronizado', response.message)
+                  this.$store.commit('SET_SNACKBAR', {
+                    color: 'success',
+                    message: `Sincronización Completa${response && response.message ? `, ${response.message}` : '.'}`
+                  })
+                  this.close()
+                }
+                this.loading = false
+              })
+        }
+      })
     },
     showDialog(item) {
       this.item = item
+      this.model = this.clone(this.item.model)
       this.dialog = true
     },
     close() {
       this.dialog = false
-      this.prescripcion = null
+      this.$refs.formSincronizador.reset()
+      this.item = null
+      this.model = null
     }
   }
 }

@@ -4,6 +4,7 @@ const Tutelas = () => import('@/modules/mipres/views/tutelas/Tutelas')
 const Tutela = () => import('@/modules/mipres/views/tutelas/tutela/Tutela')
 const Prestadores = () => import('@/modules/mipres/views/prestadores/Prestadores')
 const Suministros = () => import('@/modules/mipres/views/suministros/Suministros')
+const ConfiguracionesMipres = () => import('@/modules/mipres/views/configuraciones/Configuraciones')
 export default {
     path: '/',
     redirect: {name: 'Prescripciones'},
@@ -136,6 +137,26 @@ export default {
                     breadcrumbs: [
                         {
                             text: 'Suministros',
+                            disabled: true
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            name: 'ConfiguracionesMipres',
+            path: 'configuraciones-mipres',
+            component: ConfiguracionesMipres,
+            meta: {
+                requiresAuth: true,
+                withAccess: 'configuraciones-mipres.inicio',
+                title: {
+                    text: 'Configuraciones',
+                    icon: 'mdi-cogs',
+                    color: 'red',
+                    breadcrumbs: [
+                        {
+                            text: 'Configuraciones MIPRES',
                             disabled: true
                         }
                     ]

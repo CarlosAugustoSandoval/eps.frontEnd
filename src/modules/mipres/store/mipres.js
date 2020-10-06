@@ -87,6 +87,22 @@ const actions = {
                 })
         })
     },
+    async getTutelasMipres (context, data) {
+        return await new Promise(resolve => {
+            Vue.axios.get(`mipres/tutelas-mipres/${data.NoTutela}?sync_all=${data.sync ? 1 : 0}`)
+                .then(response => {
+                    resolve(response.data)
+                })
+                .catch(e => {
+                    resolve(null)
+                    Vue.swal({
+                        icon: 'error',
+                        title: `Error al sincronizar la tutela No. ${data.NoTutela}.`,
+                        text: e.response.data ? `Error ${e.response.data.type}, ${e.response.data.message}` : ''
+                    })
+                })
+        })
+    },
     async getSuministroMipres (context, data) {
         return await new Promise(resolve => {
             Vue.axios.get(`mipres/sincronizar-suministro/${data.NoPrescripcion}`)

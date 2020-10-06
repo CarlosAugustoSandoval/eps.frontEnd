@@ -43,7 +43,8 @@ export const itemsMenu = [
     {
         id: 6,
         title: 'Administrativo',
-        icon: 'fas fa-cog',
+        icon: 'fas fa-user-cog',
+        iconSize: 20,
         iconbg: 'orange',
         desc: '',
         routeName: 'Administrativo'
@@ -71,5 +72,13 @@ export const itemsMenu = [
         iconbg: 'green',
         desc: '',
         routeName: 'Reportes'
+    },
+    {
+        id: 10,
+        title: 'Configuraciones MIPRES',
+        icon: 'mdi-cogs',
+        iconbg: 'red',
+        desc: '',
+        routeName: 'ConfiguracionesMipres'
     }
 ]

@@ -6,11 +6,9 @@
       </v-btn>
     </template>
     <v-list class="pa-0">
-      <h4 class="px-5 py-3 pt-2 font-weight-medium title">Menu principal</h4>
-      <v-divider></v-divider>
       <v-list-item v-for="(item, i) in itemsMenu" :key="i" :to="{name: item.routeName}">
         <v-list-item-avatar :color="item.iconbg">
-          <v-icon dark>{{ item.icon }}</v-icon>
+          <v-icon dark :size="item.iconSize ? item.iconSize : null">{{ item.icon }}</v-icon>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title class="font-weight-medium">{{ item.title }}</v-list-item-title>

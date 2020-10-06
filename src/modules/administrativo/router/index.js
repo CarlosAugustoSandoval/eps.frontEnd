@@ -14,7 +14,7 @@ export default {
                 withAccess: 'administrativo.inicio',
                 title: {
                     text: 'Administrativo',
-                    icon: 'fas fa-cog',
+                    icon: 'fas fa-user-cog',
                     color: 'orange',
                     breadcrumbs: [
                         {

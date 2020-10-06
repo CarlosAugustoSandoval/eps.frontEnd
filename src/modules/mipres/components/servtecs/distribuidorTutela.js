@@ -9,6 +9,7 @@ export function contentMedicamentoT(item) {
         classSubTitle: [2, 4].find(x => x === item.EstJM) ? 'red--text' : 'green--text',
         cantidadFormulada: (item.CantTotalF !== null ? item.CantTotalF + (item.presentacion ? ' ' + item.presentacion.descripcion : '') : ''),
         table: [
+            {label: 'Descripción', text: item.DscMedPA},
             {label: 'Tipo medicamento', text: item.tipo_medicamento},
             {label: 'Tipificación Medicamento', text: item.tipificacion_medicamento},
             {label: 'Tipo prestación', text: item.tipo_prestador},
@@ -54,6 +55,7 @@ export function contentComplementarioT(item) {
         classSubTitle: [2, 4].find(x => x === item.EstJM) ? 'red--text' : 'green--text',
         cantidadFormulada: (item.CantTotal !== null ? item.CantTotal : ''),
         table: [
+            {label: 'Descripción', text: (item.CodSerComp ? item.CodSerComp : '') + (item.DescSerComp ? ' | ' + item.DescSerComp : '')},
             {label: 'Tipo prestación', text: item.TipoPrestador},
             {label: 'Cantidad formulada', text: (item.CantTotal !== null ? item.CantTotal : '')},
             {
@@ -80,6 +82,7 @@ export function contentNutricionalT(item) {
         classSubTitle: [2, 4].find(x => x === item.EstJM) ? 'red--text' : 'green--text',
         cantidadFormulada: (item.CantTotalF !== null ? item.CantTotalF + (item.forma_cantidad_total ? ' ' + item.forma_cantidad_total.descripcion : '') : ''),
         table: [
+            {label: 'Descripción', text: item.producto ? item.producto.codigo + ' | ' + [item.producto.nombre_comercial, item.producto.descripcion].filter(x => x).join(' - ') + ` ${item.producto.presentacion_comercial}${item.producto.unidades}` : ''},
             {
                 label: 'Tipo producto',
                 text: item.tipo ? item.tipo.descripcion : ''
@@ -123,6 +126,7 @@ export function contentProcedimientoT(item) {
         classSubTitle: [2, 4].find(x => x === item.EstJM) ? 'red--text' : 'green--text',
         cantidadFormulada: (item.CantTotal !== null ? item.CantTotal : ''),
         table: [
+            {label: 'Descripción', text: item.cup ? item.cup.codigo + ' | ' + item.cup.descripcion : ''},
             {label: 'Tipificación Procedimiento', text: item.tipificacion_procedimiento},
             {label: 'Tipo prestación', text: item.tipo_prestacion},
             {label: 'Cantidad formulada', text: item.CantTotal !== null ? item.CantTotal : ''},
@@ -151,6 +155,7 @@ export function contentDispositivoT(item) {
         classSubTitle: [2, 4].find(x => x === item.EstJM) ? 'red--text' : 'green--text',
         cantidadFormulada: (item.CantTotal !== null ? item.CantTotal : ''),
         table: [
+            {label: 'Descripción', text: item.dispositivo ? item.dispositivo.codigo + ' | ' + item.dispositivo.descripcion : ''},
             {label: 'Tipo prestación', text: item.tipo_prestador},
             {label: 'Cantidad formulada', text: item.CantTotal !== null ? item.CantTotal : ''},
             {

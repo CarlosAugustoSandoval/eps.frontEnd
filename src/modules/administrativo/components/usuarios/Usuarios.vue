@@ -112,7 +112,7 @@ export default {
             title: 'Eliminar Usuario',
             subtitle: `¿Está seguro de eliminar el usuario <strong>${usuario.name}</strong>?`,
             route: `users/${usuario.id}`,
-            catchMessage: 'No ha sido posible eliminar el registro del usuario:',
+            catchMessage: 'No ha sido posible eliminar el registro del usuario:'
           }
       )
       if (borrardo.confirm) {

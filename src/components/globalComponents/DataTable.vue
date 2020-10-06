@@ -204,7 +204,7 @@
                   <template v-slot:activator="{ on }">
                     <v-btn
                         v-on="on"
-                        class="ma-0"
+                        class="ma-1"
                         :class="option.btnClass || ''"
                         fab
                         dark

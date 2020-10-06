@@ -1,6 +1,13 @@
 <template>
   <v-container fluid class="down-top-padding">
-    <view-title/>
+    <view-title>
+      <template v-slot:action>
+        <v-spacer></v-spacer>
+        <sincronizador
+            @sincronizado="$refs && $refs.tablaTutelas.reloadPage()"
+        />
+      </template>
+    </view-title>
     <v-row>
       <v-col cols="12">
         <v-card>
@@ -9,6 +16,7 @@
               v-model="dataTable"
               @resetOption="item => resetOptions(item)"
               @detalleTutela="item => verTutela(item)"
+              @sincronizarTutela="item => sincronizarTutela(item)"
           ></data-table>
         </v-card>
       </v-col>
@@ -22,11 +30,13 @@
 
 <script>
 // @detalleTutela="item => $router.push({ name: 'Tutela', params: {NoTutela: item.NoTutela }})"
+import Sincronizador from '@/modules/mipres/components/sincronizador/Sincronizador'
 import DialogTutela from '@/modules/mipres/components/tutelas/DialogTutela'
 export default {
   name: 'Tutelas',
   components: {
-    DialogTutela
+    DialogTutela,
+    Sincronizador
   },
   data: (vm) => ({
     dataTable: {
@@ -203,7 +213,20 @@ export default {
     resetOptions(item) {
       item.options = []
       if(this.permisos.ver) item.options.push({event: 'detalleTutela', icon: 'mdi-file-find', tooltip: 'Ver Tutela', color: 'success'})
+      if(this.permisos.sincronizar) item.options.push({event: 'sincronizarTutela', icon: 'mdi-reload', tooltip: 'Sincronizar', color: 'blue'})
       return item
+    },
+    sincronizarTutela(item) {
+      item.loading = true
+      this.$store.dispatch('getTutelasMipres', { NoTutela: item.NoTutela, sync: true })
+          .then(() => {
+            this.$refs.tablaTutelas.reloadPage()
+            item.loading = false
+            this.$store.commit('SET_SNACKBAR', {
+              color: 'success',
+              message: `Sincronización Completa, Tutela No ${item.NoTutela}.`
+            })
+          })
     }
   }
 }

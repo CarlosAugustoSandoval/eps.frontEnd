@@ -33,8 +33,10 @@ Vue.mixin({
                 buttonColor: object['buttonColor'] || 'red',
                 buttonText: object['buttonText'] || 'Si, Eliminar',
                 timer: object['timer'] || 0,
-                route: object['route'] || null,
                 catchMessage: object['catchMessage'] || '',
+                route: object['route'] || null,
+                method: object['method'] || 'delete',
+                data: object['data'] || null,
             }
             let confirm = await Swal.fire({
                 icon: options.icon,
@@ -55,10 +57,13 @@ Vue.mixin({
                 preConfirm: async () => {
                     if (options.route) {
                         return await new Promise(resolve => {
-                            this.axios.delete(options.route)
-                                .then(response => {
-                                    resolve(response.data)
-                                })
+                            this.axios({
+                                method: options.method,
+                                url: options.route,
+                                data: options.data
+                            }).then(response => {
+                                resolve(response.data)
+                            })
                                 .catch((error) => {
                                     Swal.showValidationMessage(
                                         `${options.catchMessage} ${error}`

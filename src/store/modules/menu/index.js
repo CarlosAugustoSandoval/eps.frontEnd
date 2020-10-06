@@ -16,6 +16,7 @@ const getters = {
         if(getters.permisoName('usuarios.inicio') || getters.permisoName('roles.inicio')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 6))
         if(getters.permisoName('prestadores.inicio')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 7))
         if(getters.permisoName('reportes.inicio')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 9))
+        if(getters.permisoName('configuraciones-mipres.inicio')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 10))
         return menuPrincipal
     }
 }
