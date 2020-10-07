@@ -74,13 +74,9 @@
                     </v-col>
                     <v-col cols="12" xl="6">
                       <v-list-item-subtitle :class="darkMode ? 'text--secondary' : 'primary--text'">Paciente</v-list-item-subtitle>
-                      <v-list-item-title>{{
-                          [prescripcion.PAPaciente, prescripcion.SAPaciente, prescripcion.PNPaciente, prescripcion.SNPaciente].filter(x => x).join(' ')
-                        }}
+                      <v-list-item-title>
+                        {{ prescripcion.TipoIDPaciente }} {{ prescripcion.NroIDPaciente }} - {{ [prescripcion.PAPaciente, prescripcion.SAPaciente, prescripcion.PNPaciente, prescripcion.SNPaciente].filter(x => x).join(' ') }}
                       </v-list-item-title>
-                      <v-list-item-subtitle><strong>{{ prescripcion.TipoIDPaciente }}{{
-                          prescripcion.NroIDPaciente
-                        }}</strong></v-list-item-subtitle>
                       <p class="mb-0"><strong>{{ prescripcion.PacCovid19 === 1 ? 'SI' : 'NO' }}</strong> tiene un caso
                         sospechoso o confirmado de COVID19.</p>
                       <v-list-item-subtitle>Identificación de la Madre: <strong>{{
@@ -89,12 +85,9 @@
                     </v-col>
                     <v-col cols="12" xl="6">
                       <v-list-item-subtitle :class="darkMode ? 'text--secondary' : 'primary--text'">Profesional</v-list-item-subtitle>
-                      <v-list-item-title>{{
-                          [prescripcion.PAProfS, prescripcion.SAProfS, prescripcion.PNProfS, prescripcion.SNProfS].filter(x => x).join(' ')
-                        }}
+                      <v-list-item-title>
+                        {{ prescripcion.TipoIDProf }} {{ prescripcion.NumIDProf }} - {{ [prescripcion.PAProfS, prescripcion.SAProfS, prescripcion.PNProfS, prescripcion.SNProfS].filter(x => x).join(' ') }}
                       </v-list-item-title>
-                      <v-list-item-subtitle><strong>{{ prescripcion.TipoIDProf }}{{ prescripcion.NumIDProf }}</strong>
-                      </v-list-item-subtitle>
                       <v-list-item-subtitle>Registro Profesional: <strong>{{ prescripcion.RegProfS }}</strong>
                       </v-list-item-subtitle>
                     </v-col>

@@ -17,6 +17,7 @@
           outlined
           :error-messages="errors"
           persistent-hint
+          :dense="dense"
           :hint="servicioTecnologiaObjeto ? servicioTecnologiaObjeto.descripcioncomercial : ''"
           @change="cum => servicioTecnologia = cum ? `${cum.expediente}-${cum.consecutivocum}` : null"
       >
@@ -48,6 +49,7 @@
       <c-texto
           v-if="tipoControl === 'IUM'"
           key="tipoControlIUM"
+          :dense="dense"
           v-model="servicioTecnologia"
           label="Medicamento Código IUM"
           rules="required"
@@ -55,6 +57,7 @@
       />
       <v-autocomplete
           v-if="tipoControl === 'P'"
+          :dense="dense"
           key="tipoControlP"
           label="Procedimiento"
           v-model="servicioTecnologiaObjeto"
@@ -92,6 +95,7 @@
       </v-autocomplete>
       <v-autocomplete
           v-if="tipoControl === 'S'"
+          :dense="dense"
           key="tipoControlS"
           label="Servicio Complementario"
           v-model="servicioTecnologiaObjeto"
@@ -128,6 +132,7 @@
       </v-autocomplete>
       <v-autocomplete
           v-if="tipoControl === 'D'"
+          :dense="dense"
           key="tipoControlD"
           label="Dispositivo médico"
           v-model="servicioTecnologiaObjeto"
@@ -164,6 +169,7 @@
       </v-autocomplete>
       <v-autocomplete
           v-if="tipoControl === 'N'"
+          :dense="dense"
           key="tipoControlN"
           label="Producto nutricional"
           v-model="servicioTecnologiaObjeto"
@@ -210,6 +216,10 @@ export default {
     documento: {
       type: Object,
       default: null
+    },
+    dense: {
+      type: Boolean,
+      default: true
     },
     tipo: {
       type: String,

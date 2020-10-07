@@ -126,7 +126,7 @@ const actions = {
                 .then(response => {
                     response.data.afiliado = null
                     response.data.nombre_completo = [response.data.PAPaciente, response.data.SAPaciente, response.data.PNPaciente, response.data.SNPaciente].filter(x => x).join(' ')
-                    response.data.identificacion_completa = `${response.data.TipoIDPaciente}${response.data.NroIDPaciente}`
+                    response.data.identificacion_completa = `${response.data.TipoIDPaciente} ${response.data.NroIDPaciente}`
                     resolve(response.data)
                 })
                 .catch(() => {

@@ -45,7 +45,7 @@
       </v-expansion-panel>
     </v-expansion-panels>
     <template v-else>
-      <v-card style="contain: content !important;" class="elevation-3">
+      <v-card style="contain: content !important;" class="elevation-1">
         <template v-if="data">
           <v-toolbar class="elevation-0">
             <v-tooltip top>

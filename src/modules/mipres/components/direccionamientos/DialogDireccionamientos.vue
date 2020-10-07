@@ -48,10 +48,13 @@
       </v-toolbar>
       <v-divider class="my-0"></v-divider>
       <v-container fluid>
-        <v-row>
-          <v-col cols="12">
+        <v-window
+            v-model="window"
+            class="elevation-0"
+        >
+          <v-window-item>
             <card-servtec
-                class="mb-3"
+                class="mb-0"
                 :key-tecnologia="item.TipoTec"
                 :documento="documento"
                 :item="item.objeto"
@@ -60,13 +63,6 @@
                 :boton-direccionamientos="false"
                 expand
             />
-          </v-col>
-        </v-row>
-        <v-window
-            v-model="window"
-            class="elevation-0"
-        >
-          <v-window-item>
             <v-card flat class="elevation-0">
               <loading :value="loadingDocumento" absolute/>
               <v-list dense two-line class="py-0">

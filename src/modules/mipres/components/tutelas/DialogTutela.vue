@@ -59,25 +59,18 @@
                     </v-col>
                     <v-col cols="12" xl="6">
                       <v-list-item-subtitle :class="darkMode ? 'text--secondary' : 'primary--text'">Paciente</v-list-item-subtitle>
-                      <v-list-item-title>{{
-                          [tutela.PAPaciente, tutela.SAPaciente, tutela.PNPaciente, tutela.SNPaciente].filter(x => x).join(' ')
-                        }}
+                      <v-list-item-title>
+                        {{ tutela.TipoIDPaciente }} {{ tutela.NroIDPaciente }} - {{ [tutela.PAPaciente, tutela.SAPaciente, tutela.PNPaciente, tutela.SNPaciente].filter(x => x).join(' ') }}
                       </v-list-item-title>
-                      <v-list-item-subtitle><strong>{{ tutela.TipoIDPaciente }}{{
-                          tutela.NroIDPaciente
-                        }}</strong></v-list-item-subtitle>
                       <v-list-item-subtitle>Identificación de la Madre: <strong>{{
                           tutela.TipoIDMadrePaciente || tutela.NroIDMadrePaciente ? [tutela.TipoIDMadrePaciente, tutela.NroIDMadrePaciente].filter(x => x).join('') : 'No Registra'
                         }}</strong></v-list-item-subtitle>
                     </v-col>
                     <v-col cols="12" xl="6">
                       <v-list-item-subtitle :class="darkMode ? 'text--secondary' : 'primary--text'">Profesional</v-list-item-subtitle>
-                      <v-list-item-title>{{
-                          [tutela.PAProfS, tutela.SAProfS, tutela.PNProfS, tutela.SNProfS].filter(x => x).join(' ')
-                        }}
+                      <v-list-item-title>
+                        {{ tutela.TipoIDProf }} {{ tutela.NumIDProf }} - {{ [tutela.PAProfS, tutela.SAProfS, tutela.PNProfS, tutela.SNProfS].filter(x => x).join(' ') }}
                       </v-list-item-title>
-                      <v-list-item-subtitle><strong>{{ tutela.TipoIDProf }}{{ tutela.NumIDProf }}</strong>
-                      </v-list-item-subtitle>
                       <v-list-item-subtitle>Registro Profesional: <strong>{{ tutela.RegProfS }}</strong>
                       </v-list-item-subtitle>
                     </v-col>

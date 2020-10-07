@@ -10,6 +10,7 @@
         placehoder="Buscar por número de identificación, código de habilitación o nombre"
         no-data-text="No hay resultados para mostrar"
         outlined
+        :dense="dense"
         :disabled="disabled"
         :readonly="readonly"
         :clearable="clearable"
@@ -48,6 +49,10 @@ export default {
     value: {
       type: [Number, String, Object, Array],
       default: null
+    },
+    dense: {
+      type: Boolean,
+      default: true
     },
     TipoTec: {
       type: String,
