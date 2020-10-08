@@ -1,5 +1,5 @@
 <template>
-  <div v-if="servicioTecnologia !== ' '">
+  <div v-if='servicioTecnologia !== `""`'>
     <ValidationProvider :name="servicioTecnologiaName" :rules="rules" v-slot="{ errors }">
       <v-autocomplete
           v-if="tipoControl === 'CUM'"
@@ -309,7 +309,7 @@ export default {
           case 3:
             this.tipoControl = 'MAGISTRAL'
             this.servicioTecnologiaName = 'medicamento formula magistral'
-            this.servicioTecnologia = ' '
+            this.servicioTecnologia = '""'
             break
         }
         break
