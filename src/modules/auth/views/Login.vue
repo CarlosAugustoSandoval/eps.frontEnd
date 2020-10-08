@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <loading :value="loading"/>
-    <v-col cols="12" md="6" lg="7" xl="8" class="info d-none d-md-flex align-center justify-center">
+    <v-col cols="12" md="6" lg="7" xl="8" class="primary d-none d-md-flex align-center justify-center">
       <v-container>
         <div class="pa-10">
           <v-row justify="center">
@@ -26,11 +26,14 @@
           <v-row justify="center">
             <v-col cols="12" sm="8" md="12" class="py-0">
               <v-row justify="center">
-                <img :height="$vuetify.breakpoint.smAndUp ? 360 : 280" src="@/assets/images/logo-session.png"/>
+                <img v-if="darkMode" :height="$vuetify.breakpoint.smAndUp ? 360 : 280" src="@/assets/images/logo-light-session.png"/>
+                <img v-else :height="$vuetify.breakpoint.smAndUp ? 360 : 280" src="@/assets/images/logo-session.png"/>
               </v-row>
               <v-row justify="center" class="mb-2" no-gutters>
                 <v-col cols="12" class="text-center">
-                  <h2 class="font-weight-bold blue-grey--text text--darken-2">Inicio de Sesión</h2>
+                  <h2 :class="`font-weight-bold blue-grey--text text--${darkMode ? 'lighten-3' : 'darken-2'}`">
+                    Inicio de Sesión
+                  </h2>
                 </v-col>
               </v-row>
               <ValidationObserver class="mb-5" ref="formLogin" v-slot="{ invalid }" tag="form" autocomplete="off" @submit.prevent="login">
@@ -59,7 +62,7 @@
                 </div>
                 <v-btn
                     :disabled="invalid"
-                    color="info"
+                    color="primary"
                     block
                     class="mr-4"
                     submit

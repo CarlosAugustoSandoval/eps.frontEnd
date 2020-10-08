@@ -23,18 +23,9 @@ export default {
     Footer,
     Customizer
   },
-  props: {
-    source: String
-  },
-  data: () => ({
-  }),
   async beforeCreate() {
     await store.dispatch('getUser')
-  },
-  computed: {
-    },
-    methods: {
-    }
+  }
 }
 </script>
 

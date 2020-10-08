@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import App from './App.vue'
 import moment from 'moment'
 import vuetify from './plugins/vuetify'
 import store from './store/store'
@@ -14,6 +13,7 @@ import './plugins/veeValidate'
 import './plugins/mixin'
 import VueSkycons from 'vue-skycons'
 import lodash from 'lodash'
+import App from './App.vue'
 window.lodash = lodash
 
 moment.locale('es')

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="servicioTecnologia !== ' '">
     <ValidationProvider :name="servicioTecnologiaName" :rules="rules" v-slot="{ errors }">
       <v-autocomplete
           v-if="tipoControl === 'CUM'"

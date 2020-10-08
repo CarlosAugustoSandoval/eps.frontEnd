@@ -1,5 +1,6 @@
 export default {
     path: '/auth',
+    redirect: { name: 'Login' },
     component: () => import('@/layouts/blank-layout/Blanklayout'),
     children: [
         {

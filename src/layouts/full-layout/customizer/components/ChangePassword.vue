@@ -100,7 +100,7 @@ export default {
   }),
   computed: {
     ...mapState({
-      user: state => state.auth.user.user
+      user: state => state.auth && state.auth.user && state.auth.user.user
     })
   },
   watch: {
