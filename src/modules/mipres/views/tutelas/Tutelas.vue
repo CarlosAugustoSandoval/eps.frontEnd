@@ -4,6 +4,7 @@
       <template v-slot:action>
         <v-spacer></v-spacer>
         <sincronizador
+            :visibles="[3]"
             @sincronizado="$refs && $refs.tablaTutelas.reloadPage()"
         />
       </template>

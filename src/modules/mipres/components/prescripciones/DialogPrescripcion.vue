@@ -63,8 +63,15 @@
                       <v-list-item-subtitle>Código EPS: <strong>{{ prescripcion.CodEPS }}</strong></v-list-item-subtitle>
                     </v-col>
                     <v-col cols="12" xl="6">
+                      <v-list-item-subtitle :class="darkMode ? 'text--secondary' : 'primary--text'">Ámbito de Atención</v-list-item-subtitle>
+                      <v-list-item-title>{{ prescripcion.AmbitoAtencion }}</v-list-item-title>
+                      <p class="mb-0">
+                        Prestación <strong>{{ prescripcion.RefAmbAte === 1 ? 'SI' : 'NO' }}</strong> se trata de referencia o contrareferencia.
+                      </p>
+                    </v-col>
+                    <v-col cols="12" xl="6">
                       <v-list-item-subtitle :class="darkMode ? 'text--secondary' : 'primary--text'">IPS</v-list-item-subtitle>
-                      <v-list-item-title>{{ prescripcion.TipoIDIPS }}{{ prescripcion.NroIDIPS }}</v-list-item-title>
+                      <v-list-item-title>{{ prescripcion.TipoIDIPS }} {{ prescripcion.NroIDIPS }}{{prescripcion.ips ? ` - ${prescripcion.ips.nombre}` : ''}}</v-list-item-title>
                       <v-list-item-subtitle>Cód. Habilitación: <strong>{{ prescripcion.CodHabIPS }}</strong>
                       </v-list-item-subtitle>
                       <v-list-item-subtitle><strong>{{ prescripcion.DirSedeIPS }}, {{ prescripcion.CodDANEMunIPS }}</strong>
@@ -90,13 +97,6 @@
                       </v-list-item-title>
                       <v-list-item-subtitle>Registro Profesional: <strong>{{ prescripcion.RegProfS }}</strong>
                       </v-list-item-subtitle>
-                    </v-col>
-                    <v-col cols="12" xl="6">
-                      <v-list-item-subtitle :class="darkMode ? 'text--secondary' : 'primary--text'">Ámbito de Atención</v-list-item-subtitle>
-                      <v-list-item-title>{{ prescripcion.AmbitoAtencion }}</v-list-item-title>
-                      <p class="mb-0">
-                        Prestación <strong>{{ prescripcion.RefAmbAte === 1 ? 'SI' : 'NO' }}</strong> se trata de referencia o contrareferencia.
-                      </p>
                     </v-col>
                     <v-col cols="12" xl="6" v-if="prescripcion.EnfHuerfana === 1">
                       <v-list-item-subtitle :class="darkMode ? 'text--secondary' : 'primary--text'">Enfermedad Huerfana</v-list-item-subtitle>

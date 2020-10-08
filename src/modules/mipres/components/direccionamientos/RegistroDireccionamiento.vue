@@ -123,6 +123,7 @@
                         outlined
                         :error-messages="errors"
                         hide-selected
+                        clearable
                         @change="prestador => asignaPrestador(prestador)"
                         persistent-hint
                         :hint="prestadorObjeto ? [prestadorObjeto.telefono ? `Tel.${prestadorObjeto.telefono}`: null, `${prestadorObjeto.direccion} ${prestadorObjeto.nompio}, ${prestadorObjeto.nomdepto}`].filter(x => x).join(' | '): null"
@@ -466,6 +467,7 @@ export default {
       this.direccionamiento.celular = this.documento.afiliado.celular
       this.direccionamiento.DirPaciente = this.documento.afiliado.direccion
     }
+    this.direccionamiento.FecDireccionamiento = this.fechaMinimaDireccionamiento
   },
   methods: {
     guardarDireccionamiento() {

@@ -74,7 +74,6 @@ export default {
       let rutaTemp = this.rutaBase
       this.tags = []
       if (this.filters.models.direccionado.length) {
-        console.log('this.filters.models.direccionado', this.filters.models.direccionado)
         rutaTemp = rutaTemp + (rutaTemp.indexOf('?') > -1 ? '&' : '?') + 'filter[direccionado]=' + this.filters.models.direccionado.map(x => x.value).join(',')
         this.tags = this.tags.concat(this.filters.models.direccionado.map(x => `Direccionamientos:${x.text}`))
       }

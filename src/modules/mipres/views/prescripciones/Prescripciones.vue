@@ -4,6 +4,7 @@
       <template v-slot:action>
         <v-spacer></v-spacer>
         <sincronizador
+            :visibles="[1]"
             @sincronizado="$refs && $refs.tablaPrescripciones.reloadPage()"
         />
       </template>
@@ -133,9 +134,22 @@ export default {
           }
         },
         {
+          text: 'IPS',
+          align: 'left',
+          sortable: false,
+          value: 'nombre_ips',
+          component: {
+            functional: true,
+            render: function (createElement, context) {
+              return createElement('div', context.props.value.nombre_ips)
+            }
+          }
+        },
+        {
           text: 'Profesional',
           align: 'left',
           sortable: false,
+          visibleColumn: false,
           value: 'NoIDProf',
           component: {
             functional: true,

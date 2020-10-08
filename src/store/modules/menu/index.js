@@ -7,7 +7,6 @@ const state = {
 // getters
 const getters = {
     itemsMenu: (state, getters) => {
-        console.log('getters', getters)
         let menuPrincipal = []
         // menuPrincipal.push(state.itemsMenu.find(x => x.id === 1))
         if(getters.permisoName('prescripciones.inicio')) menuPrincipal.push(state.itemsMenu.find(x => x.id === 2))

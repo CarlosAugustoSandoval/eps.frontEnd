@@ -56,12 +56,14 @@
           name="medicamento código IUM"
       />
       <v-autocomplete
+          ref="autocompleteP"
           v-if="tipoControl === 'P'"
           :dense="dense"
           key="tipoControlP"
           label="Procedimiento"
           v-model="servicioTecnologiaObjeto"
           item-value="codigo"
+          item-text="descripcion"
           :items="cups"
           :filter="filterTecnologias"
           placehoder="Buscar por código o descripción"
@@ -69,7 +71,6 @@
           return-object
           outlined
           :error-messages="errors"
-          hide-selected
           clearable
           @change="cup => servicioTecnologia = cup ? cup.codigo : null"
       >
@@ -107,7 +108,6 @@
           return-object
           outlined
           :error-messages="errors"
-          hide-selected
           @change="complementario => servicioTecnologia = complementario ? complementario.codigo : null"
       >
         <template v-slot:selection="data">
@@ -144,7 +144,6 @@
           return-object
           outlined
           :error-messages="errors"
-          hide-selected
           @change="dispositivo => servicioTecnologia = dispositivo ? dispositivo.codigo : null"
       >
         <template v-slot:selection="data">
@@ -181,14 +180,19 @@
           return-object
           outlined
           :error-messages="errors"
-          hide-selected
           @change="nutricional => servicioTecnologia = nutricional ? nutricional.codigo : null"
       >
         <template v-slot:selection="data">
           <v-list-item class="pa-0" style="width: 100% !important;">
             <v-list-item-content class="text-truncate pa-0">
-              <v-list-item-title class="body-2">{{ data.item.codigo }} | {{ data.item.nombre_comercial }}</v-list-item-title>
-              <v-list-item-subtitle class="caption">{{ [data.item.nombre_comercial, data.item.descripcion, data.item.presentacion_comercial, data.item.unidades].filter(x => x).join(' ') }}</v-list-item-subtitle>
+              <v-list-item-title class="body-2">{{ data.item.codigo }} | {{
+                  data.item.nombre_comercial
+                }}
+              </v-list-item-title>
+              <v-list-item-subtitle class="caption">{{
+                  [data.item.nombre_comercial, data.item.descripcion, data.item.presentacion_comercial, data.item.unidades].filter(x => x).join(' ')
+                }}
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </template>
@@ -196,8 +200,14 @@
           <div style="width: 100% !important;">
             <v-list-item class="pa-0">
               <v-list-item-content class="text-truncate pa-0">
-                <v-list-item-title class="body-2">{{ data.item.codigo }} | {{ data.item.nombre_comercial }}</v-list-item-title>
-                <v-list-item-subtitle class="caption">{{ [data.item.descripcion, data.item.presentacion_comercial, data.item.unidades].filter(x => x).join(' ') }}</v-list-item-subtitle>
+                <v-list-item-title class="body-2">{{ data.item.codigo }} | {{
+                    data.item.nombre_comercial
+                  }}
+                </v-list-item-title>
+                <v-list-item-subtitle class="caption">{{
+                    [data.item.descripcion, data.item.presentacion_comercial, data.item.unidades].filter(x => x).join(' ')
+                  }}
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>
@@ -209,7 +219,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
+
 export default {
   name: 'InputSerach',
   props: {
@@ -256,14 +267,14 @@ export default {
     }
   }),
   watch: {
-    'search' : {
-      handler (val) {
+    'search': {
+      handler(val) {
         val && this.buscarCUM(val)
       },
       immediate: false
     },
-    'servicioTecnologia' : {
-      handler (val) {
+    'servicioTecnologia': {
+      handler(val) {
         this.$emit('retornaCodigo', val)
       },
       immediate: false
@@ -278,6 +289,7 @@ export default {
     ])
   },
   created() {
+    let objP = null
     switch (this.item.TipoTec) {
       case 'M' :
         switch (this.item.objeto.TipoMed) {
@@ -287,7 +299,7 @@ export default {
             if (this.item.title) {
               const rTemporal = this.item.title.split('[')
               const rFinal = rTemporal[1] ? rTemporal[1].split(']') : null
-              if(rFinal[0]) this.buscarCUM(rFinal[0])
+              if (rFinal[0]) this.buscarCUM(rFinal[0])
             }
             break
           case 2:
@@ -304,23 +316,31 @@ export default {
       case 'P' :
         this.tipoControl = 'P'
         this.servicioTecnologiaName = 'procedimiento'
+        objP = this.cups && this.cups.length && this.item && this.item.objeto && this.item.objeto.CodCUPS && this.cups.find(x => x.codigo === this.item.objeto.CodCUPS) ? this.cups.find(x => x.codigo === this.item.objeto.CodCUPS) : null
         break
       case 'D' :
         this.tipoControl = 'D'
         this.servicioTecnologiaName = 'dispositivo médico'
+        objP = this.dispositivos && this.dispositivos.length && this.item && this.item.objeto && this.item.objeto.CodDisp && this.dispositivos.find(x => x.codigo === this.item.objeto.CodDisp) ? this.dispositivos.find(x => x.codigo === this.item.objeto.CodDisp) : null
         break
       case 'N' :
         this.tipoControl = 'N'
         this.servicioTecnologiaName = 'producto de soporte nutricional'
+        objP = this.nutricionales && this.nutricionales.length && this.item && this.item.objeto && this.item.objeto.producto && this.item.objeto.producto.codigo && this.nutricionales.find(x => x.codigo === this.item.objeto.producto.codigo) ? this.nutricionales.find(x => x.codigo === this.item.objeto.producto.codigo) : null
         break
       case 'S' :
         this.tipoControl = 'S'
         this.servicioTecnologiaName = 'servicio complementario'
+        objP = this.complementarios && this.complementarios.length && this.item && this.item.objeto && this.item.objeto.CodSerComp && this.complementarios.find(x => x.codigo === this.item.objeto.CodSerComp) ? this.complementarios.find(x => x.codigo === this.item.objeto.CodSerComp) : null
         break
+    }
+    if (objP) {
+      this.servicioTecnologiaObjeto = objP
+      this.servicioTecnologia = objP.codigo
     }
   },
   methods: {
-    buscarCUM: window.lodash.debounce( async function (parametro) {
+    buscarCUM: window.lodash.debounce(async function (parametro) {
       if (parametro) {
         this.loading = true
         await this.$store.dispatch('getCUMs', parametro)

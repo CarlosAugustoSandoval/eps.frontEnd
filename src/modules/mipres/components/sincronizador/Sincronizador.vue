@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="720px">
     <template v-slot:activator="{ on }">
-      <c-tooltip :disabled="!$vuetify.breakpoint.smAndDown" top tooltip="Sincronizar">
+      <c-tooltip :disabled="!$vuetify.breakpoint.smAndDown" top tooltip="Sincronizar" v-if="itemsVisibles && itemsVisibles.length">
         <v-menu
             transition="slide-y-transition"
             bottom
@@ -32,7 +32,7 @@
           </template>
           <v-list>
             <v-list-item
-                v-for="(item, i) in items"
+                v-for="(item, i) in itemsVisibles"
                 :key="`menu${i}`"
                 @click="showDialog(item)"
             >
@@ -97,10 +97,10 @@
 export default {
   name: 'DialogDireccionamientos',
   props: {
-  },
-  components: {
-  },
-  computed: {
+    visibles: {
+      type: Array,
+      default: () => []
+    }
   },
   watch: {
   },
@@ -136,6 +136,26 @@ export default {
       }
     ]
   }),
+  computed: {
+    permisos() {
+      return {
+        tutelas: this.$store.getters.permisosModule('tutelas'),
+        prescripciones: this.$store.getters.permisosModule('prescripciones'),
+        suministros: this.$store.getters.permisosModule('suministros')
+      }
+    },
+    itemsVisibles() {
+      if(this && this.items && this.visibles && this.permisos) {
+        let preVisibles = this.items.filter(x => this.visibles.find(z => z === x.id))
+        let losVisibles = []
+        if(this.permisos.prescripciones.sincronizar && preVisibles.find(x => x.id === 1)) losVisibles.push(preVisibles.find(x => x.id === 1))
+        if(this.permisos.suministros.sincronizar && preVisibles.find(x => x.id === 2)) losVisibles.push(preVisibles.find(x => x.id === 2))
+        if(this.permisos.tutelas.sincronizar && preVisibles.find(x => x.id === 3)) losVisibles.push(preVisibles.find(x => x.id === 3))
+        return losVisibles
+      }
+      return []
+    }
+  },
   methods: {
     sincronizar() {
       this.$refs.formSincronizador.validate().then(result => {

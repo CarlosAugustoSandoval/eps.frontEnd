@@ -88,7 +88,6 @@ router.beforeEach(async (to, from, next) => {
         } else if(await store.getters.permisoName(to.meta.withAccess)) {
             next()
         } else {
-            console.log('to', to)
             setTimeout(() => {
                 store.commit('SET_SNACKBAR', {color: 'warning', message: `No tiene permisos para entrar en ${to.meta.title.text}.`})
             }, 200)
