@@ -6,7 +6,7 @@ Vue.mixin({
         esMovil: false
     }),
     computed: {
-        ...mapGetters(['darkMode', 'user'])
+        ...mapGetters(['darkMode', 'user', 'themeColor', 'themeColors'])
     },
     watch: {
         '$vuetify.breakpoint.name': {

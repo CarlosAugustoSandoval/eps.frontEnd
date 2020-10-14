@@ -49,7 +49,10 @@
       <v-divider></v-divider>
       <div class="px-4 py-4">
         <span>Color del Tema</span>
-        <v-item-group v-model="colorActive">
+        <v-item-group
+            mandatory
+            v-model="colorActive"
+        >
           <v-item
             v-for="tcolor in themeColors"
             :key="tcolor"
@@ -74,21 +77,17 @@
 </template>
 
 <script>
-import Proxyable from 'vuetify/lib/mixins/proxyable'
-import { mapGetters } from 'vuex'
   export default {
     name: 'Customizer',
     components: {
       ChangePassword: () => import('./components/ChangePassword')
     },
-    mixins: [Proxyable],
     data: () => ({
       loading: false,
-      colorActive: '',
+      colorActive: null,
       dark: false,
     }),
     computed: {
-      ...mapGetters(['themeColors', 'themeColor']),
       Customizer_drawer: {
           get () { return this.$store.state.sidebar.Customizer_drawer },
           set (val) { this.$store.commit('SET_CUSTOMIZER_DRAWER', val) }
@@ -106,24 +105,13 @@ import { mapGetters } from 'vuex'
           this.$store.commit('SET_THEME_COLOR', color)
         },
         immediate: false
-      },
-      themeColor: {
-        handler (color) {
-          this.colorActive = color
-          this.$vuetify.theme.themes[this.isDark ? 'dark' : 'light'].primary = color
-          this.$vuetify.theme.themes[this.isLight ? 'light' : 'dark'].primary = color
-        },
-        immediate: true
-      },
-      darkMode: {
-        handler (mode) {
-          this.dark = mode
-          this.$vuetify.theme.dark = mode
-        },
-        immediate: true
       }
     },
-     methods: {
+    created() {
+      this.colorActive = this.themeColor
+      this.dark = this.darkMode
+    },
+    methods: {
        logout () {
          this.loading = true
          this.$store.dispatch('logout')

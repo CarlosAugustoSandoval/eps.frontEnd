@@ -15,11 +15,8 @@
 </template>
 
 <script>
-  import Themeable from 'vuetify/lib/mixins/themeable'
-
   export default {
     name: 'CItemList',
-    mixins: [Themeable],
     props: {
       item: {
         type: Object,

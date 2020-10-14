@@ -37,7 +37,7 @@ const router = new Router({
                     path: 'home',
                     component: Prescripciones,
                     meta: {
-                        requiresAuth: false,
+                        requiresAuth: true,
                         title: {
                             text: 'Prescripciones',
                             icon: 'fas fa-prescription',
@@ -85,7 +85,7 @@ router.beforeEach(async (to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!store.state.auth.access_token) {
             next({ name: 'Login' })
-        } else if(await store.getters.permisoName(to.meta.withAccess)) {
+        } else if(to.name === 'Home' || (await store.getters.permisoName(to.meta.withAccess))) {
             next()
         } else {
             setTimeout(() => {

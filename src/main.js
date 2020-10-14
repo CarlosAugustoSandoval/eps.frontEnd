@@ -35,7 +35,7 @@ axios.interceptors.response.use(undefined, error => {
             title: 'Sesión Expirada',
             text: 'Los datos de la sesión han expirado, inicie sesión nuevamente.'
         })
-        router.push({name: 'Login'})
+        router.replace({name: 'Login'})
     }
     return Promise.reject(error)
 })

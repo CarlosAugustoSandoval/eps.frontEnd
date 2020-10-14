@@ -197,7 +197,7 @@
                       label="Celular del Paciente"
                   />
                 </v-col>
-                <v-col cols="12" class="pb-0" v-if="documento && documento.afiliado && !documento.afiliado.direccion">
+                <v-col cols="12" class="pb-0" v-if="documento && (!documento.afiliado || !documento.afiliado.direccion)">
                   <c-texto
                       v-model="direccionamiento.DirPaciente"
                       label="Dirección del Paciente"
@@ -459,17 +459,29 @@ export default {
       'departamentos'
     ])
   },
+  watch: {
+    'documento': {
+      handler() {
+        this.asignaDatosAfiliado()
+      },
+      immediate: false,
+      deep: true
+    }
+  },
   created() {
     this.direccionamiento = this.clone(this.makeDireccionamiento)
-    if(this.documento.afiliado) {
-      this.direccionamiento.sexo = this.documento.afiliado.gn_sexo_id
-      this.direccionamiento.email = this.documento.afiliado.correo_electronico
-      this.direccionamiento.celular = this.documento.afiliado.celular
-      this.direccionamiento.DirPaciente = this.documento.afiliado.direccion
-    }
+    this.asignaDatosAfiliado()
     this.direccionamiento.FecDireccionamiento = this.fechaMinimaDireccionamiento
   },
   methods: {
+    asignaDatosAfiliado() {
+      if(this.documento && this.documento.afiliado) {
+        this.direccionamiento.sexo = this.documento.afiliado.gn_sexo_id
+        this.direccionamiento.email = this.documento.afiliado.correo_electronico
+        this.direccionamiento.celular = this.documento.afiliado.celular
+        this.direccionamiento.DirPaciente = this.documento.afiliado.direccion
+      }
+    },
     guardarDireccionamiento() {
       this.$refs.formDireccionamiento.validate().then(result => {
         if (result) {

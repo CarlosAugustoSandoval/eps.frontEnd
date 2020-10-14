@@ -7,7 +7,22 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  watch: {
+    'themeColor': {
+      handler (color) {
+        this.$vuetify.theme.themes[this.isDark ? 'dark' : 'light'].primary = color
+        this.$vuetify.theme.themes[this.isLight ? 'light' : 'dark'].primary = color
+      },
+      immediate: true
+    },
+    'darkMode': {
+      handler (mode) {
+        this.$vuetify.theme.dark = mode
+      },
+      immediate: true
+    }
+  }
 }
 </script>
 
