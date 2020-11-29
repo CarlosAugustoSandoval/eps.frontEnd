@@ -21,56 +21,58 @@
     </view-title>
     <v-row>
       <loading :value="loading"/>
-      <v-col cols="12" sm="12" md="5">
+      <v-col cols="12">
         <v-card>
           <v-card-text>
-            <v-text-field
-                v-model="search"
-                placeholder="Buscar"
-                filled
-                solo
-                hide-details
-                prepend-inner-icon="mdi-magnify"
-                @input="buscarReportes"
-                clearable
-            ></v-text-field>
+            <v-row>
+              <v-col cols="12" md="6" offset-md="3">
+                <v-text-field
+                    v-model="search"
+                    placeholder="Buscar"
+                    filled
+                    solo
+                    hide-details
+                    prepend-inner-icon="mdi-magnify"
+                    @input="buscarReportes"
+                    clearable
+                ></v-text-field>
+              </v-col>
+            </v-row>
           </v-card-text>
           <v-card-text v-if="!reportesFiltrados.length" class="text-center body-1 grey--text">
             No hay reportes para mostrar
           </v-card-text>
-          <v-list v-else two-line>
-            <v-list-item-group color="primary">
-              <template v-for="reporte in reportesFiltrados">
-                <v-hover v-slot:default="{ hover }" :key="`reporte${reporte.id}`">
-                  <v-list-item :class="reporte.id === indexSeleccionado ? 'v-item--active v-list-item--active' : ''" @click="seleccionarReporte(reporte)">
-                    <v-list-item-avatar class="my-1 align-self-center">{{ reporte.id }}</v-list-item-avatar>
-                    <v-list-item-content class="pa-0">
-                      <v-list-item-title><h5 class="mb-0 text-truncate">{{ reporte.nombre }}</h5></v-list-item-title>
-                      <v-list-item-subtitle class="grey--text fs-12 fw-normal text-truncate">{{ reporte.descripcion }}
-                      </v-list-item-subtitle>
-                    </v-list-item-content>
-                    <v-list-item-action v-if="hover && permisos.editar">
-                      <v-btn icon color="warning" @click.stop="editarReporte(reporte)">
-                        <v-icon>mdi-pencil</v-icon>
-                      </v-btn>
-                    </v-list-item-action>
-                  </v-list-item>
-                </v-hover>
-              </template>
-            </v-list-item-group>
+          <v-list v-else two-line class="py-0">
+            <template v-for="reporte in reportesFiltrados">
+              <v-hover v-slot:default="{ hover }" :key="`reporte${reporte.id}`">
+                <v-list-item @click="seleccionarReporte(reporte)">
+                  <v-list-item-avatar class="my-1 align-self-center">{{ reporte.id }}</v-list-item-avatar>
+                  <v-list-item-content class="pa-0">
+                    <v-list-item-title><h5 class="mb-0 text-truncate">{{ reporte.nombre }}</h5></v-list-item-title>
+                    <v-list-item-subtitle class="grey--text fs-12 fw-normal text-truncate">{{ reporte.descripcion }}
+                    </v-list-item-subtitle>
+                    <v-list-item-subtitle class="green--text" v-if="reporte.variables && !reporte.variables.length">
+                      <v-icon color="green">mdi-arrow-down-bold-circle-outline</v-icon>
+                      Descarga directa
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                  <v-list-item-action v-if="hover && permisos.editar">
+                    <v-btn icon color="warning" @click.stop="editarReporte(reporte)">
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                  </v-list-item-action>
+                </v-list-item>
+              </v-hover>
+            </template>
           </v-list>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="12" md="7">
-        <generador-reporte v-if="seleccionado && seleccionado.id" :reporte="seleccionado"></generador-reporte>
-        <v-card v-else>
-          <v-card-text class="text-center headline">
-            No hay un reporte seleccionado
-          </v-card-text>
-        </v-card>
-      </v-col>
     </v-row>
-    <registro-reporte ref="registroReporte" @guardado="getReportes"></registro-reporte>
+    <generador-reporte
+        ref="generadorReporte"
+        @loading="val => loading = val"
+    />
+    <registro-reporte ref="registroReporte" @guardado="getReportes"/>
   </v-container>
 </template>
 
@@ -88,9 +90,7 @@ export default {
     search: '',
     loading: false,
     reportesFull: [],
-    reportesFiltrados: [],
-    seleccionado: null,
-    indexSeleccionado: null
+    reportesFiltrados: []
   }),
   computed: {
     permisos() {
@@ -111,14 +111,11 @@ export default {
       this.$refs.registroReporte.open(reporte.id)
     },
     seleccionarReporte(reporte) {
-      this.$nextTick(() => {
-        this.indexSeleccionado = reporte.id
-      })
       let copyReporte = this.clone(reporte)
       copyReporte.variables.map(x => {
         x.value = null
       })
-      this.seleccionado = copyReporte
+      this.$refs.generadorReporte.open(copyReporte)
     },
     getReportes() {
       this.loading = true
@@ -126,8 +123,6 @@ export default {
           .then(response => {
             this.reportesFull = response.data
             this.reportesFiltrados = this.clone(this.reportesFull)
-            this.seleccionado = null
-            this.indexSeleccionado = null
             this.loading = false
           })
           .catch(error => {
