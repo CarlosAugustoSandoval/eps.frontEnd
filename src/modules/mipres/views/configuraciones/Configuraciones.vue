@@ -148,8 +148,8 @@ export default {
       let sincronizado = await this.confirm(
           {
             title: `Sincronizar ${token.title}`,
-            subtitle: `¿Está seguro de sincronizar este registro de configuración.?`,
-            method: 'post',
+            subtitle: `¿Está seguro de sincronizar este registro de configuración?`,
+            method: 'put',
             route: `mipres/configuraciones/${token.key}`,
             catchMessage: 'No ha sido posible sincronizar el registro de configuración.',
             buttonColor: 'primary',
