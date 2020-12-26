@@ -87,6 +87,22 @@ const actions = {
                 })
         })
     },
+    async getPrescripcionFechaMipres (context, data) {
+        return await new Promise(resolve => {
+            Vue.axios.get(`mipres/prescripciones-mipres-fecha/${data.FechaPrescripcion}`)
+                .then(response => {
+                    resolve(response.data)
+                })
+                .catch(e => {
+                    resolve(null)
+                    Vue.swal({
+                        icon: 'error',
+                        title: `Error al sincronizar las prescripciones del ${data.FechaPrescripcion}.`,
+                        text: e.response.data ? `Error ${e.response.data.type}, ${e.response.data.message}` : ''
+                    })
+                })
+        })
+    },
     async getTutelasMipres (context, data) {
         return await new Promise(resolve => {
             Vue.axios.get(`mipres/tutelas-mipres/${data.NoTutela}?sync_all=${data.sync ? 1 : 0}`)
