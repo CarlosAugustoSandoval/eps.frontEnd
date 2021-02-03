@@ -89,7 +89,7 @@ const actions = {
     },
     async getPrescripcionFechaMipres (context, data) {
         return await new Promise(resolve => {
-            Vue.axios.get(`mipres/prescripciones-mipres-fecha/${data.FechaPrescripcion}`)
+            Vue.axios.get(`mipres/prescripciones-mipres-fecha/${data.fecha}`)
                 .then(response => {
                     resolve(response.data)
                 })
@@ -97,7 +97,7 @@ const actions = {
                     resolve(null)
                     Vue.swal({
                         icon: 'error',
-                        title: `Error al sincronizar las prescripciones del ${data.FechaPrescripcion}.`,
+                        title: `Error al sincronizar las prescripciones del ${data.fecha}.`,
                         text: e.response.data ? `Error ${e.response.data.type}, ${e.response.data.message}` : ''
                     })
                 })
@@ -105,7 +105,7 @@ const actions = {
     },
     async getReporteEntregaFechaMipres (context, data) {
         return await new Promise(resolve => {
-            Vue.axios.get(`mipres/reportes-entrega-fecha/${data.FechaReporteEntrega}`)
+            Vue.axios.get(`mipres/reportes-entrega-fecha/${data.fecha}`)
                 .then(response => {
                     resolve(response.data)
                 })
@@ -113,7 +113,23 @@ const actions = {
                     resolve(null)
                     Vue.swal({
                         icon: 'error',
-                        title: `Error al sincronizar los reportes de entrega del ${data.FechaReporteEntrega}.`,
+                        title: `Error al sincronizar los reportes de entrega del ${data.fecha}.`,
+                        text: e.response.data ? `Error ${e.response.data.type}, ${e.response.data.message}` : ''
+                    })
+                })
+        })
+    },
+    async getReporteFacturacionFechaMipres (context, data) {
+        return await new Promise(resolve => {
+            Vue.axios.get(`mipres/facturacion-fecha/${data.fecha}`)
+                .then(response => {
+                    resolve(response.data)
+                })
+                .catch(e => {
+                    resolve(null)
+                    Vue.swal({
+                        icon: 'error',
+                        title: `Error al sincronizar los reportes de facturación del ${data.fecha}.`,
                         text: e.response.data ? `Error ${e.response.data.type}, ${e.response.data.message}` : ''
                     })
                 })

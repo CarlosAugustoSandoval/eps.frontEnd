@@ -2,10 +2,10 @@
   <v-row justify="center" align="center">
     <v-col cols="12" class="pb-0">
       <c-date
-          v-model="value.FechaReporteEntrega"
-          label="Fecha de reportes de entrega"
+          v-model="value.fecha"
+          :label="label"
           rules="required"
-          name="Fecha de reportes de entrega"
+          :name="label"
       />
     </v-col>
   </v-row>
@@ -13,11 +13,15 @@
 
 <script>
 export default {
-name: 'ReporteEntregaFecha',
+name: 'RegistrosFecha',
   props: {
     value: {
       type: [Object, Number, String],
       default: null
+    },
+    label: {
+      type: String,
+      default: ''
     }
   }
 }

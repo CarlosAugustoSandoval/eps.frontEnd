@@ -68,7 +68,11 @@
       </v-toolbar>
       <ValidationObserver ref="formSincronizador" tag="form" autocomplete="off">
         <v-container fluid class="py-0">
-          <component :is="item.dataComponent" v-model="model"></component>
+          <component
+              :is="item.dataComponent"
+              v-model="model"
+              :label="item.label"
+          ></component>
         </v-container>
       </ValidationObserver>
       <v-divider></v-divider>
@@ -122,9 +126,10 @@ export default {
         id: 4,
         title: 'Prescripciones por fecha',
         subtitle: 'Requiere seleccionar una fecha',
-        model: {FechaPrescripcion: null},
+        label: 'Fecha de prescripciones',
+        model: {fecha: null},
         dispatch: 'getPrescripcionFechaMipres',
-        dataComponent: () => import('@/modules/mipres/components/sincronizador/forms/PrescripcionFecha')
+        dataComponent: () => import('@/modules/mipres/components/sincronizador/forms/RegistrosFecha')
       },
       {
         id: 2,
@@ -138,9 +143,19 @@ export default {
         id: 5,
         title: 'Reportes de entrega por fecha',
         subtitle: 'Requiere seleccionar una fecha',
-        model: {FechaReporteEntrega: null},
+        label: 'Fecha de reportes de entrega',
+        model: {fecha: null},
         dispatch: 'getReporteEntregaFechaMipres',
-        dataComponent: () => import('@/modules/mipres/components/sincronizador/forms/ReporteEntregaFecha')
+        dataComponent: () => import('@/modules/mipres/components/sincronizador/forms/RegistrosFecha')
+      },
+      {
+        id: 6,
+        title: 'Reportes de facturación por fecha',
+        subtitle: 'Requiere seleccionar una fecha',
+        label: 'Fecha de reportes de facturación',
+        model: {fecha: null},
+        dispatch: 'getReporteFacturacionFechaMipres',
+        dataComponent: () => import('@/modules/mipres/components/sincronizador/forms/RegistrosFecha')
       },
       {
         id: 3,
