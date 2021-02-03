@@ -182,6 +182,7 @@ export default {
         if(this.permisos.prescripciones.sincronizar && preVisibles.find(x => x.id === 1)) losVisibles.push(preVisibles.find(x => x.id === 1))
         if(this.permisos.prescripciones.sincronizar && preVisibles.find(x => x.id === 4)) losVisibles.push(preVisibles.find(x => x.id === 4))
         if(this.permisos.suministros.sincronizar && preVisibles.find(x => x.id === 5)) losVisibles.push(preVisibles.find(x => x.id === 5))
+        if(this.permisos.suministros.sincronizar && preVisibles.find(x => x.id === 6)) losVisibles.push(preVisibles.find(x => x.id === 6))
         if(this.permisos.suministros.sincronizar && preVisibles.find(x => x.id === 2)) losVisibles.push(preVisibles.find(x => x.id === 2))
         if(this.permisos.tutelas.sincronizar && preVisibles.find(x => x.id === 3)) losVisibles.push(preVisibles.find(x => x.id === 3))
         return losVisibles

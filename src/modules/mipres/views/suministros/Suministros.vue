@@ -4,7 +4,7 @@
       <template v-slot:action>
         <v-spacer></v-spacer>
         <sincronizador
-            :visibles="[1,4,2,5,3]"
+            :visibles="[1,4,2,5,6,3]"
             @sincronizado="$refs && $refs.tablaSuministros.reloadPage()"
         />
       </template>
