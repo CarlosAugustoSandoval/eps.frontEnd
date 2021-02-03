@@ -103,6 +103,22 @@ const actions = {
                 })
         })
     },
+    async getReporteEntregaFechaMipres (context, data) {
+        return await new Promise(resolve => {
+            Vue.axios.get(`mipres/reportes-entrega-fecha/${data.FechaReporteEntrega}`)
+                .then(response => {
+                    resolve(response.data)
+                })
+                .catch(e => {
+                    resolve(null)
+                    Vue.swal({
+                        icon: 'error',
+                        title: `Error al sincronizar los reportes de entrega del ${data.FechaReporteEntrega}.`,
+                        text: e.response.data ? `Error ${e.response.data.type}, ${e.response.data.message}` : ''
+                    })
+                })
+        })
+    },
     async getTutelasMipres (context, data) {
         return await new Promise(resolve => {
             Vue.axios.get(`mipres/tutelas-mipres/${data.NoTutela}?sync_all=${data.sync ? 1 : 0}`)

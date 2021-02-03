@@ -135,6 +135,14 @@ export default {
         dataComponent: () => import('@/modules/mipres/components/sincronizador/forms/PrescripcionNumero')
       },
       {
+        id: 5,
+        title: 'Reportes de entrega por fecha',
+        subtitle: 'Requiere seleccionar una fecha',
+        model: {FechaReporteEntrega: null},
+        dispatch: 'getReporteEntregaFechaMipres',
+        dataComponent: () => import('@/modules/mipres/components/sincronizador/forms/PrescripcionFecha')
+      },
+      {
         id: 3,
         title: 'Tutela por número',
         subtitle: 'Requiere ingresar número de tutela',
@@ -158,6 +166,7 @@ export default {
         let losVisibles = []
         if(this.permisos.prescripciones.sincronizar && preVisibles.find(x => x.id === 1)) losVisibles.push(preVisibles.find(x => x.id === 1))
         if(this.permisos.prescripciones.sincronizar && preVisibles.find(x => x.id === 4)) losVisibles.push(preVisibles.find(x => x.id === 4))
+        if(this.permisos.suministros.sincronizar && preVisibles.find(x => x.id === 5)) losVisibles.push(preVisibles.find(x => x.id === 5))
         if(this.permisos.suministros.sincronizar && preVisibles.find(x => x.id === 2)) losVisibles.push(preVisibles.find(x => x.id === 2))
         if(this.permisos.tutelas.sincronizar && preVisibles.find(x => x.id === 3)) losVisibles.push(preVisibles.find(x => x.id === 3))
         return losVisibles
