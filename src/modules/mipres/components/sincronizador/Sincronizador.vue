@@ -140,7 +140,7 @@ export default {
         subtitle: 'Requiere seleccionar una fecha',
         model: {FechaReporteEntrega: null},
         dispatch: 'getReporteEntregaFechaMipres',
-        dataComponent: () => import('@/modules/mipres/components/sincronizador/forms/PrescripcionFecha')
+        dataComponent: () => import('@/modules/mipres/components/sincronizador/forms/ReporteEntregaFecha')
       },
       {
         id: 3,
