@@ -61,7 +61,7 @@
                   depressed
                   :color="permisos.reenviar ? 'blue' : 'grey'"
                   class="my-1"
-                  @click="permisos.reenviar ? $emit('reenviar', direccionamiento) : ''"
+                  @click="reenviarDireccionamiento(direccionamiento)"
               >
                 <v-icon>mdi-send</v-icon>
               </v-btn>
@@ -132,8 +132,28 @@ export default {
         })
       }
     },
-    async editarDireccionamiento(direccionamiento) {
-      console.log('direccionamiento', direccionamiento)
+    async reenviarDireccionamiento(direccionamiento) {
+      const registro = this.clone(direccionamiento)
+      registro.FecDireccionamiento = this.moment().format('YYYY-MM-DD')
+      let reenviado = await this.confirm(
+          {
+            title: 'Reenviar Direccionamiento',
+            subtitle: `¿Está seguro de reenviar el direccionamiento id <strong>${registro.id_interno}</strong>?`,
+            route: `mipres/direccionamientos/${registro.id_interno}`,
+            method: 'put',
+            data: registro,
+            catchMessage: 'No ha sido posible reenviar el direccionamiento:',
+            buttonText: 'Si, Reenviar',
+            buttonColor: 'Primary'
+          }
+      )
+      if (reenviado.confirm) {
+        this.$emit('actualizado')
+        this.$store.commit('SET_SNACKBAR', {
+          color: 'success',
+          message: `El direccionamiento se reenvió correctamente.`
+        })
+      }
     }
   }
 }
