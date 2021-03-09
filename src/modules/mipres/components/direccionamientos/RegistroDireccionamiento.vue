@@ -474,6 +474,14 @@ export default {
     this.direccionamiento.FecDireccionamiento = this.fechaMinimaDireccionamiento
   },
   methods: {
+    // editar(direccionamiento) {
+    //   const registro = this.clone(direccionamiento)
+    //   registro.tipo_registro = true
+    //   registro.FecDireccionamiento = this.moment(registro.FecDireccionamiento).format('YYYY-MM-DD')
+    //   this.prestadorObjeto = registro.prestador
+    //   console.log('direccionamiento', registro)
+    //   this.direccionamiento = registro
+    // },
     asignaDatosAfiliado() {
       if(this.documento && this.documento.afiliado) {
         this.direccionamiento.sexo = this.documento.afiliado.gn_sexo_id

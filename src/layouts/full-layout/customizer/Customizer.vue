@@ -38,7 +38,7 @@
         </v-list-item>
         <v-list-item @click="logout">
           <v-list-item-avatar color="error">
-            <v-icon dark>mdi-close</v-icon>
+            <v-icon dark>mdi-power-standby</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>Cerrar Sesión</v-list-item-title>

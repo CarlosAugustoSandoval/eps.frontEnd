@@ -49,6 +49,23 @@
                 <v-icon>mdi-trash-can</v-icon>
               </v-btn>
             </c-tooltip>
+            <c-tooltip
+                v-if="direccionamiento.EstDireccionamiento === null"
+                top
+                :tooltip="permisos.reenviar ? 'Reenviar' : 'Sin permisos para reenviar'"
+            >
+              <v-btn
+                  dark
+                  fab
+                  x-small
+                  depressed
+                  :color="permisos.reenviar ? 'blue' : 'grey'"
+                  class="my-1"
+                  @click="permisos.reenviar ? $emit('reenviar', direccionamiento) : ''"
+              >
+                <v-icon>mdi-send</v-icon>
+              </v-btn>
+            </c-tooltip>
           </td>
           <td>{{ direccionamiento.ID }}</td>
           <td>{{ direccionamiento.NoEntrega }}</td>
@@ -114,6 +131,9 @@ export default {
           message: `El direccionamiento se anuló correctamente.`
         })
       }
+    },
+    async editarDireccionamiento(direccionamiento) {
+      console.log('direccionamiento', direccionamiento)
     }
   }
 }

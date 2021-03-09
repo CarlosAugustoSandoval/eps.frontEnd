@@ -116,12 +116,14 @@
                 <tabla-direccionamientos
                     @actualizado="$emit('actualizado')"
                     :direccionamientos="item.objeto.direccionamientos"
+                    @reenviar="val => reenviarDireccionamiento(val)"
                 />
               </v-card>
             </v-card>
           </v-window-item>
           <v-window-item>
             <registro-direccionamiento
+                ref="registroDireccionamiento"
                 v-if="window === 1"
                 @cancelar="window = 0"
                 :documento="documento"
@@ -215,6 +217,32 @@ export default {
     ]
   }),
   methods: {
+    reenviarDireccionamiento(direccionamiento) {
+      const registro = this.clone(direccionamiento)
+      registro.FecDireccionamiento = this.moment().format('YYYY-MM-DD')
+      this.processingSection = true
+      this.axios.put(`mipres/direccionamientos/${registro.id_interno}`, registro)
+          .then(async () => {
+            this.$store.commit('SET_SNACKBAR', {
+              color: 'success',
+              message: `El direccionamiento se ha reenviado correctamente.`
+            })
+            this.$emit('actualizado')
+            this.processingSection = false
+          })
+          .catch(e => {
+            this.$swal({
+              icon: 'error',
+              title: `Error al reenviar el direccionamiento.`,
+              text: e.response.data && e.response.data.type ? `Error ${e.response.data.type}, ${e.response.data.message}` : ''
+            })
+            this.processingSection = false
+          })
+      // this.window = 1
+      // setTimeout(() => {
+      //   this.$refs.registroDireccionamiento.editar(direccionamiento)
+      // }, 300)
+    },
     close() {
       this.dialog = false
     }
