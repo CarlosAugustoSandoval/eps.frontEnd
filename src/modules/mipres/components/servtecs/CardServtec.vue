@@ -12,7 +12,7 @@
                 <span>{{data.type}}</span>
               </v-tooltip>
               <v-list-item-content class="truncate-content pa-0">
-                <v-list-item-title class="body-1">{{ data.title }}</v-list-item-title>
+                <p class="body-1 ma-0">{{ data.title }}</p>
                 <v-list-item-subtitle class="caption" :class="data.classSubTitle || ''">{{ data.subTitle }}
                 </v-list-item-subtitle>
               </v-list-item-content>
@@ -56,8 +56,13 @@
             </v-tooltip>
             <v-toolbar-title>
               <v-list-item-content>
-                <v-list-item-title class="py-1">{{ data.title }}</v-list-item-title>
-                <v-list-item-subtitle class="caption" :class="data.classSubTitle || ''">{{ data.subTitle }}
+                <v-list-item-title class="py-1 mb-0">{{ data.title }}</v-list-item-title>
+                <v-list-item-subtitle class="caption mb-0" :class="data.classSubTitle || ''">{{ data.subTitle }}</v-list-item-subtitle>
+                <v-list-item-subtitle
+                    v-if="item.nodireccionamientos && item.nodireccionamientos.length"
+                    class="caption red--text"
+                >
+                  Registra {{ item.nodireccionamientos.length }} No Direccionamiento{{ item.nodireccionamientos.length > 1 ? 's' : ''}}
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-toolbar-title>
@@ -192,6 +197,7 @@ export default {
   },
   methods: {
     assignData() {
+      console.log('this.itemzzzzz', this.item)
       switch (this.keyTecnologia) {
         case 'M': {
           this.data = this.esPrescripcion ? contentMedicamentoP(this.item): contentMedicamentoT(this.item)

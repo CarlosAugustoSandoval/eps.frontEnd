@@ -2,21 +2,22 @@
   <v-dialog v-model="dialog" persistent max-width="720px">
     <v-card v-if="reporte">
       <loading :value="loading" absolute/>
-      <v-card-title class="py-0">
+      <v-list-item>
         <v-list-item-avatar color="primary" class="white--text">
           {{ reporte.id }}
         </v-list-item-avatar>
-        <v-list-item-content>
-          <v-list-item-title class="mb-0"><h6 class="title mb-0">{{ reporte.nombre }}</h6></v-list-item-title>
-          <v-list-item-subtitle>
-            {{ reporte.descripcion }}
-          </v-list-item-subtitle>
+        <v-list-item-content class="pa-0">
+          <p class="title ma-0">{{ reporte.nombre }}</p>
         </v-list-item-content>
-        <v-spacer/>
-        <v-btn large icon @click="close">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-      </v-card-title>
+        <v-list-item-action>
+          <v-btn large icon @click="close">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-list-item-action>
+      </v-list-item>
+      <v-card-text class="py-0 body-1">
+        {{ reporte.descripcion }}
+      </v-card-text>
       <ValidationObserver ref="formVariables" autocomplete="off">
         <v-container v-if="reporte.variables && reporte.variables.length">
           <v-row justify="center" align="center">

@@ -43,14 +43,13 @@
             No hay reportes para mostrar
           </v-card-text>
           <v-list v-else two-line class="py-0">
-            <template v-for="reporte in reportesFiltrados">
-              <v-hover v-slot:default="{ hover }" :key="`reporte${reporte.id}`">
+            <template v-for="(reporte, indexReporte) in reportesFiltrados">
+              <v-hover v-slot:default="{ hover }" :key="`reporte${indexReporte}`">
                 <v-list-item @click="seleccionarReporte(reporte)">
                   <v-list-item-avatar class="my-1 align-self-center">{{ reporte.id }}</v-list-item-avatar>
                   <v-list-item-content class="pa-0">
                     <v-list-item-title><h5 class="mb-0 text-truncate">{{ reporte.nombre }}</h5></v-list-item-title>
-                    <v-list-item-subtitle class="grey--text fs-12 fw-normal text-truncate">{{ reporte.descripcion }}
-                    </v-list-item-subtitle>
+                    <p class="grey--text fs-12 fw-normal ma-0">{{ reporte.descripcion }}</p>
                     <v-list-item-subtitle class="green--text" v-if="reporte.variables && !reporte.variables.length">
                       <v-icon color="green">mdi-arrow-down-bold-circle-outline</v-icon>
                       Descarga directa
@@ -102,7 +101,9 @@ export default {
   },
   methods: {
     buscarReportes: window.lodash.debounce(function () {
-      this.reportesFiltrados = this.search ? this.reportesFull.filter(x => (x.id === parseInt(this.search) || x.nombre.toLowerCase().search(this.search.toLowerCase()) > -1) || (x.descripcion.toLowerCase().search(this.search.toLowerCase()) > -1)) : this.reportesFull
+      this.reportesFiltrados = this.search
+          ? this.reportesFull.filter(x => (x.id === parseInt(this.search) || x.nombre.toLowerCase().search(this.search.toLowerCase()) > -1) || (x.descripcion.toLowerCase().search(this.search.toLowerCase()) > -1))
+          : this.clone(this.reportesFull)
     }, 200),
     crearReporte() {
       this.$refs.registroReporte.open()

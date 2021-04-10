@@ -172,11 +172,17 @@
                 <v-col cols="12" sm="6" class="pb-0">
                   <c-date
                       v-model="direccionamiento.FecMaxEnt"
-                      :rules="`required|mindate:${direccionamiento.FecDireccionamiento ? moment(direccionamiento.FecDireccionamiento).format('DD/MM/YYYY') : moment().format('DD/MM/YYYY')}`"
+                      :rules="`required`"
                       label="Maxima de Entrega"
                       name="fecha maxima de entrega"
-                      :min="direccionamiento.FecDireccionamiento ? moment(direccionamiento.FecDireccionamiento).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')"
                   />
+<!--                  <c-date-->
+<!--                      v-model="direccionamiento.FecMaxEnt"-->
+<!--                      :rules="`required|mindate:${direccionamiento.FecDireccionamiento ? moment(direccionamiento.FecDireccionamiento).format('DD/MM/YYYY') : moment().format('DD/MM/YYYY')}`"-->
+<!--                      label="Maxima de Entrega"-->
+<!--                      name="fecha maxima de entrega"-->
+<!--                      :min="direccionamiento.FecDireccionamiento ? moment(direccionamiento.FecDireccionamiento).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD')"-->
+<!--                  />-->
                 </v-col>
                 <v-col cols="12" sm="6" class="pb-0">
                   <c-number
