@@ -102,7 +102,7 @@
                 <v-list-item two-line class="pa-0" :key="`itemList${indexList}`">
                   <v-list-item-content>
                     <v-list-item-subtitle>{{ itemList.title }}</v-list-item-subtitle>
-                    <p class="pt-1 mb-0">{{ itemList.text }}</p>
+                    <p class="pt-1 mb-0" v-html="itemList.text"/>
                   </v-list-item-content>
                 </v-list-item>
                 <v-divider :key="`itemListDivider${indexList}`" class="ma-0"></v-divider>

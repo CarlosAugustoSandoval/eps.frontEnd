@@ -36,7 +36,7 @@ export function contentMedicamentoT(item) {
             {title: 'Indicaciones o recomendaciones para el paciente', text: item.IndRec},
             {
                 title: 'Principios Activos', text: item.principios_activos ? item.principios_activos.map(x => {
-                    return `${x.principio_activo.descripcion} ${x.ConcCant}${x.unimedida_concentracion.descripcion2}/${x.CantCont}${x.unimedida_medicamento.descripcion2}`
+                    return `<strong>${x.principio_activo ? x.principio_activo.descripcion : 'NO REGISTRA DESCRIPCIÓN'}</strong> ${x.ConcCant}${x.unimedida_concentracion.descripcion2}/${x.CantCont}${x.unimedida_medicamento.descripcion2}`
                 }).join('; ') : ''
             }
         ],

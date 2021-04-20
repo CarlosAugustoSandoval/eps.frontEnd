@@ -2,7 +2,7 @@
   <v-dialog v-model="dialog" persistent max-width="720px">
     <v-card v-if="reporte">
       <loading :value="loading" absolute/>
-      <v-list-item>
+      <v-card-title class="py-0">
         <v-list-item-avatar color="primary" class="white--text">
           {{ reporte.id }}
         </v-list-item-avatar>
@@ -14,7 +14,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-list-item-action>
-      </v-list-item>
+      </v-card-title>
       <v-card-text class="py-0 body-1">
         {{ reporte.descripcion }}
       </v-card-text>
