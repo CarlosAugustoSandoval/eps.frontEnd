@@ -98,6 +98,9 @@
     <v-row v-else justify="center" align="center" class="pa-3">
       <span class="text-body-1 grey--text">No hay direccionamientos registrados</span>
     </v-row>
+    <dialog-producto
+        ref="dialogProducto"
+    />
   </div>
 </template>
 
