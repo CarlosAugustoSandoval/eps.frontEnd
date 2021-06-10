@@ -80,7 +80,9 @@
           </td>
           <td>{{ direccionamiento.FecDireccionamiento }}</td>
           <td>{{ direccionamiento.CantTotAEntregar }}</td>
-          <td>{{ `${direccionamiento.TipoTec}${direccionamiento.CodSerTecAEntregar}` }}</td>
+          <td>
+            <a @click="getDetailSerTec(direccionamiento.TipoTec, direccionamiento.CodSerTecAEntregar)">{{ `${direccionamiento.TipoTec}${direccionamiento.CodSerTecAEntregar}` }}</a>
+          </td>
           <td>{{ direccionamiento.FecMaxEnt }}</td>
           <td>{{ direccionamiento.CodMunEnt }}</td>
           <td>
@@ -114,6 +116,9 @@ export default {
     }
   },
   methods: {
+    getDetailSerTec (tipo, codigo) {
+      this.$refs.dialogProducto.getDetail(tipo, codigo)
+    },
     async anularDireccionamiento(direccionamiento) {
       let borrardo = await this.confirm(
           {

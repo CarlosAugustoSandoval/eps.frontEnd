@@ -4,7 +4,7 @@
       <v-autocomplete
           v-if="tipoControl === 'CUM'"
           key="tipoControlCUM"
-          label="Medicamento CUM"
+          :label="servicioTecnologiaName"
           v-model="servicioTecnologiaObjeto"
           item-value="consecutivocum"
           :items="cums"
@@ -294,8 +294,9 @@ export default {
       case 'M' :
         switch (this.item.objeto.TipoMed) {
           case 1:
+          case 7:
             this.tipoControl = 'CUM'
-            this.servicioTecnologiaName = 'medicamento CUM'
+            this.servicioTecnologiaName = this.item.objeto.TipoMed === 1 ? 'Medicamento CUM' : 'Medicamento UNIRS'
             if (this.item.title) {
               const rTemporal = this.item.title.split('[')
               const rFinal = rTemporal[1] ? rTemporal[1].split(']') : null
