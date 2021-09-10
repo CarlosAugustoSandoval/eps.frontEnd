@@ -1,51 +1,83 @@
 <template>
   <div v-if='servicioTecnologia !== `""`'>
     <ValidationProvider :name="servicioTecnologiaName" :rules="rules" v-slot="{ errors }">
-      <v-autocomplete
-          v-if="tipoControl === 'CUM'"
-          key="tipoControlCUM"
-          :label="servicioTecnologiaName"
-          v-model="servicioTecnologiaObjeto"
-          item-value="consecutivocum"
-          :items="cums"
-          :loading="loading"
-          :search-input.sync="search"
-          no-filter
-          placehoder="Buscar por código, descripción comercial o principo activo"
-          no-data-text="No hay resultados para mostrar"
-          return-object
-          outlined
-          :error-messages="errors"
-          persistent-hint
-          :dense="dense"
-          :hint="servicioTecnologiaObjeto ? servicioTecnologiaObjeto.descripcioncomercial : ''"
-          @change="cum => servicioTecnologia = cum ? `${cum.expediente}-${cum.consecutivocum}` : null"
-      >
-        <template v-slot:selection="data">
-          <v-list-item class="pa-0" style="width: 100% !important;">
-            <v-list-item-content class="text-truncate pa-0">
-              <v-list-item-title class="body-2">
-                {{ data.item.expediente }}-{{ data.item.consecutivocum }} | {{ data.item.principioactivo }}
-              </v-list-item-title>
-              <v-list-item-subtitle class="caption">{{ data.item.producto }}</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
+<!--      <v-switch-->
+<!--          v-if="tipoControl !== 'IUM' && tipoControl !== 'MAGISTRAL'"-->
+<!--          v-model="servTecManual"-->
+<!--          :label="`Habilitar escritura manual de ${servicioTecnologiaName}`"-->
+<!--          color="red"-->
+<!--      />-->
+<!--      <template v-if="servTecManual && (tipoControl !== 'IUM' && tipoControl !== 'MAGISTRAL')">-->
+<!--        <c-texto-->
+<!--            :dense="true"-->
+<!--            v-model="servicioTecnologia"-->
+<!--            :label="servicioTecnologiaName"-->
+<!--            rules="required"-->
+<!--            :name="servicioTecnologiaName"-->
+<!--        />-->
+<!--      </template>-->
+<!--      <template v-else>-->
+      <template v-if="tipoControl === 'CUM'">
+        <v-switch
+            v-model="servTecManual"
+            label="Habilitar escritura manual de código CUM"
+            color="red"
+        />
+        <template v-if="servTecManual">
+          <c-texto
+              :dense="true"
+              v-model="servicioTecnologia"
+              label="Código CUM"
+              rules="required"
+              name="Código CUM"
+          />
         </template>
-        <template v-slot:item="data">
-          <div style="width: 100% !important;">
-            <v-list-item class="pa-0">
+        <v-autocomplete
+            v-else
+            key="tipoControlCUM"
+            :label="servicioTecnologiaName"
+            v-model="servicioTecnologiaObjeto"
+            item-value="consecutivocum"
+            :items="cums"
+            :loading="loading"
+            :search-input.sync="search"
+            no-filter
+            placehoder="Buscar por código, descripción comercial o principo activo"
+            no-data-text="No hay resultados para mostrar"
+            return-object
+            outlined
+            :error-messages="errors"
+            persistent-hint
+            :dense="dense"
+            :hint="servicioTecnologiaObjeto ? servicioTecnologiaObjeto.descripcioncomercial : ''"
+            @change="cum => servicioTecnologia = cum ? `${cum.expediente}-${cum.consecutivocum}` : null"
+        >
+          <template v-slot:selection="data">
+            <v-list-item class="pa-0" style="width: 100% !important;">
               <v-list-item-content class="text-truncate pa-0">
                 <v-list-item-title class="body-2">
                   {{ data.item.expediente }}-{{ data.item.consecutivocum }} | {{ data.item.principioactivo }}
                 </v-list-item-title>
                 <v-list-item-subtitle class="caption">{{ data.item.producto }}</v-list-item-subtitle>
-                <v-list-item-subtitle class="caption">{{ data.item.descripcioncomercial }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
-            <v-divider></v-divider>
-          </div>
-        </template>
-      </v-autocomplete>
+          </template>
+          <template v-slot:item="data">
+            <div style="width: 100% !important;">
+              <v-list-item class="pa-0">
+                <v-list-item-content class="text-truncate pa-0">
+                  <v-list-item-title class="body-2">
+                    {{ data.item.expediente }}-{{ data.item.consecutivocum }} | {{ data.item.principioactivo }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle class="caption">{{ data.item.producto }}</v-list-item-subtitle>
+                  <v-list-item-subtitle class="caption">{{ data.item.descripcioncomercial }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider></v-divider>
+            </div>
+          </template>
+        </v-autocomplete>
+      </template>
       <c-texto
           v-if="tipoControl === 'IUM'"
           key="tipoControlIUM"
@@ -248,6 +280,7 @@ export default {
   data: () => ({
     tipoControl: null,
     loading: false,
+    servTecManual: false,
     search: '',
     cums: [],
     servicioTecnologiaObjeto: null,
@@ -267,6 +300,13 @@ export default {
     }
   }),
   watch: {
+    servTecManual: {
+      handler() {
+        this.servicioTecnologia = null
+        this.servicioTecnologiaObjeto = null
+      },
+      immediate: false
+    },
     'search': {
       handler(val) {
         val && this.buscarCUM(val)
@@ -296,7 +336,7 @@ export default {
           case 1:
           case 7:
             this.tipoControl = 'CUM'
-            this.servicioTecnologiaName = this.item.objeto.TipoMed === 1 ? 'Medicamento CUM' : 'Medicamento UNIRS'
+            this.servicioTecnologiaName = this.item.objeto.TipoMed === 1 ? 'Código Medicamento CUM' : 'Código  Medicamento UNIRS'
             if (this.item.title) {
               const rTemporal = this.item.title.split('[')
               const rFinal = rTemporal[1] ? rTemporal[1].split(']') : null
@@ -305,33 +345,33 @@ export default {
             break
           case 2:
             this.tipoControl = 'IUM'
-            this.servicioTecnologiaName = 'código medicamento IUM'
+            this.servicioTecnologiaName = 'Código  Medicamento IUM'
             break
           case 3:
             this.tipoControl = 'MAGISTRAL'
-            this.servicioTecnologiaName = 'medicamento formula magistral'
+            this.servicioTecnologiaName = 'Código Medicamento formula magistral'
             this.servicioTecnologia = '""'
             break
         }
         break
       case 'P' :
         this.tipoControl = 'P'
-        this.servicioTecnologiaName = 'procedimiento'
+        this.servicioTecnologiaName = 'Código Procedimiento'
         objP = this.cups && this.cups.length && this.item && this.item.objeto && this.item.objeto.CodCUPS && this.cups.find(x => x.codigo === this.item.objeto.CodCUPS) ? this.cups.find(x => x.codigo === this.item.objeto.CodCUPS) : null
         break
       case 'D' :
         this.tipoControl = 'D'
-        this.servicioTecnologiaName = 'dispositivo médico'
+        this.servicioTecnologiaName = 'Código Dispositivo Médico'
         objP = this.dispositivos && this.dispositivos.length && this.item && this.item.objeto && this.item.objeto.CodDisp && this.dispositivos.find(x => x.codigo === this.item.objeto.CodDisp) ? this.dispositivos.find(x => x.codigo === this.item.objeto.CodDisp) : null
         break
       case 'N' :
         this.tipoControl = 'N'
-        this.servicioTecnologiaName = 'producto de soporte nutricional'
+        this.servicioTecnologiaName = 'Código  Producto de Soporte Nutricional'
         objP = this.nutricionales && this.nutricionales.length && this.item && this.item.objeto && this.item.objeto.producto && this.item.objeto.producto.codigo && this.nutricionales.find(x => x.codigo === this.item.objeto.producto.codigo) ? this.nutricionales.find(x => x.codigo === this.item.objeto.producto.codigo) : null
         break
       case 'S' :
         this.tipoControl = 'S'
-        this.servicioTecnologiaName = 'servicio complementario'
+        this.servicioTecnologiaName = 'Código Servicio Complementario'
         objP = this.complementarios && this.complementarios.length && this.item && this.item.objeto && this.item.objeto.CodSerComp && this.complementarios.find(x => x.codigo === this.item.objeto.CodSerComp) ? this.complementarios.find(x => x.codigo === this.item.objeto.CodSerComp) : null
         break
     }
